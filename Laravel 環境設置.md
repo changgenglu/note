@@ -1,0 +1,423 @@
+# Laravel 環境設置
+
+###### tags: `php` `Laravel` `環境設定`
+
+## 環境初始設定
+
+### 1. 安裝 XAMPP or phpEnv
+
+### 2. 安裝 composer
+
+#### windows 透過 composer 官網下載 composer 安裝檔
+
+#### 下載 Composer(MacOS)
+
+- 代碼以[Composer 官網](https://getcomposer.org/download/)為主
+
+下載安裝程序到當前目錄
+
+```bash
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+```
+
+驗證安裝程序
+
+```bash
+php -r "if (hash_file('sha384', 'composer-setup.php') === '906a84df04cea2aa72f40b5f787e49f22d4c2f19492ac310e8cba5b96ac8b64115ac402c8cd292b8a03482574915d1a8') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+```
+
+運行安裝程序
+
+```bash
+php composer-setup.php
+```
+
+刪除安裝程序
+
+```bash
+php -r "unlink('composer-setup.php');"
+```
+
+- MacOS 如果出現 `zsh: command not found: php`
+
+  原因：MacOS Monterry 版本，沒有包括 PHP。請參考：[macOS Monterey 上安裝 PHP](https://hackmd.io/wnFCr0GUS-iIRxHY2zrBgw)
+
+- MacOS 須確保 Composer 的系統等級 vendor bin 資料夾有放在$PATH 中，這樣作業系統才能找到`laravel` 可執行檔。一般常見的位置如下：
+  - macOS: $HOME/.composer/vendor/bin
+  - Windows: %USERPROFILE%\AppData\Roaming\Composer\vendor\bin
+
+#### 全局調用 Composer (MacOS)
+
+確認是否成功安裝 Composer
+
+```bash
+ls
+
+// 要看到有composer.phar的檔案
+```
+
+將 composer.phar 放入本地的目錄
+
+```bash
+sudo mv composer.phar /usr/local/bin/composer
+```
+
+測試是否安裝成功
+
+```bash
+composer
+```
+
+### 3. 安裝 Visual Studio Code or phpStorm
+
+### 4. Laravel 全域安裝 (XAMPP)
+
+```bash
+cd c:\xampp\htdocs
+composer global require laravel/installer
+
+laravel new project_name
+
+cd project_name
+
+php artisan serve
+```
+
+## 從 Git clone Laravel 專案
+
+由於安全性及維護的考量，Laravel 預設有 .gitignore，所以較為敏感的檔案，不會被 push 上去。
+因此專案 clone 下來之後，必須要重建才能正常執行。
+
+### 開發環境設定
+
+1. 安裝依賴套件
+
+   ```bash
+   composer install
+   ```
+
+2. 設定.env 檔
+
+   複製.env.example 並更改為.env
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   修改.env
+
+3. 設定加密的 APP_KEY
+
+   ```bash
+   php artisan key:generate
+   ```
+
+4. 設定資料庫
+
+   建立 MySQL 所需的資料庫
+
+5. Migration 和 Seeding 建立資料表結構
+
+   ```cmd
+   php artisan migrate
+   &
+   php artisan db:seed
+   &
+   php artisan migrate --seed
+   ```
+
+6. 若有安裝 passport 需運行命令產生 Access Token
+
+   ```bash
+   php artisan passport:install
+   ```
+
+7. 建立符號連結
+   如果有使用到 public storage （如：Storage::disk('public')），
+   記得使用以下指令，將 storage 軟連結到 storage/app/public
+
+   ```cmd
+   php artisan storage:link
+   ```
+
+8. 設定伺服器
+
+   例如到 NGINX 新增、調整 conf 檔
+
+9. 設定任務排程
+
+   如果有在 Laravel 中定義排程的任務，
+   記得在 crontab 中增加 Laravel 指令排程器
+
+   ```cmd
+   # 在 crontab -e 中
+   * * * * * php /path-to-your-project/artisan schedule:run >> /dev/null 2>&1
+   ```
+
+### 上線環境設定
+
+1. 安裝 compsoer 排除 dev 項目
+
+   ```bash
+   composer install --optimize-autoloader --no-dev
+   ```
+
+2. `.env`設定轉為線上並且關閉錯誤提示
+
+   ```php
+   APP_NAME=專案名稱
+   APP_ENV=production
+   APP_KEY=
+   APP_DEBUG=false
+   APP_URL=https://正式網址
+   ```
+
+3. 設定快取
+
+   ```bash
+   php artisan config:cache
+
+   #　下次更新程式記得更新config
+   php artisan config:clear
+   ```
+
+4. Router 快取  
+   error: (Unable to prepare route [api/user] for serialization. Uses Closure. )
+
+   ```bash
+   php artisan route:cache
+
+   # 下次更新程式記得更新route
+   php artisan route:clear
+   php artisan cache:clear
+   ```
+
+5. Composer 緩存
+
+   ```bash
+   composer dumpautoload -o
+   # 每次更新compsoer install 後，都要再執行一次
+   ```
+
+6. 類別緩存  
+   error: (Unable to prepare route [api/user] for serialization. Uses Closure. )
+
+   ```bash
+   php artisan optimize
+   ```
+
+7. 清除類別緩存
+
+   ```bash
+   php artisan clear-compiled
+   ```
+
+8. 建立 keygen
+
+   ```bash
+   php artisan key:generate
+   ```
+
+9. 若有安裝 passport 需運行命令產生 Access Token
+
+   ```bash
+   php artisan passport:keys
+   ```
+
+10. 執行
+
+    ```bash
+    # 遷移資料表
+    php artisan migrate
+
+    # 填充資料
+    php artisan db:seed
+    ```
+
+## Laravel ReactJS
+
+> Use laravel/ui Package to install react in laravel with Bootstrap 4.
+
+1. 建立新的專案
+
+   ```cmd
+        composer create-project laravel/laravel --prefer-dist running_in_circles
+
+        laravel new running_in_circles
+   ```
+
+2. 進入 Laravel 項目
+
+   ```cmd
+       cd running_in_circles
+   ```
+
+3. 安裝 laravel/ui
+
+   ```cmd
+       composer require laravel/ui
+   ```
+
+4. 在 Laravel 中安裝 React
+
+   ```cmd
+       php artisan ui react
+   ```
+
+5. 安裝所需的軟件包
+
+   ```cmd
+       <!-- 檢查node和npm是否安裝 -->
+           node -v
+           npm -v
+       <!-- 建立一個node_modules資料夾並自動安裝package.json -->
+           npm install
+   ```
+
+6. 在 Laravel 中設置 React 組件
+
+   ```javascript
+   // 路徑 ==> resource/js/components/User.js
+   import React from "react";
+   import ReactDOM from "react-dom";
+
+   function User() {
+     return (
+       <div className="container mt-5">
+         <div className="row justify-content-center">
+           <div className="col-md-8">
+             <div className="card text-center">
+               <div className="card-header">
+                 <h2>React Component in Laravel</h2>
+               </div>
+               <div className="card-body">
+                 I'm tiny React component in Laravel app!
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     );
+   }
+
+   export default User;
+
+   // DOM element
+   if (document.getElementById("user")) {
+     ReactDOM.render(<User />, document.getElementById("user"));
+   }
+   ```
+
+7. 修改 resources/js/app.js 註冊 React 文件
+
+   ```javascript
+   require("./bootstrap");
+
+   // Register React components
+   require("./components/Example");
+   require("./components/User");
+   ```
+
+8. 修改 views/welcome.blade.php 模板
+
+   ```html
+   <!DOCTYPE html>
+   <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+     <head>
+       <meta charset="utf-8" />
+       <meta name="viewport" content="width=device-width, initial-scale=1" />
+       <title>Laravel</title>
+       <!-- Styles -->
+       <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
+     </head>
+
+     <body>
+       <!-- React root DOM -->
+       <div id="user"></div>
+       <!-- React JS -->
+       <script src="{{ asset('js/app.js') }}" defer></script>
+     </body>
+   </html>
+   ```
+
+9. 執行命令編譯 Laravel 和 React.js
+
+   ```cmd
+       npm run watch
+   ```
+
+10. 編譯成功，運行 laravel
+
+    ```cmd
+        php artisan serve
+    ```
+
+## Laraval 安裝 bootstrap
+
+### Laravel 8
+
+1. 終端機
+
+   ```cmd
+      npm install
+   ```
+
+2. 建立文件(如果尚未建立) `resources/sass/app.scss` 並引入:
+   `@import '~bootstrap';`
+
+3. 在 webpack.mix.js 加入
+
+   ```php
+       mix.sass('resources/sass/app.scss', 'public/css')
+   ```
+
+4. 終端機
+
+   ```cmd
+      npm run dev
+   ```
+
+5. 現在可以引用 bootstrap
+
+   ```php
+       <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+   ```
+
+### Laravel 6
+
+1. 終端機輸入
+
+   ```cmd
+       composer require laravel/ui="1.*" --dev
+   ```
+
+2. 輸入
+
+   ```cmd
+       php artisan ui bootstrap
+   ```
+
+3. 如果出現 "Command "ui" is not defined."
+
+   ```cmd
+       composer update
+   ```
+
+4. 執行
+
+   ```cmd
+       npm install
+   ```
+
+5. 終端機
+
+   ```cmd
+      npm run dev
+   ```
+
+6. 現在可以引入
+
+   ```php
+       <link rel="stylesheet" href="/css/app.css">
+       <script src="/js/app.js"></script>
+   ```

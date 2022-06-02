@@ -1,0 +1,314 @@
+# Git 學習筆記
+
+###### tags: `Git`
+
+## 常用指令
+
+### Git 常用指令
+
+- `git init` 將目前的目錄初始化為 Git 目錄, 建立本地儲存庫
+- `git config` 設定或檢視 Git 設定檔資訊
+- `git add` 將檔案加入 Git 暫存區
+- `git rm` 將檔案移出 Git 暫存區
+- `git status` 顯示 Git 狀態
+- `git commit` 將暫存區的檔案提交至儲存庫納入版本控制
+- `git log` 顯示過去歷次的版本異動
+- `git reflog` 顯示完整的版本異動歷史紀錄
+- `git show` 顯示指定版本的異動內容
+- `git branch` 建立一個新分支 (branch)
+- `git checkout` 取出分支內容還原為工作目錄
+- `git merge` 合併分支
+- `git reset` 重設某一版本
+- `git clone` 從遠端儲存庫 (GitHub 或 Bitbucket) 複製副本至本地儲存庫
+- `git push` 將本地儲存庫內容推送到遠端儲存庫
+- `git pull` 將遠端儲存庫拉回合併更新到本地儲存庫
+
+### Git Bash 常用指令， rm 與 Windows 檔案管理指令對照
+
+- `pwd` | `cd` 顯示幕前目錄
+- `ls -al` | `dir` 顯示目前目錄下的檔案與子目錄列表
+- `mkdir tmp` | `md tmp` 建立子目錄 tmp
+- `rm -r tmp` | `rd tmp` 刪除子目錄 tmp
+- `cd tmp` | `cd tmp` 切換至子目錄 tmp
+- `cd ..` | `cd ..` 切換至上一層目錄
+- `touch test.txt` | `copy nul > test.txt` 建立空白文字檔案
+- `cat file/more` | `type file` 顯示檔案內容
+- `rm file` | `del file` 刪除檔案 file
+- `mv file1 file2` | `ren file1 file2` 將檔案 file1 更名為 file2
+- `cp file1 file2` | `copy file1 file2` 複製檔案 file1 為 file2
+- `date` | `date` 顯示日期 (Linux 含時間)
+- `clear` | `cls` 清除螢幕
+
+## [Git Flow 開發流程觀念](https://gitbook.tw/chapters/gitflow/why-need-git-flow)
+
+### 分支介紹
+
+#### 長期分支
+
+- **main**(原為 master, 於 2020/10 變更)  
+   主要為穩定，上線的版本。不該允許開發者直接 commit 到此分支。  
+   一般在專案初期，環境建置好就會拉 develop 分支出去，以維持 main 獨立性。
+- **develop**  
+   所有開發分支的基礎，當新增/修改功能時，會從此分支切出去，完成後再合併回來。
+
+#### 任務分支(Topic)
+
+- **hotfix**  
+   上線版本需緊急修復時，由 main 直接切出的 hotfix 分支，修復完成也會合併至 main 分支。  
+   由於 develop 在開發中，若從 develop 切 hotfix 分支，再合併至 main 分支時可能會出現更嚴重的問題。
+- **feature**  
+   開發新功能時，會從 develop 切出 feature 分支，其命名方式採`feature/功能名稱`。
+- **release**  
+   由 develop 切出來，正式上線前的最終測試分支，通過後會將 release 合併到 main 以及 develop 確保在 release 時修正的一些問題能同步到 main 與 develop。
+
+### [Git Commit 規範](https://ithelp.ithome.com.tw/articles/10228738)
+
+#### Commit Message 格式
+
+```bash=
+# 標題: <type>(<scope>): <subject>
+# - type: feat, fix, docs, style, refactor, test, chore
+# - scope: 如果修改範圍為全局修改或難以分配給單個組件，可略
+# - subject: 以動詞開頭的簡短描述
+#
+# 正文: 內文需包含:
+# * 程式碼更訂的原因(問題、原因、需求)
+# * 調整項目
+# * 與先前行為的對比
+#
+# 結尾:
+# - 任務編號(如果有)
+# - 重大變化(紀錄不兼容的更動)，
+#   以 BREAKING CHANGE: 開頭，後面是對變動的描述、以及變動原因和遷移方法。
+#
+```
+
+#### Header Type
+
+- **feat** - 新增/修改功能 (Feature)
+- **fix** - 修正 Bug (bug fix)
+- **docs** - 修改/新增文件 (documentation)
+- **style** - 修改程式碼格式或風格，不影響原有運作，例如 ESLint (formatting, missing semi colons, …)
+- **refactor** - 重構 or 優化，不屬於 bug 也不屬於新增功能等
+- **test** - 增加測試功能 (when adding missing tests)
+- **chore** - 增加或修改第三方套件(輔助工具)等 (maintain)
+- **perf** - 改善效能 (A code change that improves performance)
+- **revert** - 撤銷回覆先前的 commit 例如：revert: type(scope): subject (回覆版本：xxxx)。
+
+#### Body
+
+可選的。與 subject 一樣，使用命令式現在時態， 如 change，而不是 changed 或 changes。  
+body 應包括改變的動機，並將其與以前的行為進行對比。也就是說，描述為什麼修改，做了什麼樣的修改，以及開發的思路等，是 commit 的詳細描述。
+
+#### Footer
+
+Breaking Changes 應以單詞 BREAKING CHANGE 開頭：用空格或兩個換行符。後面是對變動的描述和變動的理由。
+
+```bash=
+BREAKING CHANGE: isolate scope bindings definition has changed.
+
+    To migrate the code follow the example below:
+
+    Before:
+
+    scope: {
+      myAttr: 'attribute',
+    }
+
+    After:
+
+    scope: {
+      myAttr: '@',
+    }
+
+    "The removed `inject` wasn't generaly useful for directives so there should be no code using it."
+```
+
+如果當前 commit 還原了先前的 commit，則應以 revert：開頭，後跟還原的 commit 的 header。在 body 中必須寫成：This reverts commit \<hash>。其中 hash 是要還原的 commit 的 SHA 標識。
+
+```bash=
+revert: feat(pencil): add 'delete' option
+
+This reverts commit 667ecc1654a317a13331b17617d973392f415f02.
+```
+
+#### commit 模板
+
+在~/.gitconfig 新增
+
+```
+[commit]
+template = ~/.gitmessage
+```
+
+新建 ~/.gitmessage
+
+```
+# 標題: <type>(<scope>): <subject>
+# - type: feat, fix, docs, style, refactor, test, chore
+# - scope: 如果修改範圍為全局修改或難以分配給單個組件，可略
+# - subject: 以動詞開頭的簡短描述
+#
+# 正文: 內文需包含:
+# * 程式碼更訂的原因(問題、原因、需求)
+# * 調整項目
+# * 與先前行為的對比
+#
+# 結尾:
+# - 任務編號(如果有)
+# - 重大變化(紀錄不兼容的更動)，
+#   以 BREAKING CHANGE: 開頭，後面是對變動的描述、以及變動原因和遷移方法。
+#
+```
+
+## Git 操作情境
+
+### 取消 commit (git reset 指令)
+
+Git 的 `reset`指令，比較像是「前往」或是「變成」，並不會真的重新設定。
+
+`reset`後的東西都還可以撿的回來。
+
+#### 確認 git 紀錄
+
+```terminal
+git log --oneline
+af75a42 (HEAD -> develop) 0327
+1baa403 (origin/develop) no message
+13fd2dc 0223
+a640c49 0222新增
+e09ecae init commit
+```
+
+#### 利用相對位置取消 commit
+
+```terminal
+git reset af75a42^
+```
+
+`^`符號表示「前一次」的意思，`af75a42^`是指`af75a42`這個 commit 的「前一次」，`af75a42^^`則是往前兩次，以此類推。
+
+如果要倒退五次可以寫成`af75a42~5`。
+
+另外`HEAD`和`develop`也都指向`af75a42`這個 commit，所以也可以寫成
+
+```terminal
+git reset develop^
+&
+git reset HEAD^
+```
+
+#### 利用絕對位置取消 commit
+
+```terminal
+git reset 1baa403
+```
+
+他會切會到`1baa403`這個 commit，剛好是`af75a42`的前一個 commit，和取消最後一次 commit 的效果一樣。
+
+### git mirror 轉移資料庫
+
+可以轉移整個 repo 的資訊，包括 beanch, tags
+
+進到專案資料夾，設定新的遠端 git repo 位置
+
+```bash=
+cd Authentication.git/
+git remote set-url --push origin https://github.com/your_name/your_project.git
+```
+
+local 更新 remote branch ,最後將整包 push 上去
+
+```bash=
+git push --mirror
+```
+
+或者一個指令直接指向遠端 repo
+
+```bash=
+ git push --mirror https://github.com/your_name/your_project.git
+
+```
+
+## Git 管理
+
+### [使用 VSCode 管理 Git](https://www.minwt.com/webdesign-dev/22926.html)
+
+## GitHub 操作
+
+### 將本地專案上傳到 github
+
+1. git init
+2. git add .
+3. git commit -m "init commit"
+4. git remote add origin `https://github.com/<username>/<repo>.git`
+5. git push -u origin master
+
+### Https 設定 Token
+
+當使用推送，輸入 github 密碼會出現錯誤。
+
+```terminal
+changgenglu@masenyuandeMacBook-Air ~ % git push -u origin master
+remote: Support for password authentication was removed on August 13, 2021. Please use a personal access token instead.
+remote: Please see https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations/ for more information.
+fatal: unable to access 'https://github.com/changgenglu/your_project.git/': The requested URL returned error: 403
+```
+
+大致意思是，密碼驗證於 2021 年 8 月 13 日不再支援，也就是今天 intellij 不能再用密碼方式去提交程式碼。請用使用 **personal access token** 替代。
+
+#### 設定 personal access token
+
+- 開啟 GitHub.com -> Setting -> Developer settings -> Personal access tokens
+- 按下`Generate new token`
+- Note 欄位填入 token 的備註
+- Expiration 設定 token 的時效
+- Select scopes 設定權限（基本全部開啟）
+- 按下`Generate token`
+- 複製 token 代碼
+
+再次使用終端機推送
+
+```terminal
+git push -u origin master
+```
+
+輸入 github 密碼的地方，貼上 token 代碼
+
+### 設定 SSH
+
+#### 輸入指令產生 SHH
+
+```terminal
+ssh-keygen
+```
+
+產生
+
+```terminal
+$ Enter file in which to save the key (/Users/changgenglu/.ssh/id_rsa):
+# 這行只是確定存在哪
+$ Overwrite (y/n)?
+# 如果原本就有金鑰會跳出此問題，覆蓋嗎？ (是)
+$ Enter passphrase (empty for no passphrase):
+$ Enter same passphrase again:
+# 輸入密碼，再次確認輸入密碼
+```
+
+此處的輸入密碼為使用至個金鑰的密碼，可以選擇不輸入。
+
+#### 產生 SSH 連線所需的公鑰內容
+
+```terminal
+cat ~/.ssh/id_rsa.pub
+```
+
+輸出實例
+
+```terminal
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDFp+A3qe4qm1Dkw66LN/vNGlufX5iC9VERfuUiXHNM5L3hQuz6wO8WuzFv+zDIHRPGUl616oLXTHTqommuO0GZavDo+lbUIRkSBM9j/9tr+hlF4LPTT4ggjOgzLCHTrSyzcmcdykgBfnDgX3aYfZbhCEcWdERUxWFNnDf+YYlNd8L6LMKSIce61nhqiSLNbugDCrE0IH+/1hoS3LNoag9V05Qwo5yZ6srLNJT8uISoqvJv5BwSpBL9ImnePx+LzDiVXlJMisKf1GSXdVuWmVWlKrZOsadk4ZkSNH2cL1wgkNvAUbydWKG9Ag4TfI/khKwUXyhT+7V4jWsJusDXZxafylZma4qeOsaLAN4ScSStnOoSm1CxeNqmPsQpAGbtvx49yB2+c4HFsa68VzcwV1oejhh2E67iqqKK53IFN/qQmYYfhUukY6rgLLHlLkmjLqdVpVcULCP0mMzn4xacFWLwDgOtZK1i97vWaLPyG6hYQQ108zK9i/Cg13p0Z+CUTCs= changgenglu@masenyuandeMacBook-Air.local
+```
+
+#### 上傳公鑰
+
+到 Github > Settings > SSH and GPG keys 的設定頁面，選擇 New SSH Key。
