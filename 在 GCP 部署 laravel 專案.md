@@ -1,6 +1,6 @@
 # 在 GCP 部署 laravel 專案
 
-###### tags: `網管` GCP` `Laravel`
+###### tags: `網管` `GCP` `Laravel`
 
 > [執行環境設定](https://bugswarehouse.blogspot.com/2018/07/gcpgceubuntuapachelaravel56.html)
 >
