@@ -133,7 +133,7 @@ class User extends Model
 - 自訂目標的查詢欄位名稱
 
   ```php
-  // morphOne(目標表單名稱，多形名稱，目標的型別欄位名稱，目標的外鍵欄位  名稱，自己的關聯鍵)
+  // morphOne(目標表單名稱，多形名稱，目標的型別欄位名稱，目標的外鍵欄位名稱，自己的關聯鍵)
    $this->morphOne(Image::class, 'imageable','imageable_type',  'imageable_id','id');
   ```
 
@@ -296,7 +296,7 @@ class Tag extends Model
 - 自訂名稱
 
   ```php
-  // morphToMany(目標表單名稱，多形名稱，中介表單名稱，中介表單上參照自己  的外鍵，中介表單上參照目標的外鍵，目標的關聯鍵，自己的關聯鍵)
+  // morphToMany(目標表單名稱，多形名稱，中介表單名稱，中介表單上參照自己的外鍵，中介表單上參照目標的外鍵，目標的關聯鍵，自己的關聯鍵)
   $this->morphToMany(Tag::class, 'taggable','taggables',  'taggable_id','tag_id','id','id');
   ```
 
@@ -305,6 +305,14 @@ class Tag extends Model
 - 自訂名稱
 
   ```php
-  // morphedByMany(目標表單名稱，多形名稱，中介表單名稱，中介表單上參照  目標的外鍵，中介表單上參照自己的外鍵，自己的關聯鍵，目標的關聯鍵)
-  $this->morphedByMany(Post::class, 'taggable','taggables',  'taggable_id','tag_id','id','id');
+  // morphedByMany(目標表單名稱，多形名稱，中介表單名稱，中介表單上參照目標的外鍵，中介表單上參照自己的外鍵，自己的關聯鍵，目標的關聯鍵)
+  $this->morphedByMany(
+      Post::class,  // 目標表單名稱
+      'taggable',   // 多型名稱
+      'taggables',  // 中介表明稱
+      'taggable_id',// 中介表單上參照目標的外鍵
+      'tag_id',     // 中介表單上參照自己的外鍵 
+      'id',         // 自己的關聯鍵
+      'id'          // 目標的關聯鍵
+    );
   ```
