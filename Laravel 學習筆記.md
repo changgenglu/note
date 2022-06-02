@@ -185,43 +185,6 @@ DB_PASSWORD=        （資料庫密碼）
        {{ $title }}  // 變數值直接使用
    ```
 
-## Model
-
-```php
-class UserInfo extends Model
-{
-    protected $table = 'user_data';  // 資料表名稱
-    protected $primaryKey = 'id';   // 主鍵
-    public $timestamps = false;
-    protected $fillable = [
-        'userId',
-        'userName',
-        'account',
-        'passord',
-        'email'
-    ];
-}
-```
-
-- public $timestamps = false // 設定時間戳記
-- $fillable ：調用 create() update() 時，可以大量新增、修改的欄位。若沒有添加這個屬性，新增修改的動作將無法實現。
-
-  - fillable：設定可以大量新增的欄位（白名單）
-
-    ```php=
-    class User extends Model {
-        protected $fillable = ['userId','userName','account','pw','email'];
-    }
-    ```
-
-  - guarded：設定需要被保護的欄位（黑名單）
-
-    ```php=
-    class User extends Model {
-        protected $guarded = [‘uuid’, ‘pw’];
-    }
-    ```
-
 ## Controller
 
 ### 生成 controller
