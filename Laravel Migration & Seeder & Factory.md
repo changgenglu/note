@@ -12,6 +12,32 @@ php artisan make:migration create_your_table
 
 - 產生出來的 Migration 檔案，內有 up() 和 down() 兩個方法。
 
+```php
+    public function up()
+    {
+       Schema::create('model_has_user', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->comment('系統中的成員');
+            $table->bigInteger('parent_id')->comment('將此成員加入系統的使用者');
+            // $table->morphs('model');
+            $table->foreignId('model_id')->comment('對應資料表的id');
+            $table->foreignId('model_type')->comment('對應的資料表');
+            $table->foreignId('role_id')->comment('成員的身分');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('model_has_user');
+    }
+```
+
 ### 執行 Migrate
 
 ```cmd

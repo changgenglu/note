@@ -1,5 +1,17 @@
 # Laravel Model
 
+建立 Model
+
+```php
+php artisan make:model New
+```
+
+建立 Model 同時建立 migration controller
+
+```php
+php artisan make:model New -mcr
+```
+
 ## Model 基本屬性
 
 ```php
@@ -37,7 +49,7 @@ class UserInfo extends Model
     }
     ```
 
-## 多型態關聯
+## [多型態關聯](https://blog.epoch.tw/2020/04/30/%E5%9C%A8-Laravel-7-0-%E4%BD%BF%E7%94%A8-Eloquent-%E5%A4%9A%E5%9E%8B%E9%97%9C%E8%81%AF/)
 
 > 多型態關聯可以讓一張表同時關連到兩張以上的資料表
 >
@@ -311,7 +323,7 @@ class Tag extends Model
       'taggable',   // 多型名稱
       'taggables',  // 中介表明稱
       'taggable_id',// 中介表單上參照目標的外鍵
-      'tag_id',     // 中介表單上參照自己的外鍵 
+      'tag_id',     // 中介表單上參照自己的外鍵
       'id',         // 自己的關聯鍵
       'id'          // 目標的關聯鍵
     );
