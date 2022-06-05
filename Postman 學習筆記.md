@@ -17,8 +17,20 @@
 - Basic Auth ｜帳號，密碼型驗證
 - token 驗證 ｜token 型驗證
 
-### Header 
+### Header
 
 用來設定 Header 中的其他參數
 
+postman 把一些必要的參數隱藏起來，如需特殊設定，可以取消隱藏，進行修改。
 
+- User-Agent | 告知 Server，發出 Request 的 Client 瀏覽器、作業系統等資訊
+- Accept ｜告知 Server，Client 可以解讀的內容類型
+- Content-type | 告知 Server，Client 提交什麼類型內容
+
+### body
+
+較常用的是 form-data, x-www-form-urlencoded, raw，前兩者都是送出表單資料，最後一個提供較多彈性的資料格式。
+
+- form-data 不會針對內容進行編碼，可選擇 file 類型進行上傳檔案
+- x-www-form-urlencoded 會以 Key = val1 進行編碼，一般的表單資料使用
+- raw 放 postman JSON 資料
