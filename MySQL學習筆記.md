@@ -257,24 +257,22 @@
 
 [參考資料](https://github.com/victorbuild/coscup-postgresql-foreign-key-constraint)
 
-`2020_07_26_065337_create_posts_table.php` 第 20 行
-
-```php=8.0
-// 原為
-$table->unsignedInteger('user_id')->nullable();
-
-// 修改成
-$table->unsignedBigInteger('user_id')->nullable();
-```
-
-- 沒有加入`onDelete`
+- 沒有加入`onDelete`  
   如果在關聯中的限制屬性，沒有加入`onDelete`，此時刪除外鍵約束的父層資料表中的欄位，會出現#1451 error
 
   ```cmd
   #1451 - Cannot delete or update a parent row: a foreign key constraint fails (`test0505`.`posts`, CONSTRAINT `posts_user_id_foreign` FOREIGN KEY (`user_id`)     REFERENCES `users` (`id`))
   ```
 
-- onDelete 'set null'
-  刪除父層資料表的欄位時，同時會將關聯的子資料表中的欄位設為。
+- onDelete('set null')
+  刪除父層資料表的欄位時，同時會將關聯的子資料表中的欄位設為`null`。
 - onDelete('cascade')
   刪除父層資料表的欄位時，同時會將關聯的子資料表中的欄位刪除。
+
+### ERROR: #1215 - Cannot add foreign key constraint
+
+- 可能原因:
+  1. 添加外鍵約束時，目標欄位須和引用欄位具有相同的數據類型  
+     int signed with int signed 或 int unsigned with int unsigned
+  2. 在 not null 的欄位加上 on delete/update set null 的外鍵約束
+     須將該欄位設為 DEFAULT NULL

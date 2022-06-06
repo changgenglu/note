@@ -1,4 +1,4 @@
-# Visual Studio Code環境設置
+# Visual Studio Code 環境設置
 
 ###### tags: `環境設定`
 
@@ -8,22 +8,39 @@
 
 - Chinese (Traditional) Language Pack for Visual Studio Code
 
-### 美化code
+### 美化 code
+
 - Bracket Pair Colorizer
 - Auto Rename Tag
+- Prettier - Code formatter
 
 ### 前端
+
 - Live server：它會幫使用者自動開啟一個服務器，保存的時候便自動刷新瀏覽器頁面
   設定預設開啟的瀏覽器：齒輪符號 > 進行延伸模組設定 > Live Server Settings: Custom Browser
 - open in browser
+- IntelliSense for CSS class names in HTML
 
 ### PHP Laravel
+
 - PHP IntelliSense (felixfbecker.php-intellisense)
 - PHP Server (brapifra.phpserver)
+- php cs fixer
+- PHP DocBlocker
+- PHP Getters & Setters
+- PHP import checker
+- PHP Namespace Reaolver
+- phpcs fixer
+- PHP Extension Pack
 - Laravel Blade Snippets (onecentlin.laravel-blade)
-- [參考網站](https://danielhuang030.pixnet.net/blog/post/268697116)
-- [參考網站2](https://devdojo.com/bobbyiliev/8-awesome-vs-code-extensions-for-laravel-developers)
-- [參考網站3](https://medium.com/@shengyou/2018ironman-eos-for-php-developer-day21-cc0e4b35dc08)
+- Laravel Blade formatter
+- Laravel Blade Wrapper
+- Laravel Create View
+- laravel Extension Pack
+- Laravel Extra Intellisese
+- Laravel Goto Controller
+- Laravel goto view
+- laravel-goto-components
 
 ### Markdown
 
@@ -38,12 +55,19 @@
 - GitHub Theme
 - gitignore
 - Git Extension Pack
+- GitHub Repositories
+- Open in GitHub, Bitbucket, Gitlab, VisualStudio
+- Remote Repositories
+
+### 小工具
+
+- Draw.io Inetgration(繪製表格、流程圖)
 
 ## 調整設定
 
 - 檔案 → 喜好設定 → 設定 → 文字編輯器 → 字型 → Font Size
-- 檔案 → 喜好設定 → 設定 → 工作台 → 外觀 → Tree:Indent 
-- 檔案 → 喜好設定 → 設定 → 延伸模組 
+- 檔案 → 喜好設定 → 設定 → 工作台 → 外觀 → Tree:Indent
+- 檔案 → 喜好設定 → 設定 → 延伸模組
 
 ## 快速鍵
 
@@ -58,4 +82,3 @@
 - 觸發建議 `control + space`
 - 參數建議 `shift + option + space`
 - 格式化 `shift + option + space`
-

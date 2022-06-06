@@ -15,15 +15,24 @@ php artisan make:migration create_your_table
 ```php
     public function up()
     {
-       Schema::create('model_has_user', function (Blueprint $table) {
+        Schema::create('room_user', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->comment('系統中的成員');
+            $table->unsignedBigInteger('user_id');
             $table->bigInteger('parent_id')->comment('將此成員加入系統的使用者');
-            // $table->morphs('model');
-            $table->foreignId('model_id')->comment('對應資料表的id');
-            $table->foreignId('model_type')->comment('對應的資料表');
-            $table->foreignId('role_id')->comment('成員的身分');
+            $table->unsignedBigInteger('room_id')->nullable();
+            $table->bigInteger('role_id')->comment('使用者身分');
             $table->timestamps();
+        });
+
+        Schema::table('room_user', function (Blueprint $table) {
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+            $table->foreign('room_id')
+                ->references('id')
+                ->on('rooms')
+                ->nullOnDelete();
         });
     }
 
