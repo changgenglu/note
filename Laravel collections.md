@@ -1,10 +1,10 @@
-# Laravel collections
+# Laravel Collections & Helper
 
 ###### tags: `php` `Laravel`
 
-## 可用的方法
+## Collections 集合
 
-- `pluck()` 取得集合中所有陣列的key值，括號中為key值。
+- `pluck()` 取得集合中所有陣列的 key 值，括號中為 key 值。
 
 ```php=
 $collection = collectc([
@@ -21,7 +21,8 @@ $pluck->all();
 
 - `contains()`用來判斷該集合是否含有指定的項目，並返回布林。
 
-- `diff()` 此方法會比較其他集合或是純php陣列裡的值，並返回沒有在此方法參數中的值。diff(差異)。
+- `diff()` 此方法會比較其他集合或是純 php 陣列裡的值，並返回沒有在此方法參數中的值。diff(差異)。
+
 ```php=
 $diff = collect([1, 2, 3, 4, 5])->diff([2, 4, 6, 8]);
 $diff->all();
@@ -108,4 +109,16 @@ $multiplied = $collection->map(function ($item, $key) {
 $multiplied->all();
 
 // [2, 4, 6, 8, 10]
+```
+
+## Helper 輔助函數
+
+- `after()` 返回傳入的字串的值後面所有的內容，如果傳入的值不存在，他將返回整個字串
+
+```php
+use Illuminate\Support\Str;
+
+$slice = Str::of('This is my name')->after('This is');
+
+// ' my name'
 ```
