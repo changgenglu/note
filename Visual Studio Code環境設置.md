@@ -2,6 +2,20 @@
 
 ###### tags: `環境設定`
 
+<!-- TOC -->
+
+- [擴充套件](#擴充套件)
+  - [中文化](#中文化)
+  - [美化 code](#美化-code)
+  - [前端](#前端)
+  - [PHP Laravel](#php-laravel)
+  - [Markdown](#markdown)
+  - [Git](#git)
+  - [小工具](#小工具)
+- [調整設定](#調整設定)
+- [快速鍵](#快速鍵)
+<!-- /TOC -->
+
 ## 擴充套件
 
 ### 中文化
@@ -47,6 +61,8 @@
 - markdownlint
 - Markdown All in One
 - Markdown Perview Gitnub Styling
+- Markdown TOC  
+  markdown 自動生成目錄
 
 ### Git
 

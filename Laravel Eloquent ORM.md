@@ -12,7 +12,7 @@
     - [多型多對多關聯](#多型多對多關聯)
 - [Laravel ORM 將資料存至資料庫](#laravel-orm-將資料存至資料庫)
   - [save](#save)
-  - [多對多關聯時](#多對多關聯時)
+  - [修改多對多中間表](#修改多對多中間表)
 - [序列化](#序列化)
   - [將 collection 序列化](#將-collection-序列化)
     - [array](#array)
@@ -393,7 +393,7 @@ User::find(1)->save([
 ]);
 ```
 
-### 多對多關聯修改中間表
+### 修改多對多中間表
 
 - articles
 
@@ -466,31 +466,31 @@ User::find(1)->save([
 
 - 同步
 
-- `sync`
-
-  ```php
-  // 更新有傳入值的該筆資料，其他資料會被刪除
-  $user->roles()->sync([1, 2, 3]);
-
-  // 透過id傳入額外的值到中間表
-  $user->roles()->sync([1 => ['expires' => true], 2, 3]);
-  ```
-
-- `syncWithoutDetaching`
-
-  ```php
-  // 更新有傳入值的該筆資料，並保留原有的資料
-  $user->roles()->syncWithoutDetaching([1, 2, 3]);
-  ```
-
-- `updateExistingPivot`
-
-  ```php
-  // 更新一筆已存在的資料，接受中間表的外鍵和要更新的值進行更新
-  $user = App\Models\User::find(1);
-
-  $user->roles()->updateExistingPivot($roleId, $attributes);
-  ```
+  - `sync`
+  
+    ```php
+    // 更新有傳入值的該筆資料，其他資料會被刪除
+    $user->roles()->sync([1, 2, 3]);
+  
+    // 透過id傳入額外的值到中間表
+    $user->roles()->sync([1 => ['expires' => true], 2, 3]);
+    ```
+  
+  - `syncWithoutDetaching`
+  
+    ```php
+    // 更新有傳入值的該筆資料，並保留原有的資料
+    $user->roles()->syncWithoutDetaching([1, 2, 3]);
+    ```
+  
+  - `updateExistingPivot`
+  
+    ```php
+    // 更新一筆已存在的資料，接受中間表的外鍵和要更新的值進行更新
+    $user = App\Models\User::find(1);
+  
+    $user->roles()->updateExistingPivot($roleId, $attributes);
+    ```
 
 - 切換: `toggle()`
 
