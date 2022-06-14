@@ -122,7 +122,7 @@ class UserInfo extends Model
 - imageable_id : 關聯的主鍵值
 - imageable_type : 指定這筆資料是關聯 users 資料表還是 posts 資料表，欄內儲存的是類別名稱，型態為字串，如：'App\Models\User' 'App\Models\Post'
 
-### 一對一關聯
+#### 多形一對一關聯
 
 ```php
 namespace App\Models;
@@ -156,43 +156,43 @@ class User extends Model
 }
 ```
 
-#### morphOne: hasOne 的多型態版本
+- `morphOne`: hasOne 的多型態版本
 
-和 hasOne 相比，標類別後面多了一個 name 參數 imageable，Eloquent 會根據這個 name 預設目標表單上的查詢欄位，以 imageable 為例的話就是查詢 imageable_type 跟 imageable_id
+  和 hasOne 相比，標類別後面多了一個 name 參數 imageable，Eloquent 會根據這個 name 預設目標表單上的查詢欄位，以 imageable 為例的話就是查詢 imageable_type 跟 imageable_id
 
-- 自訂目標的查詢欄位名稱
+  - 自訂目標的查詢欄位名稱
 
-  ```php
-  // morphOne(目標表單名稱，多形名稱，目標的型別欄位名稱，目標的外鍵欄位名稱，自己的關聯鍵)
-   $this->morphOne(Image::class, 'imageable','imageable_type',  'imageable_id','id');
-  ```
+    ```php
+    // morphOne(目標表單名稱，多形名稱，目標的型別欄位名稱，目標的外鍵欄位名稱，自己的關聯鍵)
+     $this->morphOne(Image::class, 'imageable','imageable_type',  'imageable_id','id');
+    ```
 
-#### morphTo: belongsTo 的多型態版本
-
-```php
-// 使用時要注意函式的名稱
-public function imageable()
-{
-    return $this->morphTo();
-}
-```
-
-如果沒有帶入參數的話預設會用函式的名稱產出預設名稱，像這裡的函式名稱是 imageable ，那查詢時就會以型別欄位 imageable_type 查對應的資料表，以及鍵值欄位 imageable_id 查資料。
-
-- 自訂預設名稱
+- `morphTo`: belongsTo 的多型態版本
 
   ```php
-  $this->morphTo('imageable');
+  // 使用時要注意函式的名稱
+  public function imageable()
+  {
+      return $this->morphTo();
+  }
   ```
 
-- 自訂查詢欄位的名稱
+  如果沒有帶入參數的話預設會用函式的名稱產出預設名稱，像這裡的函式名稱是 imageable ，那查詢時就會以型別欄位 imageable_type 查對應的資料表，以及鍵值欄位 imageable_id 查資料。
 
-  ```php
-  // morphOne(多形名稱，型別欄位名稱，外鍵欄位名稱)
-  $this->morphTo('imageable'，'imageable_type','imageable_id');
-  ```
+  - 自訂預設名稱
 
-### 一對多關聯
+    ```php
+    $this->morphTo('imageable');
+    ```
+
+  - 自訂查詢欄位的名稱
+
+    ```php
+    // morphOne(多形名稱，型別欄位名稱，外鍵欄位名稱)
+    $this->morphTo('imageable'，'imageable_type','imageable_id');
+    ```
+
+#### 多型一對多關聯
 
 和一對一的關聯差不多，差別在 morphOne 改成 morphMany，查詢得到的資料不是一筆而是一組
 
@@ -228,7 +228,7 @@ class User extends Model
 }
 ```
 
-### 多對多關聯
+#### 多型多對多關聯
 
 > 和普通多對多關聯相比，中介表為多型態
 
@@ -314,38 +314,38 @@ class Tag extends Model
 }
 ```
 
-#### morphToMany: belongsToMany 的多型態版
+- `morphToMany`: belongsToMany 的多型態版
 
-需要帶多型的名稱參數才能查詢資料
-
-```php
-// morphOne(目標表單名稱，多形名稱)
- $this->morphToMany(Tag::class, 'taggable');
-```
-
-- 自訂名稱
+  需要帶多型的名稱參數才能查詢資料
 
   ```php
-  // morphToMany(目標表單名稱，多形名稱，中介表單名稱，中介表單上參照自己的外鍵，中介表單上參照目標的外鍵，目標的關聯鍵，自己的關聯鍵)
-  $this->morphToMany(Tag::class, 'taggable','taggables',  'taggable_id','tag_id','id','id');
+  // morphOne(目標表單名稱，多形名稱)
+   $this->morphToMany(Tag::class, 'taggable');
   ```
 
-#### morphedByMany: 多對多的反向多型關聯
+  - 自訂名稱
 
-- 自訂名稱
+    ```php
+    // morphToMany(目標表單名稱，多形名稱，中介表單名稱，中介表單上參照自己的外鍵，中介表單上參照目標的外鍵，目標的關聯鍵，自己的關聯鍵)
+    $this->morphToMany(Tag::class, 'taggable','taggables',  'taggable_id','tag_id','id','id');
+    ```
 
-  ```php
-  // morphedByMany(目標表單名稱，多形名稱，中介表單名稱，中介表單上參照目標的外鍵，中介表單上參照自己的外鍵，自己的關聯鍵，目標的關聯鍵)
-  $this->morphedByMany(
-      Post::class,  // 目標表單名稱
-      'taggable',   // 多型名稱
-      'taggables',  // 中介表明稱
-      'taggable_id',// 中介表單上參照目標的外鍵
-      'tag_id',     // 中介表單上參照自己的外鍵
-      'id',         // 自己的關聯鍵
-      'id'          // 目標的關聯鍵
-    );
-  ```
+- `morphedByMany`: 多對多的反向多型關聯
+
+  - 自訂名稱
+
+    ```php
+    // morphedByMany(目標表單名稱，多形名稱，中介表單名稱，中介表單上參照目標的外鍵，中介表單上參照自己的外鍵，自己的關聯鍵，目標的關聯鍵)
+    $this->morphedByMany(
+        Post::class,  // 目標表單名稱
+        'taggable',   // 多型名稱
+        'taggables',  // 中介表明稱
+        'taggable_id',// 中介表單上參照目標的外鍵
+        'tag_id',     // 中介表單上參照自己的外鍵
+        'id',         // 自己的關聯鍵
+        'id'          // 目標的關聯鍵
+      );
+    ```
 
 ## Laravel ORM 將資料存至資料庫
 
@@ -400,59 +400,79 @@ User::find(1)->save([
 
 - 建立:
 
-  - attach()
+  - `attach()`
+
+    ```php
+    // id=3 的文章原有的標籤[4]
+    Article::find(3)->tags()->attach([1,2]);
+    // id=3 的文章加入標籤[1, 2]
+    // id=3 的文章的標籤有[1, 2, 4]
+    ```
+
+  - `save()`
+
+    ```php
+    Article::find(3)->tags()->saveMany([
+        Tag::find(1),
+    Tag::find(2)
+    ]);
+    // save輸入的類型須為model
+    // 多個時要用saveMany
+    ```
+
+    |   方法   | 單個 id | 多個 id | 單個 model |   多個 model    |
+    | :------: | :-----: | :-----: | :--------: | :-------------: |
+    | attach() |    V    |    V    |     V      |                 |
+    |  sync()  |    V    |    V    |     V      |                 |
+    |  save()  |         |         |     V      | 要用 saveMany() |
+
+- 刪去: `detach()`
 
   ```php
-  // id=3 的文章原有的標籤[4]
-  Article::find(3)->tags()->attach([1,2]);
-  // id=3 的文章加入標籤[1, 2]
-  // id=3 的文章的標籤有[1, 2, 4]
+  $article = Article::find(1);
+
+  // 從文章上移除指定tag
+  $article->tags()->detach($tagid);
+
+  // 移除文章所有tag
+  $article->tags()->detach();
   ```
 
-  - sync()
+- 同步
+
+- `sync`
+  
+  ```php
+  // 更新有傳入值的該筆資料，其他資料會被刪除
+  $user->roles()->sync([1, 2, 3]);
+  
+  // 透過id傳入額外的值到中間表
+  $user->roles()->sync([1 => ['expires' => true], 2, 3]);
+  ```
+
+- `syncWithoutDetaching`
 
   ```php
-    Article::find(3)->tags()->sync([1,2]);
-    // 文章3會有三個標籤：1,2
-    // 不在傳入的陣列中的值，將會被從中介表中刪除
+  // 更新有傳入值的該筆資料，並保留原有的資料
+  $user->roles()->syncWithoutDetaching([1, 2, 3]);
   ```
 
-  - save()
+- `updateExistingPivot`
 
   ```php
-  Article::find(3)->tags()->saveMany([
-      Tag::find(1),
-  Tag::find(2)
-  ]);
-  // save輸入的類型須為model
-  // 多個時要用saveMany
+  // 更新一筆已存在的資料，接受中間表的外鍵和要更新的值進行更新
+  $user = App\Models\User::find(1);
+  
+  $user->roles()->updateExistingPivot($roleId, $attributes);
   ```
 
-  |   方法   | 單個 id | 多個 id | 單個 model |   多個 model    |
-  | :------: | :-----: | :-----: | :--------: | :-------------: |
-  | attach() |    V    |    V    |     V      |                 |
-  |  sync()  |    V    |    V    |     V      |                 |
-  |  save()  |         |         |     V      | 要用 saveMany() |
+- 切換: `toggle()`
 
-- 刪去: detach()
-
-```php
-$article = Article::find(1);
-
-// 從文章上移除指定tag
-$article->tags()->detach($tagid);
-
-// 移除文章所有tag
-$article->tags()->detach();
-```
-
-- 切換: toggle()
-
-```php
-$article->tags()->toggle([1, 2 ,3]);
-// 用來切換傳入id的附加狀態，如果傳入的id目前已經被附加，他將會被卸除。
-// 若已經被卸除，將會被附加
-```
+  ```php
+  $article->tags()->toggle([1, 2 ,3]);
+  // 用來切換傳入id的附加狀態，如果傳入的id目前已經被附加，他將會被卸除。
+  // 若已經被卸除，將會被附加
+  ```
 
 ## 序列化
 
