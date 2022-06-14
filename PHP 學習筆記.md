@@ -18,15 +18,17 @@
 
   |                 | gettype() |   isset()   |   empty()   |  is_null()  |
   | :-------------: | :-------: | :---------: | :---------: | :---------: |
-  | $x is undefined |   null    | ___false___ |  [true](#)  |  [true](#)  |
-  |    $x = null    |   null    | ___false___ |  [true](#)  |  [true](#)  |
-  |     $x = 0      |    int    |  [true](#)  |  [true](#)  | ___false___ |
-  |    $x = "0"     |    str    |  [true](#)  |  [true](#)  | ___false___ |
-  |     $x = 1      |    int    |  [true](#)  | ___false___ | ___false___ |
-  |     $x = ""     |    str    |  [true](#)  |  [true](#)  | ___false___ |
-  |   $x = "PHP"    |    str    |  [true](#)  | ___false___ | ___false___ |
+  | $x is undefined |   null    | **_false_** |  [true](#)  |  [true](#)  |
+  |    $x = null    |   null    | **_false_** |  [true](#)  |  [true](#)  |
+  |     $x = 0      |    int    |  [true](#)  |  [true](#)  | **_false_** |
+  |    $x = "0"     |    str    |  [true](#)  |  [true](#)  | **_false_** |
+  |     $x = 1      |    int    |  [true](#)  | **_false_** | **_false_** |
+  |     $x = ""     |    str    |  [true](#)  |  [true](#)  | **_false_** |
+  |   $x = "PHP"    |    str    |  [true](#)  | **_false_** | **_false_** |
 
 - `var_dump($var);` => 將變數的訊息印出於螢幕上
+
+## 陣列
 
 - `foreach()` 尋訪陣列
 
@@ -148,3 +150,11 @@
     [yellow] => banana
   )
   ```
+
+- `array_unique($array, $flags)` 從陣列中刪除重複的值
+  - `$array` 要刪除重複值的陣列
+  - `$fiags` 指定陣列的排序模式，有五種型別 
+    - `SORT_REGULAR` 正常常比較元素
+    - `SORT_NUMERIC` 以數字方式比較元素
+    - `SORT_STRING` 以字串方式比較元素
+    - `SORT_LOCALE_STRING` 基於當前的語言環境，以字串方式比較元素。
