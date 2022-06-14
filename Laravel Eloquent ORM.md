@@ -1,5 +1,31 @@
 # Laravel Eloquent ORM
 
+<!-- TOC -->
+
+- [models](#models)
+  - [建立 Model](#建立-model)
+  - [基本屬性](#基本屬性)
+- [關聯](#關聯)
+  - [多型態關聯](#多型態關聯)
+    - [多形一對一關聯](#多形一對一關聯)
+    - [多型一對多關聯](#多型一對多關聯)
+    - [多型多對多關聯](#多型多對多關聯)
+- [Laravel ORM 將資料存至資料庫](#laravel-orm-將資料存至資料庫)
+  - [save](#save)
+  - [多對多關聯時](#多對多關聯時)
+- [序列化](#序列化)
+  - [將 collection 序列化](#將-collection-序列化)
+    - [array](#array)
+    - [JSON](#json)
+  - [隱藏 JSON 屬性](#隱藏-json-屬性)
+    - [臨時修改屬性可見度](#臨時修改屬性可見度)
+  - [追加 JSON 值](#追加-json-值)
+    - [臨時追加屬性](#臨時追加屬性)
+  - [日期序列化](#日期序列化)
+    - [自訂任意屬性的日期格式](#自訂任意屬性的日期格式)
+
+<!-- /TOC -->
+
 ## models
 
 ### 建立 Model
@@ -367,7 +393,7 @@ User::find(1)->save([
 ]);
 ```
 
-### 多對多關聯時
+### 多對多關聯修改中間表
 
 - articles
 
@@ -441,11 +467,11 @@ User::find(1)->save([
 - 同步
 
 - `sync`
-  
+
   ```php
   // 更新有傳入值的該筆資料，其他資料會被刪除
   $user->roles()->sync([1, 2, 3]);
-  
+
   // 透過id傳入額外的值到中間表
   $user->roles()->sync([1 => ['expires' => true], 2, 3]);
   ```
@@ -462,7 +488,7 @@ User::find(1)->save([
   ```php
   // 更新一筆已存在的資料，接受中間表的外鍵和要更新的值進行更新
   $user = App\Models\User::find(1);
-  
+
   $user->roles()->updateExistingPivot($roleId, $attributes);
   ```
 

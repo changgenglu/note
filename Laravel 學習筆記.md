@@ -4,6 +4,22 @@
 
 > 請先完成 laravel 環境設置
 
+<!-- TOC -->
+- [基礎建立](#基礎建立)
+- [連線資料庫將資料顯示在畫面上](#連線資料庫將資料顯示在畫面上)
+- [新增一個 html 測試`input`到資料庫](#新增一個-html-測試input到資料庫)
+  - [將變數傳入 `view` 的三種方法](#將變數傳入-view-的三種方法)
+- [Controller](#controller)
+  - [生成 controller](#生成-controller)
+  - [resource controller function](#resource-controller-function)
+  - [controller 傳入參數](#controller-傳入參數)
+  - [參數預設值](#參數預設值)
+- [Route](#route)
+  - [route 基本寫法](#route-基本寫法)
+  - [resource controller 資源控制器](#resource-controller-資源控制器)
+  - [route 分組](#route-分組)
+<!-- /TOC -->
+
 ## 基礎建立
 
 - 建立新的專案

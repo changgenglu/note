@@ -2,6 +2,39 @@
 
 ###### tags: `Git`
 
+<!-- TOC -->
+
+- [常用指令](#常用指令)
+  - [Git 常用指令](#git-常用指令)
+  - [Git Bash 常用指令， rm 與 Windows 檔案管理指令對照](#git-bash-常用指令-rm-與-windows-檔案管理指令對照)
+- [Git Flow 開發流程觀念](#git-flow-開發流程觀念)
+  - [分支介紹](#分支介紹)
+    - [長期分支](#長期分支)
+    - [任務分支(Topic)](#任務分支topic)
+  - [Git Commit 規範](#git-commit-規範)
+    - [Commit Message 格式](#commit-message-格式)
+    - [Header Type](#header-type)
+    - [Body](#body)
+    - [Footer](#footer)
+    - [commit 模板](#commit-模板)
+- [Git 操作情境](#git-操作情境)
+  - [取消 commit (git reset 指令)](#取消-commit-git-reset-指令)
+    - [確認 git 紀錄](#確認-git-紀錄)
+    - [利用相對位置取消 commit](#利用相對位置取消-commit)
+    - [利用絕對位置取消 commit](#利用絕對位置取消-commit)
+  - [git mirror 轉移資料庫](#git-mirror-轉移資料庫)
+- [Git 管理](#git-管理)
+  - [使用 VSCode 管理 Git](#使用-vscode-管理-git)
+- [GitHub 操作](#github-操作)
+  - [將本地專案上傳到 github](#將本地專案上傳到-github)
+  - [Https 設定 Token](#https-設定-token)
+    - [設定 personal access token](#設定-personal-access-token)
+  - [設定 SSH](#設定-ssh)
+    - [輸入指令產生 SHH](#輸入指令產生-shh)
+    - [產生 SSH 連線所需的公鑰內容](#產生-ssh-連線所需的公鑰內容)
+    - [上傳公鑰](#上傳公鑰)
+<!-- /TOC -->
+
 ## 常用指令
 
 ### Git 常用指令
