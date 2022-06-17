@@ -18,7 +18,7 @@
   - [for of](#for-of)
   - [for in](#for-in)
   - [randome(亂數)公式](#randome亂數公式)
-  - [箭頭函式僅用於 function 內只有一條運算式時](#箭頭函式僅用於-function-內只有一條運算式時)
+  - [箭頭函式](#箭頭函式)
 <!-- /TOC -->
 
 ## 基本概念
@@ -477,8 +477,11 @@ function getRandom(start, end) {
 var r = getRandom(0, 255);
 var g = getRandom(0, 255);
 var b = getRandom(0, 255);
+```
 
-//----------------------------------------------------箭頭函式  ----------------------------
+### 箭頭函式
+
+```javascript
 function test(a) {
   return a + 1; // 將物件、運算結果傳出到呼叫點
 }
@@ -496,4 +499,4 @@ var test = (a) => a + 1; //最終省略了function和return
 var answer = test(5); //呼叫點，test(5)會將刮號內的參數傳到function的刮號(a)中
 ```
 
-### 箭頭函式僅用於 function 內只有一條運算式時
+- 箭頭函式僅用於 function 內只有一條運算式時

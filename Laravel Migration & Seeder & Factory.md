@@ -2,6 +2,20 @@
 
 ###### tags: `php` `Laravel`
 
+- [Laravel Migration & Seeder & Factory](#laravel-migration--seeder--factory)
+          - [tags: `php` `Laravel`](#tags-php-laravel)
+  - [Migration](#migration)
+    - [產生 Migration 檔案](#產生-migration-檔案)
+    - [執行 Migrate](#執行-migrate)
+    - [還原 Migrate](#還原-migrate)
+    - [重置 Migration](#重置-migration)
+  - [Seed](#seed)
+    - [產生 Seeder 檔案](#產生-seeder-檔案)
+    - [執行 Seeder](#執行-seeder)
+  - [Factory 翻譯官方文件](#factory-翻譯官方文件)
+    - [產生 Factory 檔案](#產生-factory-檔案)
+    - [Faker Formatters](#faker-formatters)
+
 ## Migration
 
 ### 產生 Migration 檔案

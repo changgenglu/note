@@ -2,6 +2,23 @@
 
 ###### tags: `php` `Laravel` `環境設定`
 
+- [Laravel 環境設置](#laravel-環境設置) - [tags: `php` `Laravel` `環境設定`](#tags-php-laravel-環境設定)
+  - [環境初始設定](#環境初始設定)
+    - [1. 安裝 XAMPP or phpEnv](#1-安裝-xampp-or-phpenv)
+    - [2. 安裝 composer](#2-安裝-composer)
+      - [windows 透過 composer 官網下載 composer 安裝檔](#windows-透過-composer-官網下載-composer-安裝檔)
+      - [下載 Composer(MacOS)](#下載-composermacos)
+      - [全局調用 Composer (MacOS)](#全局調用-composer-macos)
+    - [3. 安裝 Visual Studio Code or phpStorm](#3-安裝-visual-studio-code-or-phpstorm)
+    - [4. Laravel 全域安裝 (XAMPP)](#4-laravel-全域安裝-xampp)
+  - [從 Git clone Laravel 專案](#從-git-clone-laravel-專案)
+    - [開發環境設定](#開發環境設定)
+    - [上線環境設定](#上線環境設定)
+  - [Laravel ReactJS](#laravel-reactjs)
+  - [Laraval 安裝 bootstrap](#laraval-安裝-bootstrap)
+    - [Laravel 8](#laravel-8)
+    - [Laravel 6](#laravel-6)
+
 ## 環境初始設定
 
 ### 1. 安裝 XAMPP or phpEnv
@@ -159,7 +176,8 @@ php artisan serve
 1. 安裝 compsoer 排除 dev 項目
 
    ```bash
-   composer install --optimize-autoloader --no-dev
+   composer install --optimize-
+   loader --no-dev
    ```
 
 2. `.env`設定轉為線上並且關閉錯誤提示
@@ -195,7 +213,8 @@ php artisan serve
 5. Composer 緩存
 
    ```bash
-   composer dumpautoload -o
+   composer dump
+   load -o
    # 每次更新compsoer install 後，都要再執行一次
    ```
 
