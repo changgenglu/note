@@ -2,6 +2,19 @@
 
 ###### tags: `資料庫` `MySQL`
 
+- [MySQL 學習筆記](#mysql-學習筆記) - [tags: `資料庫` `MySQL`](#tags-資料庫-mysql)
+  - [資料表語法](#資料表語法)
+  - [資料型態](#資料型態)
+  - [DB 命名原則](#db-命名原則)
+    - [資料庫命名](#資料庫命名)
+    - [資料表命名](#資料表命名)
+    - [欄位命名](#欄位命名)
+    - [索引命名](#索引命名)
+      - [外鍵索引](#外鍵索引)
+  - [使用情境](#使用情境)
+    - [外鍵 onDelete 約束情況](#外鍵-ondelete-約束情況)
+    - [ERROR: #1215 - Cannot add foreign key constraint](#error-1215---cannot-add-foreign-key-constraint)
+
 ## 資料表語法
 
 - 建立資料表
@@ -126,7 +139,7 @@
   - `primary key` 主索引鍵(主鍵)
   - `foreign key` 外部索引鍵(外來鍵)
   - `UNIQUE` 唯一 不能有重複的資料
-  - `AUTO_INCREMENT` 流水號
+  - ` _INCREMENT` 流水號
   - `DEFAULT =` 預設值
   - `CHECK ()` 資料寫入前的檢查(預設標準)
 
