@@ -20,41 +20,41 @@
 - 建立資料表
 
   ```sql
-      CREATE TABLE 資料表名稱 (
-          欄位名稱  資料型態,
-          ...
-      )
+  CREATE TABLE 資料表名稱 (
+    欄位名稱  資料型態,
+    ...
+  )
   ```
 
 - 增加資料表欄位
 
   ```sql
-      ALTER TABLE 資料表 ADD 欄位名稱 資料型態;
+  ALTER TABLE 資料表 ADD 欄位名稱 資料型態;
   ```
 
 - 增加資料表內容
 
   ```sql
-      INSERT INTO 資料表 (欄位1, 欄位2, 欄位3, ...)
-      VALUES (值1,  值2,  值3, ...);
+  INSERT INTO 資料表 (欄位1, 欄位2, 欄位3, ...)
+  VALUES (值1,  值2,  值3, ...);
   ```
 
 - 更新資料欄位
 
   ```sql
-      UPDATE 資料表 SET 欄位1 = '資料1', 欄位2 = '資料2' WHERE 條件;
+  UPDATE 資料表 SET 欄位1 = '資料1', 欄位2 = '資料2' WHERE 條件;
   ```
 
 - 刪除資料欄位
 
   ```sql
-      delete from 資料表 where 欄位 = ;
-      truncate table 資料表;
-      drop table 資料表;
-
-      -- 刪除外鍵欄位
-      ALTER TABLE 資料表 DROP FOREIGN KEY FK_欄位 ; -- 先刪除外鍵名稱
-      ALTER TABLE 資料表 DROP `欄位`;               --  才能刪除欄位
+  delete from 資料表 where 欄位 = ;
+  truncate table 資料表;
+  drop table 資料表
+  
+  -- 刪除外鍵欄位
+  ALTER TABLE 資料表 DROP FOREIGN KEY FK_欄位 ; -- 先刪除外鍵名稱
+  ALTER TABLE 資料表 DROP `欄位`;               --  才能刪除欄位
   ```
 
 - 選擇欄位
@@ -85,29 +85,29 @@
 - 使用者定義變數
 
   ```sql
-      SELECT @x; --> x值為NULL
+  SELECT @x; --> x值為NULL
 
-      SET @x = 1;
-      SELECT @x, ProductID  FROM Products;
+  SET @x = 1;
+  SELECT @x, ProductID  FROM Products;
   ```
 
 - 子查詢:查詢裡面有查詢
 
   ```sql
-      --> 檢查資料表302中的 ProductID，不存在於資料表301 的 ProductID
-      SELECT * FROM lab302
-      WHERE ProductID NOT in (SELECT ProductID FROM lab301)
+  --> 檢查資料表302中的 ProductID，不存在於資料表301 的 ProductID
+  SELECT * FROM lab302
+  WHERE ProductID NOT in (SELECT ProductID FROM lab301)
   ```
 
 - inner join | left join | right join | cross join
 
   ```sql
-      -- 結合兩個表中某欄位具有相同資料，一起列出查詢結果
-      inner join
-      -- 列出左/右邊的表，另一邊的表列出有相同的部分，不足的欄位印出NULL
-      left join | right join
-      -- 將所有可能的組合通通列出來(交叉查詢)
-      cross join
+  -- 結合兩個表中某欄位具有相同資料，一起列出查詢結果
+  inner join
+  -- 列出左/右邊的表，另一邊的表列出有相同的部分，不足的欄位印出NULL
+  left join | right join
+  -- 將所有可能的組合通通列出來(交叉查詢)
+  cross join
   ```
 
 ## 資料型態
@@ -117,8 +117,8 @@
   - `char()` 與 `varchar()` 的空間大小是以後面參數來表示欄位的大小，不同的地方在於`varchar()` 是以動態的方式儲存。
 
     ```sql
-        char(10) = "hello     " -- 10 bytes  包含了五個空格
-        varchar(10) = "hello"   -- 5 bytes
+    char(10) = "hello     " -- 10 bytes  包含了五個空格
+    varchar(10) = "hello"   -- 5 bytes
     ```
 
   - `char()` 固定大小浪費空間，但是所需的計算時間少。
@@ -213,13 +213,12 @@
   - 類似 if else
 
     ```sql
-        CASE
-            when condition(條件為true) then "返回結果"
-            --如果條件為false就繼續下一行判斷
-
-            when condition(條件為true) then "返回結果"
-            else "返回結果" -- 如果上述條件都不符，就返回此結果
-        end
+    CASE
+      when condition(條件為true) then "返回結果"
+      --如果條件為false就繼續下一行判斷
+      when condition(條件為true) then "返回結果"
+      else "返回結果" -- 如果上述條件都不符，就返回此結果
+    end
     ```
 
   - 不等於：
@@ -246,16 +245,14 @@
 
 - 一律使用複數名詞
 - 不超過 30 個字元
-- 多對多關係中的中間表命名，為兩個表名稱，中間以`_`區額`，以單數命名。
-
+- 多對多關係中的中間表命名，為兩個表名稱，中間以`_`區額`，以單數命名  
   例如：`admins` 和 `members`，中間表命名為`admin_member`
 
 ### 欄位命名
 
 - 各表之間相同意義的欄位必須同名
 - 多單詞以`_`
-- 外鍵約束欄位，以關聯的父層資料表名加上父層資料表欄位名來命名，中間以`_`區隔
-
+- 外鍵約束欄位，以關聯的父層資料表名加上父層資料表欄位名來命名，中間以`_`區隔  
   例:父層資料表名`admins`，父層資料表欄位名`id`，關聯欄位名`admin_id`
 
 ### 索引命名
@@ -285,7 +282,5 @@
 ### ERROR: #1215 - Cannot add foreign key constraint
 
 - 可能原因:
-  1. 添加外鍵約束時，目標欄位須和引用欄位具有相同的數據類型  
-     int signed with int signed 或 int unsigned with int unsigned
-  2. 在 not null 的欄位加上 on delete/update set null 的外鍵約束
-     須將該欄位設為 DEFAULT NULL
+  1. 添加外鍵約束時，目標欄位須和引用欄位具有相同的數據類型，int signed with int signed 或 int unsigned with int unsigned
+  2. 在 not null 的欄位加上 on delete/update set null 的外鍵約束，須將該欄位設為 DEFAULT NULL
