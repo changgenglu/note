@@ -2,24 +2,24 @@
 
 ###### tags: `前端` `Javascript`
 
-<!-- TOC -->
-- [基本概念](#基本概念)
-- [class 類別](#class-類別)
-  - [嚴謹模式](#嚴謹模式)
-  - [賦值運算子](#賦值運算子)
-  - [比較運算子](#比較運算子)
-  - [算數運算子](#算數運算子)
-  - [邏輯運算子](#邏輯運算子)
-  - [三元運算式](#三元運算式)
-  - [if else](#if-else)
-  - [switch](#switch)
-  - [while 迴圈](#while-迴圈)
-  - [for 迴圈](#for-迴圈)
-  - [for of](#for-of)
-  - [for in](#for-in)
-  - [randome(亂數)公式](#randome亂數公式)
-  - [箭頭函式](#箭頭函式)
-<!-- /TOC -->
+- [Javascript 學習筆記](#javascript-學習筆記)
+          - [tags: `前端` `Javascript`](#tags-前端-javascript)
+  - [基本概念](#基本概念)
+  - [class 類別](#class-類別)
+    - [嚴謹模式](#嚴謹模式)
+    - [賦值運算子](#賦值運算子)
+    - [比較運算子](#比較運算子)
+    - [算數運算子](#算數運算子)
+    - [邏輯運算子](#邏輯運算子)
+    - [三元運算式](#三元運算式)
+    - [if else](#if-else)
+    - [switch](#switch)
+    - [while 迴圈](#while-迴圈)
+    - [for 迴圈](#for-迴圈)
+    - [for of](#for-of)
+    - [for in](#for-in)
+    - [randome(亂數)公式](#randome亂數公式)
+    - [箭頭函式](#箭頭函式)
 
 ## 基本概念
 
