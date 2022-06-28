@@ -12,7 +12,7 @@
   - [Seed](#seed)
     - [產生 Seeder 檔案](#產生-seeder-檔案)
     - [執行 Seeder](#執行-seeder)
-  - [Factory 翻譯官方文件](#factory-翻譯官方文件)
+  - [Factory](#factory)
     - [產生 Factory 檔案](#產生-factory-檔案)
     - [Faker Formatters](#faker-formatters)
 
@@ -135,9 +135,9 @@ php artisan db:seed
 php artisan db:seed --class=UsersTableSeeder
 ```
 
-## [Factory 翻譯官方文件](https://learnku.com/docs/laravel/6.x/database-testing/5185)
+## [Factory](https://learnku.com/docs/laravel/6.x/database-testing/5185)
 
-[深入了解 Facker](https://learnku.com/laravel/t/62386)
+> [深入了解 Facker](https://learnku.com/laravel/t/62386)
 
 ### 產生 Factory 檔案
 

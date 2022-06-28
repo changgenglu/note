@@ -2,38 +2,37 @@
 
 ###### tags: `Git`
 
-<!-- TOC -->
-
-- [常用指令](#常用指令)
-  - [Git 常用指令](#git-常用指令)
-  - [Git Bash 常用指令， rm 與 Windows 檔案管理指令對照](#git-bash-常用指令-rm-與-windows-檔案管理指令對照)
-- [Git Flow 開發流程觀念](#git-flow-開發流程觀念)
-  - [分支介紹](#分支介紹)
-    - [長期分支](#長期分支)
-    - [任務分支(Topic)](#任務分支topic)
-  - [Git Commit 規範](#git-commit-規範)
-    - [Commit Message 格式](#commit-message-格式)
-    - [Header Type](#header-type)
-    - [Body](#body)
-    - [Footer](#footer)
-    - [commit 模板](#commit-模板)
-- [Git 操作情境](#git-操作情境)
-  - [取消 commit (git reset 指令)](#取消-commit-git-reset-指令)
-    - [確認 git 紀錄](#確認-git-紀錄)
-    - [利用相對位置取消 commit](#利用相對位置取消-commit)
-    - [利用絕對位置取消 commit](#利用絕對位置取消-commit)
-  - [git mirror 轉移資料庫](#git-mirror-轉移資料庫)
-- [Git 管理](#git-管理)
-  - [使用 VSCode 管理 Git](#使用-vscode-管理-git)
-- [GitHub 操作](#github-操作)
-  - [將本地專案上傳到 github](#將本地專案上傳到-github)
-  - [Https 設定 Token](#https-設定-token)
-    - [設定 personal access token](#設定-personal-access-token)
-  - [設定 SSH](#設定-ssh)
-    - [輸入指令產生 SHH](#輸入指令產生-shh)
-    - [產生 SSH 連線所需的公鑰內容](#產生-ssh-連線所需的公鑰內容)
-    - [上傳公鑰](#上傳公鑰)
-<!-- /TOC -->
+- [Git 學習筆記](#git-學習筆記) - [tags: `Git`](#tags-git)
+  - [常用指令](#常用指令)
+    - [Git 常用指令](#git-常用指令)
+    - [Git Bash 常用指令， rm 與 Windows 檔案管理指令對照](#git-bash-常用指令-rm-與-windows-檔案管理指令對照)
+  - [Git Flow 開發流程觀念](#git-flow-開發流程觀念)
+    - [分支介紹](#分支介紹)
+      - [長期分支](#長期分支)
+      - [任務分支(Topic)](#任務分支topic)
+    - [Git Commit 規範](#git-commit-規範)
+      - [Commit Message 格式](#commit-message-格式)
+      - [Header Type](#header-type)
+      - [Body](#body)
+      - [Footer](#footer)
+      - [commit 模板](#commit-模板)
+  - [Git 操作情境](#git-操作情境)
+    - [取消 commit (git reset 指令)](#取消-commit-git-reset-指令)
+      - [確認 git 紀錄](#確認-git-紀錄)
+      - [利用相對位置取消 commit](#利用相對位置取消-commit)
+      - [利用絕對位置取消 commit](#利用絕對位置取消-commit)
+    - [git mirror 轉移資料庫](#git-mirror-轉移資料庫)
+    - [git stash 將未完成的工作暫存](#git-stash-將未完成的工作暫存)
+  - [Git 管理](#git-管理)
+    - [使用 VSCode 管理 Git](#使用-vscode-管理-git)
+  - [GitHub 操作](#github-操作)
+    - [將本地專案上傳到 github](#將本地專案上傳到-github)
+    - [Https 設定 Token](#https-設定-token)
+      - [設定 personal access token](#設定-personal-access-token)
+    - [設定 SSH](#設定-ssh)
+      - [輸入指令產生 SHH](#輸入指令產生-shh)
+      - [產生 SSH 連線所需的公鑰內容](#產生-ssh-連線所需的公鑰內容)
+      - [上傳公鑰](#上傳公鑰)
 
 ## 常用指令
 
@@ -98,7 +97,7 @@
 
 #### Commit Message 格式
 
-```bash=
+```bash
 # 標題: <type>(<scope>): <subject>
 # - type: feat, fix, docs, style, refactor, test, chore
 # - scope: 如果修改範圍為全局修改或難以分配給單個組件，可略
@@ -137,7 +136,7 @@ body 應包括改變的動機，並將其與以前的行為進行對比。也就
 
 Breaking Changes 應以單詞 BREAKING CHANGE 開頭：用空格或兩個換行符。後面是對變動的描述和變動的理由。
 
-```bash=
+```bash
 BREAKING CHANGE: isolate scope bindings definition has changed.
 
     To migrate the code follow the example below:
@@ -159,7 +158,7 @@ BREAKING CHANGE: isolate scope bindings definition has changed.
 
 如果當前 commit 還原了先前的 commit，則應以 revert：開頭，後跟還原的 commit 的 header。在 body 中必須寫成：This reverts commit \<hash>。其中 hash 是要還原的 commit 的 SHA 標識。
 
-```bash=
+```bash
 revert: feat(pencil): add 'delete' option
 
 This reverts commit 667ecc1654a317a13331b17617d973392f415f02.
@@ -245,22 +244,101 @@ git reset 1baa403
 
 進到專案資料夾，設定新的遠端 git repo 位置
 
-```bash=
+```bash
 cd Authentication.git/
 git remote set-url --push origin https://github.com/your_name/your_project.git
 ```
 
 local 更新 remote branch ,最後將整包 push 上去
 
-```bash=
+```bash
 git push --mirror
 ```
 
 或者一個指令直接指向遠端 repo
 
-```bash=
- git push --mirror https://github.com/your_name/your_project.git
+```bash
+git push --mirror https://github.com/your_name/your_project.git
+```
 
+### git stash 將未完成的工作暫存
+
+有時候會有工作做到一半，需要切換到別的分支進行其他任務。  
+這時有兩種辦法：
+
+- 先 `commit` 目前進度，之後再 `reset`，將做一半的東西拆回來繼續做。
+- 使用 `stash`。
+
+先看一下目前的狀態：
+
+```bash
+git status
+On branch feature/admin_controller
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   app/Http/Controllers/RegionController.php
+        modified:   app/Models/Room.php
+        modified:   app/Models/User.php
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+目前正在修改 `app/Http/Controllers/RegionController.php` `app/Models/Room.php` `app/Models/User.php`，使用 `git stash` 把他們存起來。
+
+```bash
+git stash
+Saved working directory and index state WIP on feature/admin_controller: c745ccb style(MemberController): 修改response的資料與取消註解
+```
+
+> **注意**
+> Untracked 狀態的檔案無法被 stash，需要額外使用 `-u` 參數
+
+看一下目前的狀態
+
+```bash
+git status
+On branch cat
+nothing to commit, working tree clean
+```
+
+`git stash list` 可以查看暫存檔案
+
+```bash
+git stash list
+stash@{0}: WIP on cat: b174a5a add cat 2
+```
+
+當任務完成，要把剛剛暫存的東西拿回來
+
+```bash
+git stash pop stash@{0}
+On branch feature/add_new_api_route
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   app/Http/Controllers/RegionController.php
+        modified:   app/Models/Room.php
+        modified:   app/Models/User.php
+
+no changes added to commit (use "git add" and/or "git commit -a")
+Dropped stash@{0} (8810ecbe89e1c1412c0c47d7fb7ded9f3e29aa53)
+```
+
+使用 `pop` 指令，可以將某個 `stash` 拿出來並套到目前的分支上。套用成功之後，套用過的 `stash` 就會被刪除。  
+如果沒有指定 `pop` 哪一個 `stash`，將會從編號小的也就是 `stash@{0}` 開始使用，也就是最後存進來的。
+
+要刪除 `stash` 可以用 `drop` 指令
+
+```bash
+git stash drop stash@{0}
+Dropped stash@{0} (87390c02bbfc8cf7a38fb42f6f3a357e51ce6cd1)
+```
+
+如果要把 `stash` 撿回來，但不想刪除，可以使用 `apply`
+
+```bash
+git stash apply stash@{0}
 ```
 
 ## Git 管理

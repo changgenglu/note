@@ -4,8 +4,7 @@
 
 > 請先完成 laravel 環境設置
 
-- [Laravel 學習筆記](#laravel-學習筆記)
-          - [tags: `php` `Laravel`](#tags-php-laravel)
+- [Laravel 學習筆記](#laravel-學習筆記) - [tags: `php` `Laravel`](#tags-php-laravel)
   - [基礎建立](#基礎建立)
   - [連線資料庫將資料顯示在畫面上](#連線資料庫將資料顯示在畫面上)
   - [新增一個 html 測試`input`到資料庫](#新增一個-html-測試input到資料庫)
@@ -354,4 +353,34 @@ Route::middleware('adminonly')->group(function () {
     Route::get('new/{id}/delete', 'NewController@delete');
     // ...
 });
+```
+
+## Laravel 功能實現
+
+### 儲存檔案並刪除舊檔
+
+```php
+public function updateProfile(Request $request)
+{
+  $user = auth()->user();
+  // 表單驗證規則
+  $validated = $this->validateUserProfile($request->all(), $user->id)->validate();
+  if ($request->has('image')) {
+    // 取得資料表中原始資料
+    $originalData = User::find(auth()->user()->id)->getAttributes();
+    if ($originalData['image']) {
+      $filename = $originalData['image'];
+      $storage = Storage::disk('upload');
+      // 如果資料表中有紀錄，那就刪除檔案
+      if ($storage->exists($filename)) {
+        $storage->delete($filename);
+      }
+    }
+    // 原始$request['image']的值為暫存路徑，現將其改為資料表中的路徑
+    if ($request->hasFile('image')) {
+      $validated['image'] = $request->file('image')->store('images/users', 'upload');
+    }
+  }
+  $user->update($validated);
+}
 ```
