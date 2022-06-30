@@ -12,6 +12,9 @@
   - [Laravel ORM 將資料存至資料庫](#laravel-orm-將資料存至資料庫)
     - [save](#save)
     - [修改多對多中間表](#修改多對多中間表)
+  - [ORM N+1](#orm-n1)
+    - [什麼是 N+1](#什麼是-n1)
+    - [解決 N+1 的問題](#解決-n1-的問題)
   - [序列化](#序列化)
     - [將 collection 序列化](#將-collection-序列化)
       - [array](#array)
@@ -90,8 +93,10 @@ class UserInfo extends Model
 
 ## 關聯
 
-### [多型態關聯](https://blog.epoch.tw/2020/04/30/%E5%9C%A8-Laravel-7-0-%E4%BD%BF%E7%94%A8-Eloquent-%E5%A4%9A%E5%9E%8B%E9%97%9C%E8%81%AF/)
+### 多型態關聯
 
+> [參考資料](https://blog.epoch.tw/2020/04/30/%E5%9C%A8-Laravel-7-0-%E4%BD%BF%E7%94%A8-Eloquent-%E5%A4%9A%E5%9E%8B%E9%97%9C%E8%81%AF/)
+>
 > 多型態關聯可以讓一張表同時關連到兩張以上的資料表
 >
 > 優點:
@@ -496,6 +501,117 @@ User::find(1)->save([
   // 用來切換傳入id的附加狀態，如果傳入的id目前已經被附加，他將會被卸除。
   // 若已經被卸除，將會被附加
   ```
+
+## ORM N+1
+
+> 紀錄 ORM 對資料庫的查詢語法
+>
+> ```php
+> // 開始紀錄
+> DB::enableQueryLog();
+>
+> // 結束並印出
+> dd(DB::getQueryLog());
+> ```
+
+### 什麼是 N+1
+
+資料表中有關聯關係，以論壇文章為例。
+
+- 一名使用者，可以發布多篇文章。
+- 一篇文章只屬於一名使用者。
+
+使用者與文章的關係為一對多。當我們要取得多名使用者，並同時取得這些使用者過去發布的所有文章時：
+
+```php
+use App\Models\User;
+use Illuminate\Support\Facades\Route;
+
+Route::get('lazy-loding', function () {
+  // 開啟 Query Log
+  DB::enableQueryLog();
+
+  // 取得所有使用者
+  $users = User::get();
+
+  // 使用迴圈取得每一位使用者所發布的文章
+  foreach ($users as $user) {
+      $posts = $user->posts;
+      dump($posts->toArray());
+  }
+
+  // dump 對資料庫的查詢語法
+  dump(DB::getQueryLog());
+});
+```
+
+這時就會產生 n+1 的問題。
+
+第一筆查詢是取得所有用戶。
+
+```php
+// 取得所有使用者
+$users = User::get();
+```
+
+接下來每一筆是取得各用戶發布的文章。
+
+```php
+// 使用迴圈取得每一位使用者所發布的文章
+foreach ($users as $user) {
+  $posts = $user->posts;
+}
+```
+
+### 解決 N+1 的問題
+
+可以使用 laravel 所提供的預加載功能 `with()`
+
+```php
+Route::get('lazy-loding', function () {
+  // 開啟 Query Log
+  DB::enableQueryLog();
+
+  // 取得所有使用者，並預先加載 Post 的資料
+  // 這裡的 'posts' 對應到 User Model 中的 posts()
+  $users = User::with('posts')->get();
+
+  // 使用迴圈取得每一位使用者所發布的文章
+  foreach ($users as $user) {
+      $posts = $user->posts;
+      dump($posts->toArray());
+  }
+
+  // dump 對資料庫的查詢語法
+  dump(DB::getQueryLog());
+});
+```
+
+這時僅執行了兩個查詢
+
+```sql
+select * from users
+
+select * from posts where id in (1, 2, 3, 4, 5, ...)
+```
+
+可以指定不需要某些資料
+
+```php
+$users = User::without('posts')->get();
+```
+
+或是只需要其他資料
+
+```php
+$users = User::withOnly('loginRecords')->get();
+```
+
+也可以加載多個關聯
+
+```php
+$users = User::with(['posts', 'commid'])->get();
+```
 
 ## 序列化
 

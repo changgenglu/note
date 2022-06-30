@@ -2,7 +2,8 @@
 
 ###### tags: `Git`
 
-- [Git 學習筆記](#git-學習筆記) - [tags: `Git`](#tags-git)
+- [Git 學習筆記](#git-學習筆記)
+          - [tags: `Git`](#tags-git)
   - [常用指令](#常用指令)
     - [Git 常用指令](#git-常用指令)
     - [Git Bash 常用指令， rm 與 Windows 檔案管理指令對照](#git-bash-常用指令-rm-與-windows-檔案管理指令對照)
@@ -17,12 +18,15 @@
       - [Footer](#footer)
       - [commit 模板](#commit-模板)
   - [Git 操作情境](#git-操作情境)
-    - [取消 commit (git reset 指令)](#取消-commit-git-reset-指令)
+    - [取消 commit：git reset](#取消-commitgit-reset)
       - [確認 git 紀錄](#確認-git-紀錄)
       - [利用相對位置取消 commit](#利用相對位置取消-commit)
       - [利用絕對位置取消 commit](#利用絕對位置取消-commit)
-    - [git mirror 轉移資料庫](#git-mirror-轉移資料庫)
-    - [git stash 將未完成的工作暫存](#git-stash-將未完成的工作暫存)
+    - [轉移資料庫：git mirror](#轉移資料庫git-mirror)
+    - [將未完成的工作暫存：git stash](#將未完成的工作暫存git-stash)
+      - [將現階段工作暫存](#將現階段工作暫存)
+      - [取出暫存](#取出暫存)
+    - [解決合併衝突](#解決合併衝突)
   - [Git 管理](#git-管理)
     - [使用 VSCode 管理 Git](#使用-vscode-管理-git)
   - [GitHub 操作](#github-操作)
@@ -71,7 +75,11 @@
 - `date` | `date` 顯示日期 (Linux 含時間)
 - `clear` | `cls` 清除螢幕
 
-## [Git Flow 開發流程觀念](https://gitbook.tw/chapters/gitflow/why-need-git-flow)
+## Git Flow 開發流程觀念
+
+> [參考資料：Git Flow 是什麼？為什麼需要這種東西？](https://gitbook.tw/chapters/gitflow/why-need-git-flow)
+> [參考資料：Git flow 分支策略](https://git-tutorial.readthedocs.io/zh/latest/branchingmodel.html)
+
 
 ### 分支介紹
 
@@ -93,7 +101,9 @@
 - **release**  
    由 develop 切出來，正式上線前的最終測試分支，通過後會將 release 合併到 main 以及 develop 確保在 release 時修正的一些問題能同步到 main 與 develop。
 
-### [Git Commit 規範](https://ithelp.ithome.com.tw/articles/10228738)
+### Git Commit 規範
+
+> [參考資料](https://ithelp.ithome.com.tw/articles/10228738)
 
 #### Commit Message 格式
 
@@ -195,7 +205,7 @@ template = ~/.gitmessage
 
 ## Git 操作情境
 
-### 取消 commit (git reset 指令)
+### 取消 commit：git reset
 
 Git 的 `reset`指令，比較像是「前往」或是「變成」，並不會真的重新設定。
 
@@ -238,7 +248,7 @@ git reset 1baa403
 
 他會切會到`1baa403`這個 commit，剛好是`af75a42`的前一個 commit，和取消最後一次 commit 的效果一樣。
 
-### git mirror 轉移資料庫
+### 轉移資料庫：git mirror
 
 可以轉移整個 repo 的資訊，包括 beanch, tags
 
@@ -261,13 +271,13 @@ git push --mirror
 git push --mirror https://github.com/your_name/your_project.git
 ```
 
-### git stash 將未完成的工作暫存
+### 將未完成的工作暫存：git stash
 
 有時候會有工作做到一半，需要切換到別的分支進行其他任務。  
 這時有兩種辦法：
 
-- 先 `commit` 目前進度，之後再 `reset`，將做一半的東西拆回來繼續做。
-- 使用 `stash`。
+1. 先 `commit` 目前進度，之後再 `reset`，將做一半的東西拆回來繼續做。
+2. 使用 `stash`。
 
 先看一下目前的狀態：
 
@@ -283,6 +293,8 @@ Changes not staged for commit:
 
 no changes added to commit (use "git add" and/or "git commit -a")
 ```
+
+#### 將現階段工作暫存
 
 目前正在修改 `app/Http/Controllers/RegionController.php` `app/Models/Room.php` `app/Models/User.php`，使用 `git stash` 把他們存起來。
 
@@ -308,6 +320,8 @@ nothing to commit, working tree clean
 git stash list
 stash@{0}: WIP on cat: b174a5a add cat 2
 ```
+
+#### 取出暫存
 
 當任務完成，要把剛剛暫存的東西拿回來
 
@@ -341,9 +355,44 @@ Dropped stash@{0} (87390c02bbfc8cf7a38fb42f6f3a357e51ce6cd1)
 git stash apply stash@{0}
 ```
 
+### 解決合併衝突
+
+當在不同分支中，修改同一檔案的不同行，此時合併不會發生問題。  
+倘若修改的是同一行，就會發生合併衝突。
+
+```bash
+git merge feature/create_device_model
+Auto-merging app-src/app/Http/Controllers/UserController.php
+CONFLICT (content): Merge conflict in app-src/app/Http/Controllers/UserController.php
+Auto-merging app-src/app/Models/Room.php
+Auto-merging app-src/app/Models/User.php
+CONFLICT (content): Merge conflict in app-src/app/Models/User.php
+Automatic merge failed; fix conflicts and then commit the result.
+```
+
+有出現 CONFLICT (content)提示的檔案，為發生合併衝突的檔案。  
+此時在檔案中，Git 會將衝突位置標示出來。
+
+```php
+<<<<<<< HEAD
+當前內容。
+=======
+要合併的目標分支上歧異的內容。
+>>>>>>> featuer/i_am_old_branch
+```
+
+修正衝突點後，將修改的檔案暫存，最後進行提交。
+
+```bash
+git add --all
+git commit
+```
+
 ## Git 管理
 
-### [使用 VSCode 管理 Git](https://www.minwt.com/webdesign-dev/22926.html)
+### 使用 VSCode 管理 Git
+
+> [參考資料](https://www.minwt.com/webdesign-dev/22926.html)
 
 ## GitHub 操作
 
