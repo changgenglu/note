@@ -2,19 +2,7 @@
 
 ###### tags: `環境設定`
 
-<!-- TOC -->
-
-- [擴充套件](#擴充套件)
-  - [中文化](#中文化)
-  - [美化 code](#美化-code)
-  - [前端](#前端)
-  - [PHP Laravel](#php-laravel)
-  - [Markdown](#markdown)
-  - [Git](#git)
-  - [小工具](#小工具)
-- [調整設定](#調整設定)
-- [快速鍵](#快速鍵)
-<!-- /TOC -->
+<!-- TOC -->autoauto                - [tags: `環境設定`](#tags-環境設定)auto- [擴充套件](#擴充套件)auto    - [中文化](#中文化)auto    - [美化 code](#美化-code)auto    - [前端](#前端)auto    - [PHP Laravel](#php-laravel)auto    - [Markdown](#markdown)auto    - [Git](#git)auto    - [小工具](#小工具)auto- [調整設定](#調整設定)auto- [快速鍵](#快速鍵)autoauto<!-- /TOC -->
 
 ## 擴充套件
 
@@ -62,7 +50,7 @@
 - Markdown All in One
 - Markdown Perview Gitnub Styling
 - Markdown TOC  
-  markdown 自動生成目錄
+  markdown 自動生成目錄，作者：CharlesWan
 
 ### Git
 
