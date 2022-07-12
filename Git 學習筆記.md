@@ -22,6 +22,7 @@
       - [確認 git 紀錄](#確認-git-紀錄)
       - [利用相對位置取消 commit](#利用相對位置取消-commit)
       - [利用絕對位置取消 commit](#利用絕對位置取消-commit)
+    - [git commit 打錯字](#git-commit-打錯字)
     - [轉移資料庫：git mirror](#轉移資料庫git-mirror)
     - [將未完成的工作暫存：git stash](#將未完成的工作暫存git-stash)
       - [將現階段工作暫存](#將現階段工作暫存)
@@ -77,9 +78,7 @@
 
 ## Git Flow 開發流程觀念
 
-> [參考資料：Git Flow 是什麼？為什麼需要這種東西？](https://gitbook.tw/chapters/gitflow/why-need-git-flow)
-> [參考資料：Git flow 分支策略](https://git-tutorial.readthedocs.io/zh/latest/branchingmodel.html)
-
+> [參考資料：Git Flow 是什麼？為什麼需要這種東西？](https://gitbook.tw/chapters/gitflow/why-need-git-flow) > [參考資料：Git flow 分支策略](https://git-tutorial.readthedocs.io/zh/latest/branchingmodel.html)
 
 ### 分支介紹
 
@@ -247,6 +246,16 @@ git reset 1baa403
 ```
 
 他會切會到`1baa403`這個 commit，剛好是`af75a42`的前一個 commit，和取消最後一次 commit 的效果一樣。
+
+### git commit 打錯字
+
+先把前一次 add 的內容，保留在 changes to be committed 區域
+
+```terminal
+git reset --soft HEAD^
+```
+
+接著再重新進行一次 git commit 即可
 
 ### 轉移資料庫：git mirror
 

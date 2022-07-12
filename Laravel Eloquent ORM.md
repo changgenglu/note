@@ -25,6 +25,13 @@
       - [臨時追加屬性](#臨時追加屬性)
     - [日期序列化](#日期序列化)
       - [自訂任意屬性的日期格式](#自訂任意屬性的日期格式)
+  - [刪除](#刪除)
+    - [普通刪除](#普通刪除)
+    - [軟刪除](#軟刪除)
+      - [啟用軟刪除](#啟用軟刪除)
+      - [軟刪除應用](#軟刪除應用)
+      - [實現中間表的軟刪除](#實現中間表的軟刪除)
+      - [清除舊的軟刪除資料](#清除舊的軟刪除資料)
 
 ## models
 
@@ -808,3 +815,150 @@ protected $casts = [
     'joined_at' => 'datetime:Y-m-d H:00',
 ];
 ```
+
+## 刪除
+
+### 普通刪除
+
+```php
+$contact = Contact::find(5);
+$contact->delete();
+```
+
+透過 id 刪除
+
+```php
+Contact::destroy(1);
+// or
+Contact::destroy([1, 5, 7]);
+```
+
+刪除查詢結果
+
+```php
+Contact::where('updated_at', '<', now()->subYear())->delete();
+```
+
+### 軟刪除
+
+> 透過在資料表中增加一個 delete_at 的欄位，來標記要刪除的資料，而不是直接將資料刪除。
+>
+> 優點：刪除的資料可以被復原、可以記錄資料刪除的時間點。
+>
+> 缺點：中間表無法使用軟刪除、需要定時清理軟刪除的資料，以免資料庫日益肥大。
+
+#### 啟用軟刪除
+
+將 `Illuminate\Database\Eloquent\SoftDeletes` Trait 加到 Model 上
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Flight extends Model
+{
+    use SoftDeletes;
+}
+```
+
+利用 migration 將 delete_at 欄位加入資料表
+
+```php
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+public function up() {
+    Schema::table('flights', function (Blueprint $table) {
+        $table->softDeletes();
+    });
+}
+
+public function down() {
+    Schema::table('flights', function (Blueprint $table) {
+        $table->dropSoftDeletes();
+    });
+}
+```
+
+當在 model 上呼叫 delete 方法時，會自動更新 delete_at 欄位，並設為當前時間。
+
+#### 軟刪除應用
+
+- 判斷是否已被軟刪除
+
+  ```php
+  if ($flight->trashed()) {
+      //
+  }
+  ```
+
+- 恢復軟刪除
+
+  ```php
+  $flight->restore();
+
+  // 恢復多個
+  Flight::withTrashed()
+      ->where('airline_id', 1)
+      ->restore();
+  ```
+
+  - 永久刪除 model
+
+  ```php
+  $flight->forceDelete();
+  ```
+
+- 查詢軟刪除的 model
+
+  - 包含軟刪除的 model
+
+    ```php
+    use App\Models\Flight;
+
+    $flights = Flight::withTrashed()
+                    ->where('account_id', 1)
+                    ->get();
+    ```
+
+  - 只取得被刪除的 model
+
+    ```php
+    $flights = Flight::onlyTrashed()
+                    ->where('airline_id', 1)
+                    ->get();
+    ```
+
+#### 實現中間表的軟刪除
+
+> 一般不建議對 pivot 進行軟刪除。
+
+在 pivot 表，添加一個 bool 欄位，ex: is_deleted。
+`updateExistingPivot()` 此方法可以修改這欄位
+`wherePivot('is_deleted', true)` 可以篩選數據
+
+```php
+Book::find(1)->buyers()->wherePivot('is_deleted', true)->get()
+
+Book::find(1)->buyers()->updateExistingPivot(11, ['is_deleted' => false])
+```
+
+或者在關聯中，定義兩者的關係
+
+```PHP
+function buyers() {
+    return $this->belongToMany('App\User')->wherePivot('is_deleted', false);
+} 
+
+function buyersWithDeleted() {
+    return $this->belongToMany('App\User');
+}
+```
+
+#### 清除舊的軟刪除資料
+
+[參考資料](https://github.com/tighten/quicksand)
