@@ -938,8 +938,9 @@ public function down() {
 > 一般不建議對 pivot 進行軟刪除。
 
 在 pivot 表，添加一個 bool 欄位，ex: is_deleted。
-`updateExistingPivot()` 此方法可以修改這欄位
-`wherePivot('is_deleted', true)` 可以篩選數據
+
+- `updateExistingPivot()` 此方法可以修改這欄位
+- `wherePivot('is_deleted', true)` 可以篩選數據
 
 ```php
 Book::find(1)->buyers()->wherePivot('is_deleted', true)->get()
@@ -952,7 +953,7 @@ Book::find(1)->buyers()->updateExistingPivot(11, ['is_deleted' => false])
 ```PHP
 function buyers() {
     return $this->belongToMany('App\User')->wherePivot('is_deleted', false);
-} 
+}
 
 function buyersWithDeleted() {
     return $this->belongToMany('App\User');

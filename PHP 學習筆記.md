@@ -22,6 +22,16 @@
     - [`array_combine()` 將傳入的參數合併為陣列](#array_combine-將傳入的參數合併為陣列)
     - [`array_unique($array, $flags)` 從陣列中刪除重複的值](#array_uniquearray-flags-從陣列中刪除重複的值)
     - [`array_diff()` 判斷陣列之間差異](#array_diff-判斷陣列之間差異)
+    - [`sort` 陣列排序](#sort-陣列排序)
+      - [依 value 排序](#依-value-排序)
+      - [依 key 排序](#依-key-排序)
+      - [自訂排序](#自訂排序)
+    - [分割字串](#分割字串)
+      - [`explode( string $delimiter , string $string , int $limit )`](#explode-string-delimiter--string-string--int-limit-)
+      - [`str_split(string,length)`](#str_splitstringlength)
+      - [`array_slice(array,start,length,preserve)`](#array_slicearraystartlengthpreserve)
+    - [`implode(separator,array)` 將陣列轉為字串](#implodeseparatorarray-將陣列轉為字串)
+    - [`array_filter($arrayName, $callbackFunction, $callbackParameter)` 過濾陣列元素](#array_filterarrayname-callbackfunction-callbackparameter-過濾陣列元素)
 
 ## 運算子、判斷
 
@@ -94,7 +104,7 @@ var_dump($arrObj);
 
 輸出
 
-```PHP
+```log
 object(ArrayObject)#1 (1) {
   ["storage":"ArrayObject":private]=>
   array(4) {
@@ -215,5 +225,325 @@ Array
 (
   [2] => C,
   [3] => D
+)
+```
+
+### `sort` 陣列排序
+
+#### 依 value 排序
+
+- 由小到大排序值
+  - `sort` 刪除 key
+  - `asort` 保留 key
+- 由大到小排序值
+  - `rsort` 刪除 key
+  - `arsort` 保留 key
+
+#### 依 key 排序
+
+- `ksort` 由小到大排索引值
+- `krsort` 由大到小排索引值
+
+#### 自訂排序
+
+加上一個前綴 `u` 在相對應的方法
+
+- 範例一：
+  今天有一個陣列如下
+
+  ```php
+  $unsorted = [
+      ['name'   => 'good',
+       'sorter' => '1',],
+
+      ['name'   => 'bad',
+       'sorter' => '3',],
+
+      ['name'   => 'normal',
+       'sorter' => '2',],
+  ];
+  ```
+
+  我要透過 sorter 這個 key 的 value 來做排序
+
+  ```php
+  usort($unsorted, function ($a, $b) {
+      return $a['sorter'] > $b['sorter'];
+      // 如果 a > b 的話 就會輸出 1，而因為 usort 的 根基是 sort
+      // 意即是照 value 由小到大排序，所以輸出 1 的就會往後排，進而達到目的
+  });
+  ```
+
+  output
+
+  ```log
+  array(3) {
+   [0]=>
+   array(2) {
+     ["name"]=>
+     string(4) "good"
+     ["sorter"]=>
+     string(1) "1"
+   }
+   [1]=>
+   array(2) {
+     ["name"]=>
+     string(6) "normal"
+     ["sorter"]=>
+     string(1) "2"
+   }
+   [2]=>
+   array(2) {
+     ["name"]=>
+     string(3) "bad"
+     ["sorter"]=>
+     string(1) "3"
+   }
+  }
+  ```
+
+- 範例二：
+
+  如果一樣的陣列，但要用來比對的數值是重複的
+
+  ```php
+  $unsorted = [
+      ['name'   => 'good',
+       'sorter' => '1',],
+
+      ['name'   => 'bad',
+       'sorter' => '3',],
+
+      ['name'   => 'normal',
+       'sorter' => '3',],
+  ];
+  ```
+
+  可以增加一個比對條件
+
+  ```php
+  $unsorted = [
+      ['name'   => 'good',
+       'sorter' => '1',
+      'newSorter'=> '2'],
+
+      ['name'   => 'bad',
+       'sorter' => '3',
+      'newSorter'=> '3'],
+
+      ['name'   => 'normal',
+       'sorter' => '3',
+      'newSorter' => '1'],
+
+      ['name'   => 'hahaha',
+       'sorter' => '2',
+       'newSorter' => '1'],
+  ];
+  ```
+
+  依照 sorter 來進行排序，但如果 sorter 數值相同，則使用 newSorter 來進行排序
+
+  ```php
+  usort($unsorted, function ($a, $b)) {
+      return $a['sorter'] > $b['sorter'] || ($a['sorter'] == $b['sorter'] && $a['newSorter'] > $b['newSorter']);
+  }
+
+  // 或這樣寫
+
+  if ($a['sorter'] > $b['sorter'] || ($a['sorter'] == $b['sorter'] && $a['newSorter'] > $b['newSorter'])) {
+      return 1;
+  } elseif ($a['sorter'] < $b['sorter']) {
+      return -1;
+  } else {
+      return 0;
+  }
+  ```
+
+  output
+
+  ```log
+  array(4) {
+    [0]=>
+    array(3) {
+      ["name"]=>
+      string(4) "good"
+      ["sorter"]=>
+      string(1) "1"
+      ["newSorter"]=>
+      string(1) "2"
+    }
+    [1]=>
+    array(3) {
+      ["name"]=>
+      string(6) "hahaha"
+      ["sorter"]=>
+      string(1) "2"
+      ["newSorter"]=>
+      string(1) "1"
+    }
+    [2]=>
+    array(3) {
+      ["name"]=>
+      string(6) "normal"
+      ["sorter"]=>
+      string(1) "3"
+      ["newSorter"]=>
+      string(1) "1"
+    }
+    [3]=>
+    array(3) {
+      ["name"]=>
+      string(3) "bad"
+      ["sorter"]=>
+      string(1) "3"
+      ["newSorter"]=>
+      string(1) "3"
+    }
+  }
+  ```
+
+### 分割字串
+
+#### `explode( string $delimiter , string $string , int $limit )`
+
+- string $delimiter - 字串的切割部位，請自行設定，字串形態，必填
+- string $string - 被要處理的字串，字串形態，必填項目。
+- int $limit - 設定字串切割後最多可輸出的數量，數字形態，可為正整數或負整數，如果填寫正整數，最後的的部份包含切割完剩下的所有部份，，如果填寫負整數，則倒數的部份若在負整數範圍內將不會顯示，非必填項目
+
+```php
+<?php
+  $str = 'Apple Dog Pig';
+  $str_sec = explode(" ",$str);
+  print_r($str_sec);
+```
+
+輸出
+
+```log
+Array (
+　[0] => Apple
+　[1] => Dog
+　[2] => Pig
+)
+```
+
+加入`$limit` 參數
+
+```php
+<?php
+  $str = 'Apple Dog Pig';
+  $str_sec_A = explode(" ",$str,2);
+  $str_sec_B = explode(" ",$str,-1);
+  print_r($str_sec_A);
+  print_r($str_sec_B);
+```
+
+```log
+Array (
+　[0] => Apple
+　[1] => Dog Pig
+)
+Array (
+　[0] => Apple
+　[1] => Dog
+)
+```
+
+#### `str_split(string,length)`
+
+- `string` 必需。規定要分割的字符串。
+- `length` 可選。規定每個數組元素的長度。默認是 1。
+
+```php
+<?php
+  $NewString = "M'L2";
+  $Arr2=str_split($NewString,3);//根據每三個字元切割
+  print_r($Arr2);
+```
+
+輸出
+
+```log
+Array
+(
+    [0] => M'L
+    [1] => 2
+)
+```
+
+#### `array_slice(array,start,length,preserve)`
+
+- `array` 必需。傳入陣列。
+- `start` 必須，規定取出元素的開始位置，0 = 第一個元素，若傳入證述，則由前往後取值，否則由後往前取值。
+- `length` 選填，規定返回的陣列長度。
+- `preserve` 選填，`true` 保留 key 值，`false` 重置 key 值。
+
+```php
+<?php
+$a=array("red","green","blue","yellow","brown");
+print_r(array_slice($a,2));
+```
+
+```log
+Array
+(
+    [0] => blue
+    [1] => yellow
+    [2] => brown
+)
+```
+
+### `implode(separator,array)` 將陣列轉為字串
+
+- `separator` 可選。規定數組元素之間放置的內容。默認是 ""（空字符串）。
+- `array` 必需。要結合為字符串的數組。
+
+```php
+<?php
+$arr = [1,2,3,4,5,6];
+print_r(implode('=', $arr));
+```
+
+```log
+"1=2=3=4=5=6"
+```
+
+### `array_filter($arrayName, $callbackFunction, $callbackParameter)` 過濾陣列元素
+
+- `$arrayName` 必須，目標陣列
+- `$callbackFunction` 可選，指定刪除的參數，預設刪除陣列中等於 false 的值
+- `$flag` 可選，引用傳遞給回傳函數的參數
+  - `ARRAY_FILTER_USE_KEY` 將 key 作為唯一參數傳遞給回調函數，而不是數組的值
+  - `ARRAY_FILTER_USE_BOTH` 將值和鍵都作為參數而不是值傳遞給回調
+
+```PHP
+<?php
+
+// PHP function to check for even elements in an array
+function Even($array)
+{
+    // returns if the input integer is even
+    if($array%2==0)
+       return TRUE;
+    else
+       return FALSE;
+}
+
+$array = array(12, 0, 0, 18, 27, 0, 46);
+print_r(array_filter($array, "Even"));
+
+```
+
+輸出
+
+```log
+Array
+(
+    [0] => 12
+    [1] => 0
+    [2] => 0
+    [3] => 18
+    [5] => 0
+    [6] => 46
 )
 ```

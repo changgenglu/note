@@ -126,7 +126,107 @@ $multiplied->all();
 // [2, 4, 6, 8, 10]
 ```
 
+### `count()` 計數
+
+```php
+$collection = collect([1, 2, 3, 4]);
+
+$collection->count();
+
+// 4
+```
+
+### `countBy()` 計算指定數值
+
+```php
+$collection = collect([1, 2, 2, 2, 3]);
+
+$counted = $collection->countBy();
+
+$counted->all();
+
+// [1 => 1, 2 => 3, 3 => 1]
+```
+
+可以傳入匿名函數來自訂要計數的值
+
+```php
+$collection = collect(['alice@gmail.com', 'bob@yahoo.com', 'carlos@gmail.com']);
+
+$counted = $collection->countBy(function ($email) {
+    return substr(strrchr($email, "@"), 1);
+});
+
+$counted->all();
+
+// ['gmail.com' => 2, 'yahoo.com' => 1]
+```
+
 ## Helper 輔助函數
+
+### `Arr::sort()` 將陣列重新排列
+
+```php
+use Illuminate\Support\Arr;
+
+$array = ['Desk', 'Table', 'Chair'];
+
+$sorted = Arr::sort($array);
+
+// ['Chair', 'Desk', 'Table']
+```
+
+根據傳入匿名函數返回的結果，對陣列進行排序
+
+```php
+use Illuminate\Support\Arr;
+
+$array = [
+    ['name' => 'Desk'],
+    ['name' => 'Table'],
+    ['name' => 'Chair'],
+];
+
+$sorted = array_values(Arr::sort($array, function ($value) {
+    return $value['name'];
+}));
+
+/*
+    [
+        ['name' => 'Chair'],
+        ['name' => 'Desk'],
+        ['name' => 'Table'],
+    ]
+*/
+```
+
+利用 key 值替陣列排序
+
+```php
+$list = [
+  5 => 1
+  4 => 2
+  2 => 4
+  1 => 5
+  6 => 6
+];
+
+Arr::sort($list, function ($value, $key) {
+    return $key;
+})
+```
+
+輸出
+
+```log
+array:5 [
+  1 => 5
+  2 => 4
+  4 => 2
+  5 => 1
+  6 => 6
+]
+```
 
 ### `after()` 返回傳入的字串的值後面所有的內容
 
