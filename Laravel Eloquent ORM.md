@@ -9,6 +9,7 @@
       - [多形一對一關聯](#多形一對一關聯)
       - [多型一對多關聯](#多型一對多關聯)
       - [多型多對多關聯](#多型多對多關聯)
+      - [自訂多型型別](#自訂多型型別)
   - [Laravel ORM 將資料存至資料庫](#laravel-orm-將資料存至資料庫)
     - [save](#save)
     - [修改多對多中間表](#修改多對多中間表)
@@ -102,7 +103,7 @@ class UserInfo extends Model
 
 ### 多型態關聯
 
-> [參考資料](https://blog.epoch.tw/2020/04/30/%E5%9C%A8-Laravel-7-0-%E4%BD%BF%E7%94%A8-Eloquent-%E5%A4%9A%E5%9E%8B%E9%97%9C%E8%81%AF/)
+> [參考資料](https://laravelacademy.org/post/9725)
 >
 > 多型態關聯可以讓一張表同時關連到兩張以上的資料表
 >
@@ -350,6 +351,7 @@ class Tag extends Model
 ```
 
 - `morphToMany`: belongsToMany 的多型態版
+- `morphedByMany`: 多對多的反向多型關聯
 
   需要帶多型的名稱參數才能查詢資料
 
@@ -361,26 +363,42 @@ class Tag extends Model
   - 自訂名稱
 
     ```php
-    // morphToMany(目標表單名稱，多形名稱，中介表單名稱，中介表單上參照自己的外鍵，中介表單上參照目標的外鍵，目標的關聯鍵，自己的關聯鍵)
-    $this->morphToMany(Tag::class, 'taggable','taggables',  'taggable_id','tag_id','id','id');
+    public function morphedByMany(
+      $related,                 // 目標表單名稱
+      $name,                    // 多型名稱
+      $table = null,            // 中介表單名稱
+      $foreignPivotKey = null,  // 中介表單上參照自己的外鍵
+      $relatedPivotKey = null,  // 中介表單上參照目標的外鍵
+      $parentKey = null,        // 目標的關聯鍵
+      $relatedKey = null        // 自己的關聯鍵
+    )
+
+    $this->morphToMany(
+      Tag::class, 'taggable','taggables','taggable_id','tag_id','id','id'
+    );
     ```
 
-- `morphedByMany`: 多對多的反向多型關聯
+#### 自訂多型型別
 
-  - 自訂名稱
+預設 larave 會使用類別的完整名稱來儲存 model type。
 
-    ```php
-    // morphedByMany(目標表單名稱，多形名稱，中介表單名稱，中介表單上參照目標的外鍵，中介表單上參照自己的外鍵，自己的關聯鍵，目標的關聯鍵)
-    $this->morphedByMany(
-        Post::class,  // 目標表單名稱
-        'taggable',   // 多型名稱
-        'taggables',  // 中介表明稱
-        'taggable_id',// 中介表單上參照目標的外鍵
-        'tag_id',     // 中介表單上參照自己的外鍵
-        'id',         // 自己的關聯鍵
-        'id'          // 目標的關聯鍵
-      );
-    ```
+可以透過自訂多型型別，使用簡單的字串作為 model type，將這些值從專案的內部結構中解耦出來。
+
+如此一來，即使修改 model 名稱，資料庫中的多型 type 欄位也會繼續有效。
+
+- 例如：  
+  Commit Model 可以隸屬於 Post Model 或 Video Model。因此，comments 資料表中的 commentable_type 欄位分別會記載 App\Models\Post 或 App\Models\Video。
+
+  此時可以在 `App\Providers\AppServiceProvider` 中的 `boot` 方法，呼叫`enforceMorphMap`方法。將 post 及 video 等簡單字串作為 modle type。
+
+```php
+use Illuminate\Database\Eloquent\Relations\Relation;
+
+Relation::enforceMorphMap([
+    'post' => 'App\Models\Post',
+    'video' => 'App\Models\Video',
+]);
+```
 
 ## Laravel ORM 將資料存至資料庫
 

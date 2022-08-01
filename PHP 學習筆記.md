@@ -2,8 +2,7 @@
 
 ###### tags: `php`
 
-- [PHP 學習筆記](#php-學習筆記)
-          - [tags: `php`](#tags-php)
+- [PHP 學習筆記](#php-學習筆記) - [tags: `php`](#tags-php)
   - [運算子、判斷](#運算子判斷)
     - [`+`: 算術相加](#-算術相加)
     - [`.`: 字串相加](#-字串相加)
@@ -66,12 +65,50 @@
 ### `foreach()` 尋訪陣列
 
 ```php
-foreach ($陣列 as $value) {
+foreach ($array as $value) {
   // 每次尋訪會將陣列的值存到value中，直到陣列結束
 }
-foreach ($陣列 as $key => $value) {
+foreach ($array as $key => $value) {
 	// 每次尋訪會將陣列的值以及key，存到value中  key => 流水號
 }
+```
+
+- `array_key_first()` 取得陣列中第一個 key 值
+- `array_key_last()` 取得陣列中最後一個 key 值
+
+```php
+$array  = array("dog", "rabbit", "horse", "rat", "cat");
+foreach($array as $index => $animal) {
+    if ($index === array_key_first($array))
+        echo $animal; // output: dog
+
+    if ($index === array_key_last($array))
+        echo $animal; // output: cat
+}
+```
+
+- `break` 跳出迴圈
+
+```php
+<?php
+foreach (array('1','2','3') as $first) {
+    echo "$first ";
+    foreach (array('3','2','1') as $second) {
+        echo "$second ";
+        if ($first == $second) {
+            break;  // this will break both foreach loops
+        }
+    }
+    echo ". ";  // never reached!
+}
+echo "Loop Ended";
+?>
+```
+
+輸出
+
+```log
+1 3 2 1 . 2 3 2 . 3 3 . Loop Ended
 ```
 
 ### `scandir()` 掃描指定的目錄，並返回為陣列
@@ -473,8 +510,8 @@ Array
 
 #### `array_slice(array,start,length,preserve)`
 
-- `array` 必需。傳入陣列。
-- `start` 必須，規定取出元素的開始位置，0 = 第一個元素，若傳入證述，則由前往後取值，否則由後往前取值。
+- `array` 必填，傳入陣列。
+- `start` 必填，規定取出元素的開始位置，0 = 第一個元素，若傳入證述，則由前往後取值，否則由後往前取值。
 - `length` 選填，規定返回的陣列長度。
 - `preserve` 選填，`true` 保留 key 值，`false` 重置 key 值。
 
@@ -546,4 +583,38 @@ Array
     [5] => 0
     [6] => 46
 )
+```
+
+### `str_pad(string,length,pad_string,pad_type)` 填充字串為指定長度
+
+- string 必填，要填充的字串。
+- length 必填，規定新字串的長度，若小於傳入的字串長度，則不進行操作。
+- pad_string 可選，提供填充的字串，預設為空白。
+- pad_type 可選，字串填充的方向。
+  - STR_PAD_BOTH 填充字串的兩側，若不為偶數，則將額外的字串填充至右側。
+  - STR_PAD_LEFT 填充到字串的左側。
+  - STR_PAD_RIGHT 填充到字串的右側(預設)。
+
+```php
+<?php
+$str = "Hello world";
+echo str_pad($str, 20, ".", STR_PAD_LEFT);
+```
+
+輸出
+
+```log
+.........Hello World
+```
+
+```php
+<?php
+$str = "Hello world";
+echo str_pad($str, 20, ".:", STR_PAD_BOTH);
+```
+
+輸出
+
+```php
+.:.:Hello World.:.:.
 ```
