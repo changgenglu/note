@@ -15,7 +15,7 @@
 
 - No Auth | 不需要驗證
 - Basic Auth ｜帳號，密碼型驗證
-- token 驗證 ｜token 型驗證
+- token 驗證 ｜ token 型驗證
 
 ### Header
 
@@ -34,3 +34,55 @@ postman 把一些必要的參數隱藏起來，如需特殊設定，可以取消
 - form-data 不會針對內容進行編碼，可選擇 file 類型進行上傳檔案
 - x-www-form-urlencoded 會以 Key = val1 進行編碼，一般的表單資料使用
 - raw 放 postman JSON 資料
+
+## Laravel CSRF
+
+### 原因
+
+當使用 postman 發出 post 請求時，laravel 回傳 419 | expired
+
+laravel 會透過應用程式自動產生一個 CSRF token 來管理每一個使用者的 session。
+
+這個 token 用於驗證已認證使用者，是否實際向應用程式發出請求。
+
+在`vender/laravel/framework/src/Illuminate/Session/Store.php`中可以看到，每次進入 laravel 專案的時候，都會檢查 session 中\_token 是否存在，若不存在就會呼叫 `regenerateToken` 重新生成一個 token。
+
+```php
+public function start()
+{
+    $this->loadSession();
+    if (! $this->has('_token')) {
+        $this->regenerateToken();
+    }
+
+    return $this->started = true;
+}
+```
+
+`regenerateToken` 實作，隨機產生亂數字元。
+
+```php
+public function regenerateToken()
+{
+    $this->put('_token', Str::random(40));
+}
+```
+
+### postman 添加校驗 token
+
+先進入網站首頁取得 token
+
+將 token 放入 post request 的 header， X-XSRF-TOKEN 的欄位中。
+
+### 撰寫 javascript 自動獲取 token
+
+在進入網站首頁的 API 的 test 中，加入以下程式，以自動獲取 token。
+
+```php
+pm.environment.set(
+    "XSRF-TOKEN",
+    decodeURIComponent(pm.cookies.get("XSRF-TOKEN"))
+)
+```
+
+接著在 post 的 request 中的 header 加入 `X-XSRF-TOKEN:{{XSRF-TOKEN}}`

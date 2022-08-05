@@ -16,12 +16,16 @@
 - Auto Rename Tag
 - Prettier - Code formatter
 
-### 前端
+### html, css
 
 - Live server：它會幫使用者自動開啟一個服務器，保存的時候便自動刷新瀏覽器頁面
   設定預設開啟的瀏覽器：齒輪符號 > 進行延伸模組設定 > Live Server Settings: Custom Browser
 - open in browser
 - IntelliSense for CSS class names in HTML
+
+### VUE
+
+- [參考資料](https://ithelp.ithome.com.tw/articles/10237074)
 
 ### PHP Laravel
 

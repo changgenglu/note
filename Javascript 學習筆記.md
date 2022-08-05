@@ -2,8 +2,7 @@
 
 ###### tags: `前端` `Javascript`
 
-- [Javascript 學習筆記](#javascript-學習筆記)
-          - [tags: `前端` `Javascript`](#tags-前端-javascript)
+- [Javascript 學習筆記](#javascript-學習筆記) - [tags: `前端` `Javascript`](#tags-前端-javascript)
   - [基本概念](#基本概念)
   - [class 類別](#class-類別)
     - [嚴謹模式](#嚴謹模式)
@@ -23,17 +22,17 @@
 
 ## 基本概念
 
-- Javascript 的原始值：
+- Javascript 的原始值(基本型別/primitives)：
 
-```javascript=
-    12345       => int
-    '12345'     => string
-    true, false => bool
-    null        => empty
-    undefined   => 未定義
+```javascript
+12345; // int
+("12345"); // string
+true, false; // bool
+null; // empty
+undefined; // 未定義
 ```
 
-- Javascript 的複合值：包含一個或多個原始值，像是物件或是物件實字
+- Javascript 的複合值(物件型別 => object)：包含一個或多個原始值，像是物件或是物件實字
 - Javascript 物件建構式：
 
 ```javascript
@@ -500,3 +499,7 @@ var answer = test(5); //呼叫點，test(5)會將刮號內的參數傳到functio
 ```
 
 - 箭頭函式僅用於 function 內只有一條運算式時
+
+## 參考資料
+
+- [重新認識 javascript](https://ithelp.ithome.com.tw/users/20065504/ironman/1259)

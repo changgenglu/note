@@ -164,6 +164,21 @@ $counted->all();
 
 ## Helper 輔助函數
 
+### `Arr::add()` 將數值加入陣列
+
+```php
+use Illuminate\Support\Arr;
+
+$array = Arr::add(['name' => 'Desk'], 'price', 100);
+
+// ['name' => 'Desk', 'price' => 100]
+
+$array = Arr::add(['name' => 'Desk', 'price' => null], 'price', 100);
+
+// ['name' => 'Desk', 'price' => 100]
+
+```
+
 ### `Arr::sort()` 將陣列重新排列
 
 ```php

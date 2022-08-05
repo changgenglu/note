@@ -265,16 +265,56 @@ Array
 )
 ```
 
+- 進階用法
+
+  藉由其查詢兩個以上陣列之間的差異，並返回不存在陣列中的值之特性。
+
+  因此可用來刪除陣列中多個值，而不影響其索引值。
+
+  ```php
+  <?php
+  //Declare the array
+  $flowers = [
+    "Rose",
+    "Lili",
+    "Jasmine",
+    "Hibiscus",
+    "Tulip",
+    "Sun Flower",
+    "Daffodil",
+    "Daisy"
+  ];
+
+  $flowers = array_diff($flowers, array("Rose","Lili"));
+  echo "The array is:\n";
+  print_r($flowers);
+  ```
+
+  輸出
+
+  ```log
+
+  Array
+  (
+  [2] => Jasmine
+  [3] => Hibiscus
+  [4] => Tulip
+  [5] => Sun Flower
+  [6] => Daffodil
+  [7] => Daisy
+  )
+  ```
+
 ### `sort` 陣列排序
 
 #### 依 value 排序
 
 - 由小到大排序值
-  - `sort` 刪除 key
-  - `asort` 保留 key
+- `sort` 刪除 key
+- `asort` 保留 key
 - 由大到小排序值
-  - `rsort` 刪除 key
-  - `arsort` 保留 key
+- `rsort` 刪除 key
+- `arsort` 保留 key
 
 #### 依 key 排序
 
@@ -288,56 +328,56 @@ Array
 - 範例一：
   今天有一個陣列如下
 
-  ```php
-  $unsorted = [
-      ['name'   => 'good',
-       'sorter' => '1',],
+```php
+$unsorted = [
+    ['name'   => 'good',
+     'sorter' => '1',],
 
-      ['name'   => 'bad',
-       'sorter' => '3',],
+    ['name'   => 'bad',
+     'sorter' => '3',],
 
-      ['name'   => 'normal',
-       'sorter' => '2',],
-  ];
-  ```
+    ['name'   => 'normal',
+     'sorter' => '2',],
+];
+```
 
-  我要透過 sorter 這個 key 的 value 來做排序
+我要透過 sorter 這個 key 的 value 來做排序
 
-  ```php
-  usort($unsorted, function ($a, $b) {
-      return $a['sorter'] > $b['sorter'];
-      // 如果 a > b 的話 就會輸出 1，而因為 usort 的 根基是 sort
-      // 意即是照 value 由小到大排序，所以輸出 1 的就會往後排，進而達到目的
-  });
-  ```
+```php
+usort($unsorted, function ($a, $b) {
+    return $a['sorter'] > $b['sorter'];
+    // 如果 a > b 的話 就會輸出 1，而因為 usort 的 根基是 sort
+    // 意即是照 value 由小到大排序，所以輸出 1 的就會往後排，進而達到目的
+});
+```
 
-  output
+output
 
-  ```log
-  array(3) {
-   [0]=>
-   array(2) {
-     ["name"]=>
-     string(4) "good"
-     ["sorter"]=>
-     string(1) "1"
-   }
-   [1]=>
-   array(2) {
-     ["name"]=>
-     string(6) "normal"
-     ["sorter"]=>
-     string(1) "2"
-   }
-   [2]=>
-   array(2) {
-     ["name"]=>
-     string(3) "bad"
-     ["sorter"]=>
-     string(1) "3"
-   }
-  }
-  ```
+```log
+array(3) {
+ [0]=>
+ array(2) {
+   ["name"]=>
+   string(4) "good"
+   ["sorter"]=>
+   string(1) "1"
+ }
+ [1]=>
+ array(2) {
+   ["name"]=>
+   string(6) "normal"
+   ["sorter"]=>
+   string(1) "2"
+ }
+ [2]=>
+ array(2) {
+   ["name"]=>
+   string(3) "bad"
+   ["sorter"]=>
+   string(1) "3"
+ }
+}
+```
 
 - 範例二：
 
@@ -617,4 +657,44 @@ echo str_pad($str, 20, ".:", STR_PAD_BOTH);
 
 ```php
 .:.:Hello World.:.:.
+```
+
+### 資料序列化及反序列化
+
+#### `string serialize ( mixed $value )` 序列化
+
+- $value: 要序列化的對象或陣列
+
+```php
+<?php
+$sites = array('Google', 'Runoob', 'Facebook');
+$serialized_data = serialize($sites);
+echo  $serialized_data . PHP_EOL;
+```
+
+輸出
+
+```log
+a:3:{i:0;s:6:"Google";i:1;s:6:"Runoob";i:2;s:8:"Facebook";}
+```
+
+#### `mixed unserialize ( string $str )` 反序列化
+
+- $str: 序列化後的字串
+
+```php
+$str = 'a:3:{i:0;s:6:"Google";i:1;s:6:"Runoob";i:2;s:8:"Facebook";}';
+$unserialized_data = unserialize($str);
+print_r($unserialized_data);
+```
+
+輸出
+
+```log
+Array
+(
+    [0] => Google
+    [1] => Runoob
+    [2] => Facebook
+)
 ```
