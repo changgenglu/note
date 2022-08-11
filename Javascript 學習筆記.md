@@ -2,23 +2,33 @@
 
 ###### tags: `前端` `Javascript`
 
-- [Javascript 學習筆記](#javascript-學習筆記) - [tags: `前端` `Javascript`](#tags-前端-javascript)
-  - [基本概念](#基本概念)
-  - [class 類別](#class-類別)
-    - [嚴謹模式](#嚴謹模式)
-    - [賦值運算子](#賦值運算子)
-    - [比較運算子](#比較運算子)
-    - [算數運算子](#算數運算子)
-    - [邏輯運算子](#邏輯運算子)
-    - [三元運算式](#三元運算式)
-    - [if else](#if-else)
-    - [switch](#switch)
-    - [while 迴圈](#while-迴圈)
-    - [for 迴圈](#for-迴圈)
-    - [for of](#for-of)
-    - [for in](#for-in)
-    - [randome(亂數)公式](#randome亂數公式)
-    - [箭頭函式](#箭頭函式)
+- [基本概念](#基本概念)
+- [運算式與運算子](#運算式與運算子)
+  - [嚴謹模式](#嚴謹模式)
+  - [賦值運算子](#賦值運算子)
+  - [比較運算子](#比較運算子)
+  - [算數運算子](#算數運算子)
+  - [邏輯運算子](#邏輯運算子)
+  - [三元運算式](#三元運算式)
+  - [if else](#if-else)
+- [流程判斷與迴圈](#流程判斷與迴圈)
+  - [switch](#switch)
+  - [while 迴圈](#while-迴圈)
+  - [for 迴圈](#for-迴圈)
+  - [for of](#for-of)
+  - [for in](#for-in)
+- [函式 function](#函式-function)
+  - [定義函式](#定義函式)
+  - [箭頭函式](#箭頭函式)
+  - [變數的有效範圍 (Scope)](#變數的有效範圍-scope)
+  - [提升(Hoisting)](#提升hoisting)
+  - [全域變數](#全域變數)
+- [額外補充](#額外補充)
+  - [randome(亂數)公式](#randome亂數公式)
+
+> ### 參考資料
+>
+> - [重新認識 javascript](https://ithelp.ithome.com.tw/users/20065504/ironman/1259)
 
 ## 基本概念
 
@@ -112,7 +122,7 @@ console.log(a === b);
 - 將不同型態的物件通通轉為字串  
   \`${}\` 在大括號中加入變數
 
-## class 類別
+## 運算式與運算子
 
 ### 嚴謹模式
 
@@ -352,6 +362,8 @@ if (A) {
 - 判斷式括號裡會強制轉成布林值
 - `null` 跟 `undefined` 和 `NaN` 在 if 判斷時值都會轉換為 `false`
 
+## 流程判斷與迴圈
+
 ### switch
 
 ```javascript
@@ -467,16 +479,49 @@ var 物件3 = [10, 20, 30];
 物件3[6] = 999; //這時物件3的陣列[10, 20, 30, nill]
 ```
 
-### randome(亂數)公式
+## 函式 function
+
+> function 是物件的一種
+
+### 定義函式
+
+- 函式宣告
+
+  ```javascript
+  function name(params) {
+    // do some things
+  }
+  ```
+
+- 函式運算式
+
+  透過匿名函式將變數賦值
+
+  ```javascript
+  var squsre = function (params) {
+    return params;
+  };
+  ```
+
+  若在 function 加上名稱時，這個名稱只在"自己函式的區塊內有效"
+
+  ```javascript
+  var square = function func(number) {
+    console.log(typeof func); // "function"
+    return number * number;
+  };
+
+  console.log(typeof func); // undefined
+  ```
+
+- 透過 new 關鍵字建立函式
 
 ```javascript
-function getRandom(start, end) {
-  return Math.floor(Math.random() * (end - start + 1)) + start;
-}
-var r = getRandom(0, 255);
-var g = getRandom(0, 255);
-var b = getRandom(0, 255);
+// F 要大寫
+var square = new Function("number", "return number * number");
 ```
+
+透過關鍵字建立的函式物件，每次執行時都會進行解析字串的動作(如：`'return number * number'`)
 
 ### 箭頭函式
 
@@ -500,6 +545,137 @@ var answer = test(5); //呼叫點，test(5)會將刮號內的參數傳到functio
 
 - 箭頭函式僅用於 function 內只有一條運算式時
 
-## 參考資料
+### 變數的有效範圍 (Scope)
 
-- [重新認識 javascript](https://ithelp.ithome.com.tw/users/20065504/ironman/1259)
+> 全域變數和區域變數的差異
+
+```javascript
+var x = 1;
+
+var someThingHappend = function (y) {
+  var x = 100;
+  return x + y;
+};
+
+console.log(someThingHappend(50)); // 150
+console.log(x); // 1
+```
+
+切分變數有效範圍的最小單位是 `function`
+
+因此在 function 中透過 var 宣告的變數，其作用範圍僅限於這個函式。
+
+此例中在一開始宣告的變數 x 與在 function 內部宣告的變數 x 為兩個不同變數。
+
+若 function 中沒有宣告新變數，則會一層一層往外尋找，直到全域變數為止
+
+```javascript
+var x = 1;
+
+var doSomeThing = function (y) {
+  x = 100;
+  return x + y;
+};
+
+console.log(doSomeThing(50)); // 150
+console.log(x); // 100
+```
+
+此例中，function 中未宣告新變數 x，因此 javascript 向外層尋找同名的變數，直到最外層的全域變數，並將其賦值。
+
+### 提升(Hoisting)
+
+- 變數提升
+
+  當 Scope 中的變數有被宣告，即使在宣告之前即調用變數，javascript 會將先告的語法拉到此 scope 的上面
+
+  ```javascript
+  var x = 1;
+
+  var doSomeThing = function (y) {
+    console.log(x); // undefined
+
+    var x = 100;
+    return x + y;
+  };
+
+  console.log(doSomeThing(50)); // 150
+  console.log(x); // 1
+  ```
+
+  對編譯器而言此，這段程式碼會是這個樣子
+
+  ```javascript
+  var x = 1;
+
+  var doSomeThing = function (y) {
+    var x; // 宣告的語法被拉到上面
+    console.log(x); // undefined
+    x = 100;
+    return x + y;
+  };
+
+  console.log(doSomeThing(50)); // 150
+  console.log(x); // 1
+  ```
+
+- 函式提升
+
+  透過"函式宣告"方式定義的函式可以在宣告前使用
+
+  ```javascript
+  square(2); // 4
+
+  function square(number) {
+    return number * number;
+  }
+  ```
+
+  而透過"函式運算式"定義的函式則是會出現錯誤
+
+  ```javascript
+  square(2); // TypeError: square is not a function
+
+  var square = function (number) {
+    return number * number;
+  };
+  ```
+
+  除呼叫時機不同，此兩者在執行時無明顯差異
+
+### 全域變數
+
+其實在 javascript 中並無所謂"全域變數"，所謂全域變數指的是"全域物件"(亦稱作"頂層物件")的屬性。
+
+以瀏覽器而言，全域物件指的是 `window`，在 node 的環境中則叫做 `global`。
+
+- 全域物件的屬性
+
+  於外層透過 var 宣告一個變數 a，當我們調用 `window.a` 會回傳我們宣告的此一變數
+
+  ```javascript
+  var a = 10;
+  console.log(a); // 10
+  ```
+
+- 變數的作用範圍，最小的的切分單位為 function
+- 即使是寫在函式中，沒有 var 宣告的變數，會變成全域變數
+- 全域變數指的是全域物件(頂層物件)的屬性
+
+> ### 附註
+>
+> 在 javascript ES6 之後有新的宣告方法 let 與 const，分別定義"變數"與"常數"
+> 和 var 不同的是，他們的作用區域是透過大括號`{}`來切分的
+
+## 額外補充
+
+### randome(亂數)公式
+
+```javascript
+function getRandom(start, end) {
+  return Math.floor(Math.random() * (end - start + 1)) + start;
+}
+var r = getRandom(0, 255);
+var g = getRandom(0, 255);
+var b = getRandom(0, 255);
+```
