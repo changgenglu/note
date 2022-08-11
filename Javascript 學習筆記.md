@@ -17,6 +17,8 @@
   - [for 迴圈](#for-迴圈)
   - [for of](#for-of)
   - [for in](#for-in)
+  - [prototype.forEach()](#prototypeforeach)
+  - [prototype.map()](#prototypemap)
 - [函式 function](#函式-function)
   - [定義函式](#定義函式)
   - [箭頭函式](#箭頭函式)
@@ -46,9 +48,9 @@ undefined; // 未定義
 - Javascript 物件建構式：
 
 ```javascript
-    Nunmber()、String()、Boolean()、
-    Object()、Array()、Function()、
-    Date()、RegExp()、Error()
+Nunmber()、String()、Boolean()、
+Object()、Array()、Function()、
+Date()、RegExp()、Error()
 ```
 
 - 物件：使用 new 關鍵字建立物件
@@ -477,6 +479,58 @@ for (變數3 in 物件2) {
 
 var 物件3 = [10, 20, 30];
 物件3[6] = 999; //這時物件3的陣列[10, 20, 30, nill]
+```
+
+### prototype.forEach()
+
+forEach 會修改原始陣列，且不會回傳值
+
+```javascript
+var forEachIt = people.forEach(function (item, index, array) {
+  console.log(item, index, array); // 物件, 索引, 全部陣列
+  return item; // forEach 沒在 return 的，所以這邊寫了也沒用
+});
+console.log(forEachIt); // undefined
+
+people.forEach(function (item, index, array) {
+  item.age = item.age + 1; // forEach 就如同 for，不過寫法更容易
+});
+
+console.log(people); // 全部 age + 1
+```
+
+### prototype.map()
+
+使用 map 時會需要回傳一個值，他會透過函式內所回傳的值組成一個陣列。
+
+- 如不回傳，則為 undefined
+- 回傳長度等於原始長度
+
+map 很適合將原始的變數運算後，重新組合成一個新的陣列。
+
+使用語法：
+
+```Javascript
+const newArr = arr.map(function (value, index, array){
+  //...
+});
+```
+
+- `newArr` 處理後的新陣列
+- `arr` 要執行 map 的舊陣列
+- `function` 舊陣列中每個元素要執行的函式
+- `value` 陣列中正在處理的值
+- `index` 陣列中正在處理的 key 值(可略)
+- `array` 舊陣列(可略)
+
+```javascript
+let A = [9000, 8500, 5500, 6500];
+let B = A.map(function (value, index, array) {
+  return value * 2;
+});
+
+console.log(A); // [9000, 8500, 5500, 6500] - 原陣列不會被修改
+console.log(B); // [18000, 17000, 11000, 13000] 回傳新陣列
 ```
 
 ## 函式 function
