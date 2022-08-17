@@ -294,11 +294,9 @@ v-model 標籤須使用在 `<select>` 標籤，不能用在 `<option>` 標籤中
 
 #### v-pre
 
-加入 v-pre後，就不會解析模板內容。
+加入 v-pre 後，就不會解析模板內容。
 
 ### 樣式綁定
-
-
 
 ## 條件渲染
 
@@ -438,3 +436,5 @@ publishedAt: 2016-04-10
 ## 備註
 
 - 註 1 Truthy: 假值以外的任何值皆為 true，即所有除了 false, 0, -0, 0n, "", null, undefined, NaN 以外的值皆返回 true
+
+> > > > > > > 9a7bdcabf2afd9a9b7842fa652816a812ccaf637
