@@ -2,31 +2,33 @@
 
 ###### tags: `前端` `Javascript`
 
-- [基本概念](#基本概念)
-- [運算式與運算子](#運算式與運算子)
-  - [嚴謹模式](#嚴謹模式)
-  - [賦值運算子](#賦值運算子)
-  - [比較運算子](#比較運算子)
-  - [算數運算子](#算數運算子)
-  - [邏輯運算子](#邏輯運算子)
-  - [三元運算式](#三元運算式)
-  - [if else](#if-else)
-- [流程判斷與迴圈](#流程判斷與迴圈)
-  - [switch](#switch)
-  - [while 迴圈](#while-迴圈)
-  - [for 迴圈](#for-迴圈)
-  - [for of](#for-of)
-  - [for in](#for-in)
-  - [prototype.forEach()](#prototypeforeach)
-  - [prototype.map()](#prototypemap)
-- [函式 function](#函式-function)
-  - [定義函式](#定義函式)
-  - [箭頭函式](#箭頭函式)
-  - [變數的有效範圍 (Scope)](#變數的有效範圍-scope)
-  - [提升(Hoisting)](#提升hoisting)
-  - [全域變數](#全域變數)
-- [額外補充](#額外補充)
-  - [randome(亂數)公式](#randome亂數公式)
+- [Javascript 學習筆記](#javascript-學習筆記) - [tags: `前端` `Javascript`](#tags-前端-javascript)
+  - [基本概念](#基本概念)
+  - [運算式與運算子](#運算式與運算子)
+    - [嚴謹模式](#嚴謹模式)
+    - [賦值運算子](#賦值運算子)
+    - [比較運算子](#比較運算子)
+    - [算數運算子](#算數運算子)
+    - [邏輯運算子](#邏輯運算子)
+    - [其餘運算子與展開運算子](#其餘運算子與展開運算子)
+    - [三元運算式](#三元運算式)
+    - [if else](#if-else)
+  - [流程判斷與迴圈](#流程判斷與迴圈)
+    - [switch](#switch)
+    - [while 迴圈](#while-迴圈)
+    - [for 迴圈](#for-迴圈)
+    - [for of](#for-of)
+    - [for in](#for-in)
+    - [prototype.forEach()](#prototypeforeach)
+    - [prototype.map()](#prototypemap)
+  - [函式 function](#函式-function)
+    - [定義函式](#定義函式)
+    - [箭頭函式](#箭頭函式)
+    - [變數的有效範圍 (Scope)](#變數的有效範圍-scope)
+    - [提升(Hoisting)](#提升hoisting)
+    - [全域變數](#全域變數)
+  - [額外補充](#額外補充)
+    - [randome(亂數)公式](#randome亂數公式)
 
 > ### 參考資料
 >
@@ -327,6 +329,79 @@ console.log(x); // 回傳3，回傳之後再設定
       //....
     }
     ```
+
+### 其餘運算子與展開運算子 `...`
+
+- 其餘運算子
+
+  假設要將一個陣列的值相加後取平均
+
+  ```javascript
+  let arr = [1, 2, 3, 4, 5];
+
+  let avg = function (arr) {
+    let sum = 0;
+    for (let i = 0; i < arr.length; i++) {
+      sum += arr[i];
+    }
+    return sum / arr.length;
+  };
+
+  console.log(avg(arr)); //  3
+  ```
+
+  但若呼叫 function 時，不是傳入陣列，而是傳入多個參數
+
+  最後得到的結果會是 NaN
+
+  ```javascript
+  let avg = function (arr) {
+    let sum = 0;
+    for (let i = 0; i < arr.length; i++) {
+      sum += arr[i];
+    }
+    return sum / arr.length;
+  };
+
+  console.log(avg(1, 3, 5, 7, 9)); // NaN
+  ```
+
+  運用其餘運算子`...`，將輸入函式中的參數值變成陣列的形式
+
+  ```javascript
+  let avg = function (...arr) {
+    console.log(arr); // [1,3,5,7,9]
+    let sum = 0;
+    for (let i = 0; i < arr.length; i++) {
+      sum += arr[i];
+    }
+    return sum / arr.length;
+  };
+
+  console.log(avg(1, 3, 5, 7, 9)); // 5
+  ```
+
+- 展開運算子
+  
+  關鍵字與其餘運算子相同，但功能與其餘運算子相反，展開運算子可以把陣列中的元素取出。
+  
+  假設要用 `Math.max()` 來找出最大值，但傳入的參數為陣列，此時會得到 NaN
+  
+  ```javascript
+  let number = [1, 2, 3, 4, 5, 6, 7, 8];
+  
+  console.log(Math.max(number)); // NaN
+  ```
+  
+  運用展開運算子將陣列展開成許多數值
+  
+  ```javascript
+  let number = [1, 2, 3, 4, 5];
+  
+  console.log(Math.max(...number)); // 5
+  
+  console.log(...number); // 1,2,3,4,5
+  ```
 
 ### 三元運算式
 
