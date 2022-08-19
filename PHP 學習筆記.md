@@ -698,3 +698,13 @@ Array
     [2] => Facebook
 )
 ```
+
+### `file_get_contents(path,include_path,context,start,max_length)`
+
+將本地文件存入一個變數中
+
+- path (必須) 文件的路徑
+- include_path (可選) 如果也想在 include_path 中搜尋文件，可以將該參數設為"1"
+- context (可選) 規定文件控制代碼的環境
+- start (可選) 指定在文件中開始讀取的位置。
+- max_length (可選) 規定讀取的位元組。

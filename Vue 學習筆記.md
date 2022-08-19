@@ -1,5 +1,35 @@
 # Vue 學習筆記
 
+- [Vue 學習筆記](#vue-學習筆記)
+  - [Vue 實體的生命週期](#vue-實體的生命週期)
+  - [監聽器](#監聽器)
+    - [介紹](#介紹)
+    - [$watch](#watch)
+    - [watch](#watch-1)
+  - [eventHub 事件中心 (vue 2)](#eventhub-事件中心-vue-2)
+  - [指令(directive)](#指令directive)
+    - [屬性綁定](#屬性綁定)
+    - [表單綁定 `v-model`](#表單綁定-v-model)
+      - [input](#input)
+      - [textarea 文字方塊](#textarea-文字方塊)
+      - [radio](#radio)
+      - [checkbox](#checkbox)
+      - [select 下拉式選單](#select-下拉式選單)
+    - [v-model 修飾子](#v-model-修飾子)
+      - [.lazy](#lazy)
+    - [模板綁定](#模板綁定)
+      - [v-text](#v-text)
+      - [v-html](#v-html)
+      - [v-once](#v-once)
+      - [v-pre](#v-pre)
+    - [樣式綁定](#樣式綁定)
+  - [條件渲染](#條件渲染)
+    - [v-if](#v-if)
+    - [v-show](#v-show)
+  - [迴圈渲染](#迴圈渲染)
+  - [事件監聽器](#事件監聽器)
+  - [備註](#備註)
+
 ## Vue 實體的生命週期
 
 - `beforeCreate`: 當 Vue 實例初始化時便立即調用，此時尚未創建實例，因此所有 Vue 實體中的設定(如：data)都還未配置。
@@ -10,6 +40,177 @@
 - `update`: 在重新渲染頁面後調用，此時的頁面已經被重新渲染成改變後的畫面。
 - `beforeDestroy`: 在此實體被銷毀前調用，此時實體依然擁有完整的功能。
 - `destoryed`: 於此實體被銷毀後調用，此時實體中的任何定義(data, methods...)都已被解除綁定，在此做任何操作都會失效。
+
+## 監聽器
+
+當資料變化時調用函數，函數會有兩個傳入參數：改變前的值、改變後的後的值，可以使用這個函數做跟此資料變化有的處理。
+
+### 介紹
+
+監聽器在 vue.js 中有兩種使用方式：
+
+- `$watch` 實體上的函數，使用此函數註冊監聽器。
+- `watch` 實體上的屬性，此屬性設置的物件在實體建立時會調用 `$watch` 註冊監聽器。
+
+`$watch` 是註冊監聽器的函數，而 watch 是為了開發者方便在實體上設置監聽器而提供的，其實 watch 本身也是使用 $watch 註冊監聽器。
+
+### $watch
+
+定義
+
+```javascript
+unwatch = vm.$watch(expOrFn, callback, [options]);
+```
+
+`$watch` 的回傳值是註銷監聽器的函數，執行此函數可使監聽器失效。
+
+- `exOrFn` 設定要監聽的目標，可以使用 javascript 表達式或是一個回傳監聽目標值的函數
+- `callback` 當數值改變時，要叫用的函數，此函數會有兩個傳入參數：callback(newVal, oldVal)
+  - `newVal` 改變後的資料值
+  - `oldVal` 改變前的資料值
+- `[options]` 非必要參數，監聽器的設定
+  - `deep` 監聽物件時，物件下層屬性變化也會觸發監聽器
+  - `immediate` 在實體初始畫設置監聽器的時候馬上叫用 callback 函數
+
+```html
+<div id="app">
+  <button @click="a++">+</button>
+  <button @click="a--">--</button>
+  <div>a: {{a}}</div>
+  <div>changed: {{newA}}</div>
+  <div>before change: {{oldA}}</div>
+</div>
+```
+
+```javascript
+var vm = new Vue({
+  ...
+  data: {
+    a: 1,
+    newA: 0,
+    oldA: 0
+  }
+});
+
+vm.$watch('a', function(newA, oldA) {
+  this.newA = newA;
+  this.oldA = oldA;
+});
+```
+
+### watch
+
+```javascript
+watch: (
+  key: value,
+  ...
+)
+```
+
+- 以 watch 為 key 值，下面定義的屬性都是欲監聽的資料來源。
+- key 監聽目標名稱，可以使用 javascript 表達式
+- value callback 函數的設定，共有 string, function, object 及 array 可以設定。
+  - string callback 函數名稱
+  - function callback 函數
+  - object 設定監聽物件，設定方法如下
+    - handler callback 函數
+    - deep 布林值，是否監聽物件下層屬性
+    - immediate 布林值 使否在實體初始化時立即調用 callback
+  - array 當有多個監聽器時，使用陣列帶入多個 callback 函數
+
+## eventHub 事件中心 (vue 2)
+
+在無關聯的組件之間，互相傳遞 data
+
+在需要取得 data 的組件上設置一個監聽器，每次要傳遞 data 時，那個組件就會廣播這個事件並調用這些監聽器。
+
+eventHub 最主要的功能就是**監聽**和**廣播**
+
+若 vue 搭配其他框架時，在 library 新增一個 eventHub.js
+
+```javascript
+import Vue from "vue";
+const eventHub = new Vue();
+export default eventHub;
+```
+
+若只有單純 vue 框架，則在頂層組件的 `data` 裡初始化 eventHub，並使用 `provide` 對外傳遞這個 eventHub
+
+```javascript
+import Vue from "vue";
+
+export default {
+  name: "App",
+  components: {
+    GrandParent,
+  },
+  data() {
+    return {
+      eventHub: new Vue(),
+    };
+  },
+  provide() {
+    return {
+      eventHub: this.eventHub,
+    };
+  },
+  methods: {
+    setRandomValue() {
+      this.eventHub.$emit("update:msg", Math.random() * 100);
+    },
+  },
+};
+```
+
+在要傳遞 data 的組件裡加入廣播
+
+```javascript
+import eventHub from "../library/eventHub";
+export default {
+  data() {
+    return {
+      name: "",
+    };
+  },
+  methods: {
+    getCategories: function () {
+      let id = "";
+      axios
+        .get(base_url + "/api/category/")
+        .then((response) => {
+          eventHub.$emit("categoryupdate", this.name);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+  },
+  created() {
+    this.getCategories();
+  },
+};
+```
+
+接著在需要監聽的組件裡注入這個依賴，並在添加事件監聽。
+
+```javascript
+import eventHub from "../library/eventHub";
+export default {
+  data() {
+    return {
+      categories: [],
+    };
+  },
+  mounted() {
+    eventHub.$on("categoryupdate", this.categoryupdate);
+  },
+  methods: {
+    categoryupdate(input) {
+      this.categories.push(input);
+    },
+  },
+};
+```
 
 ## 指令(directive)
 
@@ -433,8 +634,16 @@ publishedAt: 2016-04-10
 2. **publishedAt**: 2016-04-10
 ```
 
+## 事件監聽器
+
+> 靜態事件監聽
+>
+> - 元素上使用 v-on 監聽原生事件
+> - 父組件設定 v-on 設定所需要監聽的事件，子組件用 $emit 觸發事件
+> - 在 Vue 實體上設定生命週期鉤子，監聽各個鉤子事件。
+
+當要在執行時去動態增減事件的監聽，這時就要用到 $on, $once, and $off 這些 js 函式來做設定。
+
 ## 備註
 
 - 註 1 Truthy: 假值以外的任何值皆為 true，即所有除了 false, 0, -0, 0n, "", null, undefined, NaN 以外的值皆返回 true
-
-> > > > > > > 9a7bdcabf2afd9a9b7842fa652816a812ccaf637

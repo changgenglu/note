@@ -10,7 +10,7 @@
     - [比較運算子](#比較運算子)
     - [算數運算子](#算數運算子)
     - [邏輯運算子](#邏輯運算子)
-    - [其餘運算子與展開運算子](#其餘運算子與展開運算子)
+    - [其餘運算子與展開運算子 `...`](#其餘運算子與展開運算子-)
     - [三元運算式](#三元運算式)
     - [if else](#if-else)
   - [流程判斷與迴圈](#流程判斷與迴圈)
@@ -382,24 +382,24 @@ console.log(x); // 回傳3，回傳之後再設定
   ```
 
 - 展開運算子
-  
+
   關鍵字與其餘運算子相同，但功能與其餘運算子相反，展開運算子可以把陣列中的元素取出。
-  
+
   假設要用 `Math.max()` 來找出最大值，但傳入的參數為陣列，此時會得到 NaN
-  
+
   ```javascript
   let number = [1, 2, 3, 4, 5, 6, 7, 8];
-  
+
   console.log(Math.max(number)); // NaN
   ```
-  
+
   運用展開運算子將陣列展開成許多數值
-  
+
   ```javascript
   let number = [1, 2, 3, 4, 5];
-  
+
   console.log(Math.max(...number)); // 5
-  
+
   console.log(...number); // 1,2,3,4,5
   ```
 
@@ -607,6 +607,16 @@ let B = A.map(function (value, index, array) {
 console.log(A); // [9000, 8500, 5500, 6500] - 原陣列不會被修改
 console.log(B); // [18000, 17000, 11000, 13000] 回傳新陣列
 ```
+
+### prototype.push()
+
+添加一個或多個元素至陣列末端，並回傳陣列的新長度。
+
+```javascript
+arr.push(element1[, ...[, elementN]])
+```
+
+- `elementN` 欲添加至陣列末端的元素
 
 ## 函式 function
 
