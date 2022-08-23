@@ -57,6 +57,9 @@ php artisan make:migration create_your_table
      */
     public function down()
     {
+        Schema::table('room_user', function (Blueprint $table) {
+            $table->dropForeign('room_user_user_id_foreign');
+        });
         Schema::dropIfExists('model_has_user');
     }
 ```
