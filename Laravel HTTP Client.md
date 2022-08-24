@@ -64,3 +64,23 @@ $response = Http::asForm()->post('http://example.com/users', [
     'role' => 'Privacy Consultant',
 ]);
 ```
+
+## 錯誤處理
+
+laravel HTTP client 不會在 client 端或是 server 端錯誤時拋出異常(status code 400 or 500)。
+
+此時可以透過 successful, clientError 或是 serverError 方法來判斷是否發生錯誤。
+
+```php
+// 若 status code 在200 ~ 300
+$response->successful();
+
+// 若 status code 大於 400
+$response->failed();
+
+// 若 status code 為400層級的錯誤
+$response->clientError();
+
+// 若 status code 為500層級的錯誤
+$response->serverError();
+```
