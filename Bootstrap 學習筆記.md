@@ -2,7 +2,7 @@
 
 ###### tags: `前端` `Bootstrap`
 
-### html 引入
+## html 引入
 
 ```html
 <head>
@@ -15,7 +15,7 @@
 </head>
 ```
 
-### 表格
+## 表格
 
 ```html
 <div class="row">
@@ -24,7 +24,7 @@
 </div>
 ```
 
-### 部分顏色名稱
+## 部分顏色名稱
 
 - primary 主要的
 - secondary 副標
@@ -36,20 +36,20 @@
 - dark 深色
 - white 白色
 
-### 改變字型的外觀
+## 改變字型的外觀
 
 - font-weight-bold
 - font-weight-normal
 - font-weight-light
 - fon-italic(斜體)
 
-### 文字位置設定
+## 文字位置設定
 
 - text-left
 - text-center
 - text-right
 
-### 輪播牆
+## 輪播牆
 
 ```html
 <div id="mydemo1" class="carousel slide" data-ride="carousel">
@@ -90,7 +90,7 @@
 </div>
 ```
 
-### drop down
+## drop down
 
 ```html
 <li class="nav-item dropup">
@@ -104,3 +104,4 @@
   </div>
 </li>
 ```
+
