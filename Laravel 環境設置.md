@@ -5,6 +5,7 @@
 - [Laravel 環境設置](#laravel-環境設置) - [tags: `php` `Laravel` `環境設定`](#tags-php-laravel-環境設定)
   - [環境初始設定](#環境初始設定)
     - [1. 安裝 XAMPP or phpEnv](#1-安裝-xampp-or-phpenv)
+      - [xampp 更改 php 版本 (版本 5 => 7)](#xampp-更改-php-版本-版本-5--7)
     - [2. 安裝 composer](#2-安裝-composer)
       - [windows 透過 composer 官網下載 composer 安裝檔](#windows-透過-composer-官網下載-composer-安裝檔)
       - [下載 Composer(MacOS)](#下載-composermacos)
@@ -22,6 +23,65 @@
 ## 環境初始設定
 
 ### 1. 安裝 XAMPP or phpEnv
+
+#### xampp 更改 php 版本 (版本 5 => 7)
+
+> 注意！php 8.1 不相容 laravel 6.x 以下(包含 6)
+
+1. 開啟 Apache Admin 查看當前 XAMPP 所有版本資訊
+2. 到[XAMPP](https://windows.php.net/download/)下載要更新的 php 版本的 zip 檔。(注意！選擇 `Thread Safe` 版本！)
+3. 解壓縮定指定資料夾名稱為`php`，將此資料夾放至 XAMPP 資料夾中，並將原本的 php 資料夾另外命名
+4. 至 XAMPP 控制面板點選 `config` 按鈕，開啟 `httpd-xampp.conf` 檔，並修改其內容
+
+   1. 找到以下文字，並將其修改
+
+      修改前
+
+      ```txt
+      LoadFile "C:/xampp/php/php5ts.dll"
+      LoadFile "C:/xampp/php/libpq.dll"
+      LoadModule php5_module "C:/xampp/php/php5apache2_4.dll"
+      ```
+
+      修改後
+
+      ```txt
+      LoadFile "C:/xampp/php/php7ts.dll"
+      LoadFile "C:/xampp/php/libpq.dll"
+      LoadModule php7_module "C:/xampp/php/php7apache2_4.dll"
+      ```
+
+      - 修改時需確認修改路徑的檔案確實存在，若無此檔案，可能是 php 版本的關係
+
+   2. 將 `httpd-xampp.conf` 設定檔中所有 `php5_module` 改為 `php7_module`
+      - 在 php8 的 `httpd-xampp.conf` 設定檔為 `php_module`
+
+5. 重建 `php.ini` 設定檔
+
+   1. 複製 php 資料夾中的 php.ini-development，並重新命名為 php.ini
+   2. 開啟 php.ini 並依開發或網站需求，開啟相關模組(刪除前面的分號`;`)
+      1. `Dynamic Extensions` 動態延伸功能
+         - extension=curl
+         - extension=gd2(version 7) / gd(version 8)
+           - 在 php 8.0，DG 延伸功能 windows dll 文件名稱由 php_gd2.dll 改為 php_gd.dll)
+         - extension=mbstring
+         - **extension=mysqli**
+         - extension=openssl
+      2. `Paths and Directories` 路徑和目錄
+         - **extension_dir = "ext"**
+      3. 常見設定
+         - max_execution_time = 600
+         - short_open_tag = On
+         - max_input_time = 180
+         - **error_reporting=E_ALL & ~E_DEPRECATED & ~E_STRICT**
+           - 設置錯誤訊息通知，加入版本兼融性的提示
+         - memory_limit = 500M
+         - post_max_size = 500M
+         - upload_max_filesize = 100M
+         - max_file_uploads = 50
+
+6. 至 XAMPP 面板重啟 Apache
+7. 重新執行 composer update
 
 ### 2. 安裝 composer
 
