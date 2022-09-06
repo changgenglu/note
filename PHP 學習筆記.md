@@ -551,7 +551,7 @@ Array
 #### `array_slice(array,start,length,preserve)`
 
 - `array` 必填，傳入陣列。
-- `start` 必填，規定取出元素的開始位置，0 = 第一個元素，若傳入證述，則由前往後取值，否則由後往前取值。
+- `start` 必填，規定取出元素的開始位置，0 = 第一個元素，若傳入正數，則由前往後取值，若為負值由後往前取值。
 - `length` 選填，規定返回的陣列長度。
 - `preserve` 選填，`true` 保留 key 值，`false` 重置 key 值。
 
@@ -708,3 +708,36 @@ Array
 - context (可選) 規定文件控制代碼的環境
 - start (可選) 指定在文件中開始讀取的位置。
 - max_length (可選) 規定讀取的位元組。
+
+### `str_pad ($str, $pad_length , $pad_string, $pad_type)` 補足字串
+
+- `$str` 來源字串
+- `$pad_length` 補完後字串長度
+- `$pad_string` 補入的字元
+- `$pad_type` 補入的規則
+  - `STR_PAD_BOTH` 左右都補
+  - `STR_PAD_LEFT` 從左邊開始
+  - `STR_PAD_RIGHT` 從右邊開始
+
+範例：把 id 由左邊開始補 0，補到五位數
+
+```php
+$id=01;
+$id=str_pad($id,5,"0",STR_PAD_LEFT);
+echo $id;
+//00001
+```
+
+### 將字串轉換為數值
+
+> 若字串開頭為 0，轉為數值後開頭的 0 會被省略
+
+- `number_format()` 若失敗則返回`E_WARNING`
+- 使用類型轉換
+
+  ```php
+  $num = "1000.314";
+  echo (int)$num
+  ```
+
+- 透過運算子將字串轉為數值，例如在字串中 + 0

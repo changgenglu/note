@@ -2,8 +2,7 @@
 
 ###### tags: `Git`
 
-- [Git 學習筆記](#git-學習筆記)
-          - [tags: `Git`](#tags-git)
+- [Git 學習筆記](#git-學習筆記) - [tags: `Git`](#tags-git)
   - [常用指令](#常用指令)
     - [Git 常用指令](#git-常用指令)
     - [Git Bash 常用指令， rm 與 Windows 檔案管理指令對照](#git-bash-常用指令-rm-與-windows-檔案管理指令對照)
@@ -396,6 +395,22 @@ Automatic merge failed; fix conflicts and then commit the result.
 git add --all
 git commit
 ```
+
+### 更改 git remote 位置
+
+當修改 git repo 的名稱或是路徑時，若要在本機進行 push 或是 pull 的指令時，會出現：remote: This repository moved. Please use the new location [new location]
+
+- 解決辦法：重新設定 remote url
+  
+  ```bash
+  git remote set-url origin https://XXX.git
+  ```
+  
+  檢查 remote url 是否修改成功
+  
+  ```bash
+  git remote -v
+  ```
 
 ## Git 管理
 

@@ -13,7 +13,7 @@
 
 ## 設置專案
 
-### clone gti repo
+### clone git repo
 
 將目錄切換到`/srv/www`，將託管在 git repo 的專案 clone 下來並依 laravel 上線環境設定流程執行。
 一般而言會將文件名稱設為域名。
@@ -150,13 +150,17 @@ sudo a2enmod rewrite
 # 重啟Apache
 sudo service apache2 restart
 ```
-
+ 
 ## 參考資料
 
 [Run Laravel on Google Compute Engine](https://medium.com/imarishwa-solutions/run-laravel-on-google-compute-engine-b0403a6a9240)
+
 [GCP/GCE/Ubuntu/Apache/Laravel5.6 踩雷筆記](https://bugswarehouse.blogspot.com/2018/07/gcpgceubuntuapachelaravel56.html)
 
 ## 延伸閱讀
 
 [詳解 Ubuntu/CentOS 下 Apache 多站點配置](https://codertw.com/%E4%BC%BA%E6%9C%8D%E5%99%A8/377669/)
+
 [Apache 之——多虛擬主機多站點配置的兩種實現方案](https://www.796t.com/content/1546761795.html)
+
+[ubuntu設定apache部署多個站點](https://www.796t.com/content/1545633208.html)

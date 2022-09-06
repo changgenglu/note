@@ -2,6 +2,23 @@
 
 > 目前最新版本為 v5.0 (但 v3.1 版較為普及)
 
+- [MQTT](#mqtt)
+  - [概述](#概述)
+    - [MQTT 訊息格式](#mqtt-訊息格式)
+    - [重要特色](#重要特色)
+  - [在 windows 建立 MQTT 測試主機(Eclipse Mosquitto)](#在-windows-建立-mqtt-測試主機eclipse-mosquitto)
+  - [在虛擬主機建立 MQTT Broker (Mosquitto)](#在虛擬主機建立-mqtt-broker-mosquitto)
+  - [Mosquitto conf 設定與啟動](#mosquitto-conf-設定與啟動)
+    - [設定使用者須使用帳號密碼連線](#設定使用者須使用帳號密碼連線)
+    - [重新啟動 Mosquitto](#重新啟動-mosquitto)
+    - [啟動 MQTT Broker](#啟動-mqtt-broker)
+  - [測試 Broker](#測試-broker)
+    - [Chrome 瀏覽器擴充程式：MQTTLens](#chrome-瀏覽器擴充程式mqttlens)
+    - [MQTT Explorer](#mqtt-explorer)
+  - [安裝身分驗證套件(mosquitto-auth-plugin)](#安裝身分驗證套件mosquitto-auth-plugin)
+    - [設置 mosquitto](#設置-mosquitto)
+    - [安裝 mosquitto-auth-plug 套件](#安裝-mosquitto-auth-plug-套件)
+
 ## 概述
 
 適用於 Server 與 Client 訊息傳 遞的通訊協定
@@ -110,25 +127,29 @@ mosquitto 的 broker 通訊埠號預設為：1833，因此需要在 server 的�
 
 ## Mosquitto conf 設定與啟動
 
-移動到軟體檔案安裝的目錄下，用編輯器打開 mosquitto.conf。
+移動到軟體檔案安裝的目錄下(linux: /etc/mosquitto)，用編輯器打開 mosquitto.conf。
 
 ### 設定使用者須使用帳號密碼連線
 
-在軟體目錄下，新增使用者帳號清單的文件檔，如：userlist.txt。
+用 `mosquitto_passwd`，來建立密碼
 
-內容格式為：`帳號:密碼`
-
-```txt
-ivan001:A001
-ivan002:A002
-ivan003:A003
+```bash
+mosquitto_passwd -c <password file> <username>
 ```
 
-之後運行終端機切換至該目錄並執行 `./mosquitto_passwd.exe -U usrlist.txt`
+- 參數 `-c` 為建立密碼文件，若指定的檔案已存在，將會被覆蓋
 
-此時再打開 userlist.txt 會發現建立的密碼欄位都會被加密。
+若要將更多的使用者添加到現有的文件中，則省略 `-c` 參數
 
-接著修改 Mosquitto.conf ，在文件的末端加入以下敘述：
+```bash
+mosquitto_passwd <password file> <username>
+```
+
+若要從密碼文件中刪除用戶
+
+```bash
+mosquitto_passwd -D <password file> <username>
+```
 
 ```txt
 allow_anonymous false
@@ -139,6 +160,12 @@ listener 1883
 - `allow_anonymous false`: 不允許匿名登入
 - `password_file` : 指定帳號清單的目錄
 - `listener` : 指定遠端登入時可以使用的 PORT
+
+### 重新啟動 Mosquitto
+
+```bash
+sudo systemctl restart mosquitto
+```
 
 ### 啟動 MQTT Broker
 
@@ -162,3 +189,176 @@ listener 1883
 ### MQTT Explorer
 
 - [參考資料](https://jimirobot.tw/esp32-mosquitto-conf-mqtt-tutorial/)
+
+## 安裝身分驗證套件(mosquitto-auth-plugin)
+
+> Ubuntu 20
+>
+> Mosquitto 2.0  
+> [mosquitto-auth-plugin](https://github.com/jpmens/mosquitto-auth-plug)  
+> MySQL
+>
+> [參考資料-1](https://www.jmeze.net/2021/06/mosquitto-20-mosquitto-auth-plugin-mysql.html) |
+> [參考資料-2](https://www.jianshu.com/p/08b42c170a6a) |
+> [參考資料-3](https://tongxinmao.com/Article/Detail/id/166) |
+
+### 設置 mosquitto
+
+- 安裝所需套件
+
+  ```bash
+  apt install gcc g++ make xsltproc docbook-xsl libwebsockets-dev libmysqlclient-dev
+  ```
+
+- 卸載舊版本的 Mosquitto
+
+  ```bash
+  apt purge mosquitto
+  ```
+
+- 從官方安裝 mosquitto 源碼
+
+  ```bash
+  wget https://mosquitto.org/files/source/mosquitto-2.0.10.tar.gz
+  tar xvf mosquitto-2.0.10.tar.gz
+  ```
+
+- 更改 config.mk 設定
+
+  ```config
+  WITH_WEBSOCKETS:=yes
+  WITH_CJSON:=no
+  ```
+
+  - `WITH_WEBSOCKETS` 當需要使用 websockets 連線到 mosquitto 時，才將其開啟。
+  - `WITH_CJSON` 將此設定開啟會報錯(未知原因)
+
+- 將 mosquitto 編譯並安裝
+
+  ```bash
+  make
+  make install
+  ```
+
+- 建立 mosquitto 使用者並改變目錄權限
+
+  ```bash
+  useradd -r mosquitto
+  mkdir /var/log/mosquitto
+  chown mosquitto:mosquitto /var/log/mosquitto/
+  mkdir /var/lib/ mosquitto
+  chown mosquitto:mosquitto /var/lib/mosquitto/
+  ```
+
+- 建立文件 /etc/systemd/system/mosquitto.service
+
+  ```bash
+  touch /etc/systemd/system/mosquitto.service
+  ```
+
+  ```service
+  [Unit]
+  Description=Mosquitto MQTT v3.1/v3.1.1 server
+  Wants=network.target
+  Documentation=http://mosquitto.org/documentation/
+
+  [Service]
+  Type=simple
+  User=mosquitto
+  Group=mosquitto
+  ExecStart=/usr/local/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf
+  Restart=on-failure
+  SyslogIdentifier=Mosquitto
+
+  [Install]
+  WantedBy=multi-user.target
+  ```
+
+### 安裝 mosquitto-auth-plug 套件
+
+- git clone
+
+```bash
+git clone https://github.com/kmihaylov/mosquitto-auth-plug.git
+```
+
+- 在 mosquitto-auth-plug 的目錄底下編輯 config.mk 的副本
+
+```bash
+cp config.mk.in config.mk
+vim config.mk
+```
+
+- 根據實際環境，設定 config.mk
+
+```mk
+# MOSQUITTO_SRC = /etc/mosquitto-2.0.10
+MOSQUITTO_SRC = <your path>/mosquitto-2.0.10
+
+# OPENSSLDIR = /usr/include/openssl
+OPENSSLDIR = <your path>
+```
+
+- 可以使用 `which openssl` 指令來顯示 OpenSSL 的目錄
+
+- 編譯此套件
+
+```bash
+make
+```
+
+- errors
+
+```bash
+/usr/local/include/mosquitto_plugin.h:167:46: error: unknown type name ‘mosquitto_plugin_id_t’; did you mean ‘mosquitto_property’?
+```
+
+修改 `auth-plug.c` 與 `log.c` 檔
+
+```c
+#include <mosquitto_broker.h>
+#include <mosquitto_plugin.h>
+#include <mosquitto.h>
+```
+
+- 將編譯完成後生成的 `auth-plug.so` 複製至 mosquitto 的目錄下(不是源碼目錄，是安裝後的目錄)
+
+```bash
+cp auth-plug.so /var/lib/mosquitto
+```
+
+- 複製 mosquitto.conf.example 並在文件最後加入設定
+
+```conf
+include_dir /etc/mosquitto/conf.d
+```
+
+- 在 mosquitto 目錄下建立 conf.d 資料夾，並新增 auth-plug.conf
+
+```conf
+# auth_plugin /etc/mosquitto-2.0.10/auth-plug.so
+auth_plugin /<your path>/auth-plug.so
+auth_opt_backends mysql
+auth_opt_log_quiet false
+# auth_opt_host localhost
+auth_opt_host <your mysql host>
+# auth_opt_port 3306
+auth_opt_port <your mysql port>
+auth_opt_dbname <your mysql schema>
+auth_opt_user <your mysql user>
+auth_opt_pass <your mysql password>
+
+auth_opt_userquery SELECT pw FROM <your_users_table> WHERE username = ‘%s’
+auth_opt_superquery SELECT COUNT(*) FROM <your_users_table> WHERE username = ‘%s’ AND super = 1
+auth_opt_aclquery SELECT topic FROM <your_acls_table> WHERE (username = ‘%s’) AND (rw >= %d)
+# auth_opt_superusers Sup
+auth_opt_superusers S*
+auth_opt_ssl_enabled true
+```
+
+- 更改檔案權限
+
+  ```bash
+  chown mosquitto:mosquitto auth-plug.conf
+  chmod go-rwx auth-plug.conf
+  ```
