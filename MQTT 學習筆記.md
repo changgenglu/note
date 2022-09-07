@@ -246,7 +246,7 @@ sudo systemctl restart mosquitto
   useradd -r mosquitto
   mkdir /var/log/mosquitto
   chown mosquitto:mosquitto /var/log/mosquitto/
-  mkdir /var/lib/ mosquitto
+  mkdir /var/lib/mosquitto
   chown mosquitto:mosquitto /var/lib/mosquitto/
   ```
 
@@ -292,8 +292,8 @@ vim config.mk
 - 根據實際環境，設定 config.mk
 
 ```mk
-# MOSQUITTO_SRC = /etc/mosquitto-2.0.10
-MOSQUITTO_SRC = <your path>/mosquitto-2.0.10
+# MOSQUITTO_SRC = /etc/mosquitto
+MOSQUITTO_SRC = <your path>/mosquitto
 
 # OPENSSLDIR = /usr/include/openssl
 OPENSSLDIR = <your path>
@@ -336,7 +336,7 @@ include_dir /etc/mosquitto/conf.d
 - 在 mosquitto 目錄下建立 conf.d 資料夾，並新增 auth-plug.conf
 
 ```conf
-# auth_plugin /etc/mosquitto-2.0.10/auth-plug.so
+# auth_plugin /etc/mosquitto/conf.d/auth-plug.so
 auth_plugin /<your path>/auth-plug.so
 auth_opt_backends mysql
 auth_opt_log_quiet false

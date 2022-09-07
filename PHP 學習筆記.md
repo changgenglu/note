@@ -31,6 +31,14 @@
       - [`array_slice(array,start,length,preserve)`](#array_slicearraystartlengthpreserve)
     - [`implode(separator,array)` 將陣列轉為字串](#implodeseparatorarray-將陣列轉為字串)
     - [`array_filter($arrayName, $callbackFunction, $callbackParameter)` 過濾陣列元素](#array_filterarrayname-callbackfunction-callbackparameter-過濾陣列元素)
+    - [`str_pad(string,length,pad_string,pad_type)` 填充字串為指定長度](#str_padstringlengthpad_stringpad_type-填充字串為指定長度)
+    - [資料序列化及反序列化](#資料序列化及反序列化)
+      - [`string serialize ( mixed $value )` 序列化](#string-serialize--mixed-value--序列化)
+      - [`mixed unserialize ( string $str )` 反序列化](#mixed-unserialize--string-str--反序列化)
+    - [`file_get_contents(path,include_path,context,start,max_length)`](#file_get_contentspathinclude_pathcontextstartmax_length)
+    - [`str_pad ($str, $pad_length , $pad_string, $pad_type)` 補足字串](#str_pad-str-pad_length--pad_string-pad_type-補足字串)
+    - [將字串轉換為數值](#將字串轉換為數值)
+    - [`is_a ( object $object , string $class_name )` 檢查物件是該類別，或該類別是此物件的父類別(boolean)](#is_a--object-object--string-class_name--檢查物件是該類別或該類別是此物件的父類別boolean)
 
 ## 運算子、判斷
 
@@ -59,6 +67,51 @@
 |   $x = "PHP"    |    str    |  [true](#)  | **_false_** | **_false_** |
 
 ### `var_dump($var);`: 將變數的訊息印出於螢幕上
+
+### `instanceof` 型態運算子
+
+- 用於確定一個 php 變數是否屬於美伊 class 的實例
+
+  ```php
+  class MyClass
+  {
+  }
+
+  class NotMyClass
+  {
+  }
+  $a = new MyClass;
+
+  var_dump($a instanceof MyClass);
+  var_dump($a instanceof NotMyClass);
+  ```
+
+  ```log
+  bool(true)
+  bool(false)
+  ```
+
+- 也可以用來確定一個變數是不是繼承自某一父類別的子類別的實例
+
+  ```php
+  class ParentClass
+  {
+  }
+
+  class MyClass extends ParentClass
+  {
+  }
+
+  $a = new MyClass;
+
+  var_dump($a instanceof MyClass);
+  var_dump($a instanceof ParentClass);
+  ```
+
+  ```log
+  bool(true)
+  bool(true)
+  ```
 
 ## 方法
 
@@ -741,3 +794,7 @@ echo $id;
   ```
 
 - 透過運算子將字串轉為數值，例如在字串中 + 0
+
+### `is_a ( object $object , string $class_name )` 檢查物件是該類別，或該類別是此物件的父類別(boolean)
+
+- 此函數在 php 5 之後已廢棄，改用 `instanceof` 型態運算子
