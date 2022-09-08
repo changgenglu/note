@@ -356,6 +356,24 @@ auth_opt_superusers S*
 auth_opt_ssl_enabled true
 ```
 
+```conf
+auth_plugin /etc/mosquitto/auth-plug.so
+auth_opt_backends mysql
+auth_opt_log_quiet false
+uth_opt_host localhost
+auth_opt_port 3306
+auth_opt_dbname <your mysql schema>
+auth_opt_user <your mysql user>
+auth_opt_pass <your mysql password>
+
+auth_opt_userquery SELECT pw FROM <your_users_table> WHERE username = ‘%s’
+auth_opt_superquery SELECT COUNT(*) FROM <your_users_table> WHERE username = ‘%s’ AND super = 1
+auth_opt_aclquery SELECT topic FROM <your_acls_table> WHERE (username = ‘%s’) AND (rw >= %d)
+# auth_opt_superusers Sup
+auth_opt_superusers S*
+auth_opt_ssl_enabled true
+```
+
 - 更改檔案權限
 
   ```bash
