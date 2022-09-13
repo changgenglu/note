@@ -18,6 +18,7 @@
   - [安裝身分驗證套件(mosquitto-auth-plugin)](#安裝身分驗證套件mosquitto-auth-plugin)
     - [設置 mosquitto](#設置-mosquitto)
     - [安裝 mosquitto-auth-plug 套件](#安裝-mosquitto-auth-plug-套件)
+    - [若 mosquitto 無法正常運行](#若-mosquitto-無法正常運行)
 
 ## 概述
 
@@ -299,7 +300,7 @@ MOSQUITTO_SRC = <your path>/mosquitto
 OPENSSLDIR = <your path>
 ```
 
-- 可以使用 `which openssl` 指令來顯示 OpenSSL 的目錄
+- 可以使用 `whereis openssl` 指令來顯示 OpenSSL 的目錄
 
 - 編譯此套件
 
@@ -327,7 +328,7 @@ make
 cp auth-plug.so /var/lib/mosquitto
 ```
 
-- 複製 mosquitto.conf.example 並在文件最後加入設定
+- 進入 mosquitto 安裝後的目錄(預設為 etc/mosquitto)，複製 mosquitto.conf.example 並在文件最後加入設定
 
 ```conf
 include_dir /etc/mosquitto/conf.d
@@ -335,8 +336,13 @@ include_dir /etc/mosquitto/conf.d
 
 - 在 mosquitto 目錄下建立 conf.d 資料夾，並新增 auth-plug.conf
 
+```bash
+mkdir /etc/mosquitto/conf.d
+vim auth-plug.conf
+```
+
 ```conf
-# auth_plugin /etc/mosquitto/conf.d/auth-plug.so
+# auth_plugin /var/lib/mosquitto/auth-plug.so
 auth_plugin /<your path>/auth-plug.so
 auth_opt_backends mysql
 auth_opt_log_quiet false
@@ -357,18 +363,19 @@ auth_opt_ssl_enabled true
 ```
 
 ```conf
-auth_plugin /etc/mosquitto/auth-plug.so
+auth_plugin /var/lib/mosquitto/auth-plug.so
+# auth_plugin /<your path>/auth-plug.so
 auth_opt_backends mysql
 auth_opt_log_quiet false
-uth_opt_host localhost
+auth_opt_host 50.87.186.138
 auth_opt_port 3306
-auth_opt_dbname <your mysql schema>
-auth_opt_user <your mysql user>
-auth_opt_pass <your mysql password>
+auth_opt_dbname homchooc_v5_cloud
+auth_opt_user homchooc_v5_cloud
+auth_opt_pass v&mv4ES-^z5+
 
-auth_opt_userquery SELECT pw FROM <your_users_table> WHERE username = ‘%s’
-auth_opt_superquery SELECT COUNT(*) FROM <your_users_table> WHERE username = ‘%s’ AND super = 1
-auth_opt_aclquery SELECT topic FROM <your_acls_table> WHERE (username = ‘%s’) AND (rw >= %d)
+auth_opt_userquery SELECT pw FROM mqtt_users WHERE username = ‘%s’
+auth_opt_superquery SELECT COUNT(*) FROM mqtt_users WHERE username = ‘%s’ AND super = 1
+auth_opt_aclquery SELECT topic FROM mqtt_acls WHERE (username = ‘%s’) AND (rw >= %d)
 # auth_opt_superusers Sup
 auth_opt_superusers S*
 auth_opt_ssl_enabled true
@@ -380,3 +387,15 @@ auth_opt_ssl_enabled true
   chown mosquitto:mosquitto auth-plug.conf
   chmod go-rwx auth-plug.conf
   ```
+
+### 若 mosquitto 無法正常運行
+
+使用 `sudo systemctl start mosquitto -l` 啟動 Mosquitto
+
+使用 `sudo systemctl status mosquitto -l` 查看運行狀態
+
+若狀態為失敗，運行輸入 `sudo /usr/local/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf` (ExecStart=)，查看詳細的啟動錯誤資訊
+
+- 缺乏權限：將缺乏權限的目錄或是檔案，其權限歸於 mosquitto
+- libmosquitto.so.1:cannot open shard object
+  - 運行 `sudo /sbin/ldconfig` 更新庫的連接器緩存

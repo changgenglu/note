@@ -163,7 +163,7 @@ echo "Loop Ended";
 ```log
 1 3 2 1 . 2 3 2 . 3 3 . Loop Ended
 ```
-
+Korea
 ### `scandir()` 掃描指定的目錄，並返回為陣列
 
 ### `list(var1, var2...)` 宣告陣列中的值，使其成為變數

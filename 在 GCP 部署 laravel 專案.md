@@ -164,3 +164,5 @@ sudo service apache2 restart
 [Apache 之——多虛擬主機多站點配置的兩種實現方案](https://www.796t.com/content/1546761795.html)
 
 [ubuntu設定apache部署多個站點](https://www.796t.com/content/1545633208.html)
+
+[SSL憑證設定](https://ithelp.ithome.com.tw/articles/10081759)
