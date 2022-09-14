@@ -94,6 +94,22 @@ MQTT 可以針對網路品質(QoS)，決定操作等級
 
   - 安裝好後，borker 會自動運行
 
+- 控制指令
+
+  ```bash
+  # 查詢 mosquitto 服務狀態
+  systemctl status mosquitto
+
+  # 啟動 mosquitto 服務
+  sudo systemctl start mosquitto
+
+  # 停止 mosquitto 服務
+  sudo systemctl stop mosquitto
+
+  # 重新啟動 mosquitto 服務
+  sudo systemctl restart mosquitto
+  ```
+
 - 確認運行
 
   - 查看 server 狀態
@@ -110,6 +126,26 @@ MQTT 可以針對網路品質(QoS)，決定操作等級
   Proto Recv-Q Send-Q Local Address           Foreign Address         State
   tcp        0      0 0.0.0.0:1833            0.0.0.0:*               LISTEN
   ```
+
+- 本機測試
+
+  - `-d` debug 模式
+  - `-t` 訂閱的主題
+  - `-h` broker 的 IP
+  - `-m` 發送的內容
+  - `-v` 顯示主題名稱
+
+  - 訂閱
+
+    ```bash
+    mosquitto_sub -v -d -t <topic> -u <user> -P <Possword>
+    ```
+
+  - 推送
+
+    ```bash
+    mosquitto_pub -d -t <Topic> -m <Message> -u <User> -P <Possword>
+    ```
 
 - 開啟 server 防火牆的 port: 1883
 
@@ -354,28 +390,9 @@ auth_opt_dbname <your mysql schema>
 auth_opt_user <your mysql user>
 auth_opt_pass <your mysql password>
 
-auth_opt_userquery SELECT pw FROM <your_users_table> WHERE username = ‘%s’
-auth_opt_superquery SELECT COUNT(*) FROM <your_users_table> WHERE username = ‘%s’ AND super = 1
-auth_opt_aclquery SELECT topic FROM <your_acls_table> WHERE (username = ‘%s’) AND (rw >= %d)
-# auth_opt_superusers Sup
-auth_opt_superusers S*
-auth_opt_ssl_enabled true
-```
-
-```conf
-auth_plugin /var/lib/mosquitto/auth-plug.so
-# auth_plugin /<your path>/auth-plug.so
-auth_opt_backends mysql
-auth_opt_log_quiet false
-auth_opt_host 50.87.186.138
-auth_opt_port 3306
-auth_opt_dbname homchooc_v5_cloud
-auth_opt_user homchooc_v5_cloud
-auth_opt_pass v&mv4ES-^z5+
-
-auth_opt_userquery SELECT pw FROM mqtt_users WHERE username = ‘%s’
-auth_opt_superquery SELECT COUNT(*) FROM mqtt_users WHERE username = ‘%s’ AND super = 1
-auth_opt_aclquery SELECT topic FROM mqtt_acls WHERE (username = ‘%s’) AND (rw >= %d)
+auth_opt_userquery SELECT pw FROM <your_users_table> WHERE username = '%s'
+auth_opt_superquery SELECT COUNT(*) FROM <your_users_table> WHERE username = '%s' AND super = 1
+auth_opt_aclquery SELECT topic FROM <your_acls_table> WHERE (username = '%s') AND (rw >= %d)
 # auth_opt_superusers Sup
 auth_opt_superusers S*
 auth_opt_ssl_enabled true
