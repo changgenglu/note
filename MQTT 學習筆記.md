@@ -329,10 +329,11 @@ vim config.mk
 - 根據實際環境，設定 config.mk
 
 ```mk
-# MOSQUITTO_SRC = /etc/mosquitto
+# mosquitto 源碼
+# MOSQUITTO_SRC = /etc/mosquitto-2.0.10
 MOSQUITTO_SRC = <your path>/mosquitto
 
-# OPENSSLDIR = /usr/include/openssl
+# OPENSSLDIR = /usr/lib/ssl
 OPENSSLDIR = <your path>
 ```
 
