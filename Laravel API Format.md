@@ -1,4 +1,4 @@
-# Laravel API resource
+# Laravel API Format
 
 > api 返回資料若以原生格式返回，沒有經過任何處理，可能包含敏感資訊
 >
@@ -12,7 +12,7 @@
 >
 > [Laravel 8 中文文檔 API 资源](https://learnku.com/docs/laravel/8.x/eloquent-resources/9410)
 
-- [Laravel API resource](#laravel-api-resource)
+- [Laravel API Format](#laravel-api-format)
   - [spatie/laravel-fractal 套件](#spatielaravel-fractal-套件)
     - [建立 transformer](#建立-transformer)
     - [在 controller 中使用 transformer](#在-controller-中使用-transformer)

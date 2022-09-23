@@ -21,7 +21,7 @@
 
 ### 基本類型
 
-- 標籤 #id .class
+- 標籤 `#id` `.class`
 
 - div 標籤和 span 標籤
 

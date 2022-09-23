@@ -27,6 +27,9 @@
       - [將現階段工作暫存](#將現階段工作暫存)
       - [取出暫存](#取出暫存)
     - [解決合併衝突](#解決合併衝突)
+    - [更改 git remote 位置](#更改-git-remote-位置)
+    - [取消 mrege (清除合併紀錄)](#取消-mrege-清除合併紀錄)
+    - [新增遠端儲存庫](#新增遠端儲存庫)
   - [Git 管理](#git-管理)
     - [使用 VSCode 管理 Git](#使用-vscode-管理-git)
   - [GitHub 操作](#github-操作)
@@ -401,16 +404,100 @@ git commit
 當修改 git repo 的名稱或是路徑時，若要在本機進行 push 或是 pull 的指令時，會出現：remote: This repository moved. Please use the new location [new location]
 
 - 解決辦法：重新設定 remote url
-  
+
   ```bash
   git remote set-url origin https://XXX.git
   ```
-  
+
   檢查 remote url 是否修改成功
-  
+
   ```bash
   git remote -v
   ```
+
+### 取消 mrege (清除合併紀錄)
+
+> [參考資料](https://blog.darkthread.net/blog/git-undo-merge/)
+
+當 feature 與 develop 分支的合併位置有誤，想要拆掉重做
+
+```bash
+db7915e (HEAD -> dev, feature/mqtt_test) feat: 測試mqtt連線
+b65d2d2 (tag: release_v2.0.0, origin/dev) no message
+0a198be refactor(firmware index page): 優化firmware前端頁面
+539942f (origin/master, origin/HEAD, master) Merge branch 'feature/fix_firmware_download' into dev
+1a4515a fix(firmwareController): 修復firmware下載問題
+d1e204f docs(README): 修改上線環境設定
+```
+
+`git rebase -i` ：重整目標 commit 之後的 commit：重整清單中不會有下指令的 commit 而是顯示其後所有的 commit。
+
+```bash
+git rebase -i 0a198be
+```
+
+輸入指令之後會進入編輯器
+
+```vim
+pick db7915e feat: 測試mqtt連線
+pick b65d2d2 no message
+
+# Rebase 539942f..879c462 onto 539942f (3 commands)
+#
+# Commands:
+# p, pick <commit> = use commit
+# r, reword <commit> = use commit, but edit the commit message
+# e, edit <commit> = use commit, but stop for amending
+# s, squash <commit> = use commit, but meld into previous commit
+# f, fixup [-C | -c] <commit> = like "squash" but keep only the previous
+#                    commit's log message, unless -C is used, in which case
+#                    keep only this commit's message; -c is same as -C but
+#                    opens the editor
+```
+
+並將要取消的 commit 改為 drop
+
+```vim
+drip db7915e feat: 測試mqtt連線
+pick b65d2d2 no message
+```
+
+```bash
+b65d2d2 (HEAD -> dev, tag: release_v2.0.0, origin/dev) no message
+0a198be refactor(firmware index page): 優化firmware前端頁面
+539942f (origin/master, origin/HEAD, master) Merge branch 'feature/fix_firmware_download' into dev
+1a4515a fix(firmwareController): 修復firmware下載問題
+```
+
+### 新增遠端儲存庫
+
+```bash
+$ git init
+
+$ git add .
+
+$ git commit -m "First commit"
+```
+
+添加遠端儲存庫的路徑
+
+```bash
+## $ git remote add origin "remote repository URL"
+$ git remote add origin //fishbone/研發部/軟體區/GitServer/V5/*.git
+```
+
+將遠端儲存庫初始化
+
+```bash
+## $ git init --bare "remote repository URL"
+$ git init --bare //fishbone/研發部/韌體區/GitServer/V5/*.git
+```
+
+將本地儲存庫內容推送到遠端
+
+```bash
+$ git push --set-upstream origin main
+```
 
 ## Git 管理
 
@@ -439,7 +526,7 @@ remote: Please see https://github.blog/2020-12-15-token-authentication-requireme
 fatal: unable to access 'https://github.com/changgenglu/your_project.git/': The requested URL returned error: 403
 ```
 
-大致意思是，密碼驗證於 2021 年 8 月 13 日不再支援，也就是今天 intellij 不能再用密碼方式去提交程式碼。請用使用 **personal access token** 替代。
+大致意思是，密碼驗證於 2021 年 8 月 13 日不再支援，也就是今天不能再用密碼方式去提交程式碼。請用使用 **personal access token** 替代。
 
 #### 設定 personal access token
 
