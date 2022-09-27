@@ -221,11 +221,11 @@ sudo systemctl restart mosquitto
 
 ### Chrome 瀏覽器擴充程式：MQTTLens
 
-- [參考資料](https://swf.com.tw/?p=1009)
+- [MQTT教學（四）：使用MQTTLens訂閱與發布MQTT訊息](https://swf.com.tw/?p=1009)
 
 ### MQTT Explorer
 
-- [參考資料](https://jimirobot.tw/esp32-mosquitto-conf-mqtt-tutorial/)
+- [| ESP32 教學 | Mosquitto conf 設定與 MQTT 測試](https://jimirobot.tw/esp32-mosquitto-conf-mqtt-tutorial/)
 
 ## 安裝身分驗證套件(mosquitto-auth-plugin)
 
@@ -235,9 +235,9 @@ sudo systemctl restart mosquitto
 > [mosquitto-auth-plugin](https://github.com/jpmens/mosquitto-auth-plug)  
 > MySQL
 >
-> [參考資料-1](https://www.jmeze.net/2021/06/mosquitto-20-mosquitto-auth-plugin-mysql.html) |
-> [參考資料-2](https://www.jianshu.com/p/08b42c170a6a) |
-> [參考資料-3](https://tongxinmao.com/Article/Detail/id/166) |
+> [Mosquitto 2.0 + mosquitto-auth-plugin + MySQL](https://www.jmeze.net/2021/06/mosquitto-20-mosquitto-auth-plugin-mysql.html) |
+> [Ubuntu 18 使用apt安装 mosquitto auth plugin 与 MySQL](https://www.jianshu.com/p/08b42c170a6a) |
+> [mosquitto权限验证](https://tongxinmao.com/Article/Detail/id/166) |
 
 ### 設置 mosquitto
 

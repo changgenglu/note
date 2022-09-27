@@ -80,7 +80,9 @@
 
 ## Git Flow 開發流程觀念
 
-> [參考資料：Git Flow 是什麼？為什麼需要這種東西？](https://gitbook.tw/chapters/gitflow/why-need-git-flow) > [參考資料：Git flow 分支策略](https://git-tutorial.readthedocs.io/zh/latest/branchingmodel.html)
+> [參考資料：Git Flow 是什麼？為什麼需要這種東西？](https://gitbook.tw/chapters/gitflow/why-need-git-flow)
+>
+> [參考資料：Git flow 分支策略](https://git-tutorial.readthedocs.io/zh/latest/branchingmodel.html)
 
 ### 分支介紹
 
@@ -104,7 +106,7 @@
 
 ### Git Commit 規範
 
-> [參考資料](https://ithelp.ithome.com.tw/articles/10228738)
+> [Git Commit Message 這樣寫會更好，替專案引入規範與範例](https://ithelp.ithome.com.tw/articles/10228738)
 
 #### Commit Message 格式
 
@@ -315,6 +317,7 @@ Saved working directory and index state WIP on feature/admin_controller: c745ccb
 ```
 
 > **注意**
+>
 > Untracked 狀態的檔案無法被 stash，需要額外使用 `-u` 參數
 
 看一下目前的狀態
@@ -417,7 +420,7 @@ git commit
 
 ### 取消 mrege (清除合併紀錄)
 
-> [參考資料](https://blog.darkthread.net/blog/git-undo-merge/)
+> [Git 實戰技巧 - 取消合併](https://blog.darkthread.net/blog/git-undo-merge/)
 
 當 feature 與 develop 分支的合併位置有誤，想要拆掉重做
 
@@ -472,38 +475,38 @@ b65d2d2 (HEAD -> dev, tag: release_v2.0.0, origin/dev) no message
 ### 新增遠端儲存庫
 
 ```bash
-$ git init
+git init
 
-$ git add .
+git add .
 
-$ git commit -m "First commit"
+git commit -m "First commit"
 ```
 
 添加遠端儲存庫的路徑
 
 ```bash
-## $ git remote add origin "remote repository URL"
-$ git remote add origin //fishbone/研發部/軟體區/GitServer/V5/*.git
+## git remote add origin "remote repository URL"
+git remote add origin //fishbone/研發部/軟體區/GitServer/V5/*.git
 ```
 
 將遠端儲存庫初始化
 
 ```bash
-## $ git init --bare "remote repository URL"
-$ git init --bare //fishbone/研發部/韌體區/GitServer/V5/*.git
+## git init --bare "remote repository URL"
+git init --bare //fishbone/研發部/韌體區/GitServer/V5/*.git
 ```
 
 將本地儲存庫內容推送到遠端
 
 ```bash
-$ git push --set-upstream origin main
+git push --set-upstream origin main
 ```
 
 ## Git 管理
 
 ### 使用 VSCode 管理 Git
 
-> [參考資料](https://www.minwt.com/webdesign-dev/22926.html)
+> [Visual Studio Code 無需輸入 Git 指令，透過界面按鈕就可輕鬆管理 Github 中的專案檔案](https://www.minwt.com/webdesign-dev/22926.html)
 
 ## GitHub 操作
 

@@ -265,8 +265,6 @@
 
 ### 外鍵 onDelete 約束情況
 
-[參考資料](https://github.com/victorbuild/coscup-postgresql-foreign-key-constraint)
-
 - 沒有加入`onDelete`  
   如果在關聯中的限制屬性，沒有加入`onDelete`，此時刪除外鍵約束的父層資料表中的欄位，會出現#1451 error
 

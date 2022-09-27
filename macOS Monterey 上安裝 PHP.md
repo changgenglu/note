@@ -12,7 +12,9 @@
 >
 > MacOS Monterry 版本，沒有包括 PHP。
 
-## [安裝 PHP](https://daily-dev-tips.com/posts/installing-php-on-your-mac/)
+## 安裝 PHP
+
+[Installing PHP on your Mac](https://daily-dev-tips.com/posts/installing-php-on-your-mac/)
 
 ### 安裝 Homebrew
 

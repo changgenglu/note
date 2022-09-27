@@ -39,8 +39,6 @@ php artisan make:transformer TestTransformer
 ```
 
 ```php
-<?php
-
 namespace App\Transformers;
 
 use League\Fractal\TransformerAbstract;

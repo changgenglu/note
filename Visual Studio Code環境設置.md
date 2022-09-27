@@ -2,7 +2,18 @@
 
 ###### tags: `環境設定`
 
-<!-- TOC -->autoauto                - [tags: `環境設定`](#tags-環境設定)auto- [擴充套件](#擴充套件)auto    - [中文化](#中文化)auto    - [美化 code](#美化-code)auto    - [前端](#前端)auto    - [PHP Laravel](#php-laravel)auto    - [Markdown](#markdown)auto    - [Git](#git)auto    - [小工具](#小工具)auto- [調整設定](#調整設定)auto- [快速鍵](#快速鍵)autoauto<!-- /TOC -->
+- [Visual Studio Code 環境設置](#visual-studio-code-環境設置) - [tags: `環境設定`](#tags-環境設定)
+  - [擴充套件](#擴充套件)
+    - [中文化](#中文化)
+    - [美化 code](#美化-code)
+    - [html, css](#html-css)
+    - [VUE](#vue)
+    - [PHP Laravel](#php-laravel)
+    - [Markdown](#markdown)
+    - [Git](#git)
+    - [小工具](#小工具)
+  - [調整設定](#調整設定)
+  - [快速鍵](#快速鍵)
 
 ## 擴充套件
 
