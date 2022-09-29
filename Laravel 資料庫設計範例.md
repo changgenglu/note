@@ -14,9 +14,9 @@ laravel new blog
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=laravel
-DB_USERNAME=root
-DB_PASSWORD=
+DB_DATABASE=your_database
+DB_USERNAME=your_name
+DB_PASSWORD=your_password
 ```
 
 - XAMPP 預設的密碼是空白，phpEnv 要先行設定資料庫密碼
