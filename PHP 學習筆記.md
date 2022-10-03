@@ -42,6 +42,35 @@
     - [`is_a()` 檢查物件是該類別，或該類別是此物件的父類別(boolean)](#is_a-檢查物件是該類別或該類別是此物件的父類別boolean)
     - [`substr()` 取得部分字串，可設定字串長度](#substr-取得部分字串可設定字串長度)
 
+## 在 Linux 執行 php 檔
+
+### 方法一
+
+- 在程式的第一行加入路徑 -q
+
+  ```php
+  #! /usr/bin/php -q
+  <?php
+  $foo = 123;
+  ?>
+  ```
+
+- 將 php 檔賦予執行權限
+
+  ```bash
+  chmod +x testing.php
+  ```
+
+- d/n
+
+  ```bash
+  ./testing.php # 可以像其他 shell script 般執行
+  ```
+
+### 方法二
+
+
+
 ## 運算子、判斷
 
 ### `+`: 算術相加

@@ -19,6 +19,10 @@
     - [設置 mosquitto](#設置-mosquitto)
     - [安裝 mosquitto-auth-plug 套件](#安裝-mosquitto-auth-plug-套件)
     - [若 mosquitto 無法正常運行](#若-mosquitto-無法正常運行)
+  - [安裝身分驗證套件(mosquitto-go-auth)](#安裝身分驗證套件mosquitto-go-auth)
+    - [設置 mosquitto (同 mosquitto-auth-plug 套件)](#設置-mosquitto-同-mosquitto-auth-plug-套件)
+    - [安裝 mosquitto-go-auth](#安裝-mosquitto-go-auth)
+    - [acl 權限設定](#acl-權限設定)
 
 ## 概述
 
@@ -221,7 +225,7 @@ sudo systemctl restart mosquitto
 
 ### Chrome 瀏覽器擴充程式：MQTTLens
 
-- [MQTT教學（四）：使用MQTTLens訂閱與發布MQTT訊息](https://swf.com.tw/?p=1009)
+- [MQTT 教學（四）：使用 MQTTLens 訂閱與發布 MQTT 訊息](https://swf.com.tw/?p=1009)
 
 ### MQTT Explorer
 
@@ -235,9 +239,11 @@ sudo systemctl restart mosquitto
 > [mosquitto-auth-plugin](https://github.com/jpmens/mosquitto-auth-plug)  
 > MySQL
 >
-> [Mosquitto 2.0 + mosquitto-auth-plugin + MySQL](https://www.jmeze.net/2021/06/mosquitto-20-mosquitto-auth-plugin-mysql.html) |
-> [Ubuntu 18 使用apt安装 mosquitto auth plugin 与 MySQL](https://www.jianshu.com/p/08b42c170a6a) |
-> [mosquitto权限验证](https://tongxinmao.com/Article/Detail/id/166) |
+> [Mosquitto 2.0 + mosquitto-auth-plugin + MySQL](https://www.jmeze.net/2021/06/mosquitto-20-mosquitto-auth-plugin-mysql.html)
+>
+> [Ubuntu 18 使用 apt 安装 mosquitto auth plugin 与 MySQL](https://www.jianshu.com/p/08b42c170a6a)
+>
+> [mosquitto 权限验证](https://tongxinmao.com/Article/Detail/id/166)
 
 ### 設置 mosquitto
 
@@ -417,3 +423,102 @@ auth_opt_ssl_enabled true
 - 缺乏權限：將缺乏權限的目錄或是檔案，其權限歸於 mosquitto
 - libmosquitto.so.1:cannot open shard object
   - 運行 `sudo /sbin/ldconfig` 更新庫的連接器緩存
+
+## 安裝身分驗證套件(mosquitto-go-auth)
+
+> 僅支援 Linux (Debian, Ubuntu and Mintus) 和 MacOS
+>
+> [iegomez/mosquitto-go-auth](https://github.com/iegomez/mosquitto-go-auth#build)
+>
+> [Mosquitto 安装与部署](https://www.cnblogs.com/IC1101/p/14749722.html)
+>
+> [Uninstalling Go (golang)](https://askubuntu.com/questions/742078/uninstalling-go-golang)
+
+### 設置 mosquitto (同 mosquitto-auth-plug 套件)
+
+### 安裝 mosquitto-go-auth
+
+- 安裝之前，需先在系統上安裝 golang，所需 go 最低版本為 1.13.8。
+
+```bash
+go version
+```
+
+- 安裝 go (若要更新 golang，需先將舊版本解除安裝 remove golang)
+
+```bash
+# Update the following as per your system configuration
+export GO_VERSION=1.16.4
+export GO_OS=linux
+export GO_ARCH=amd64
+
+wget https://dl.google.com/go/go${GO_VERSION}.${GO_OS}-${GO_ARCH}.tar.gz -O golang.tar.gz
+sudo tar -C /usr/local -xzf golang.tar.gz
+export PATH=$PATH:/usr/local/go/bin
+rm golang.tar.gz
+
+# Prints the Go version
+go version
+```
+
+- 將 mosquitto-go-auth 套件，git clone 下來，並打包
+
+```bash
+make
+```
+
+- 設定 mosquitto 文件(mosquitto.conf)
+
+```conf
+include_dir /etc/mosquitto/conf.d
+```
+
+vim /mosquitto/conf.d/go-auth.conf
+
+```conf
+# 套件編譯完成後的檔案
+auth_plugin /etc/mosquitto/conf.d/go-auth.so
+
+# 後端
+auth_opt_backends mysql
+
+# 密碼編碼方式
+auth_opt_hasher bcrypt
+auth_opt_hasher_cost 10
+
+# 設定  mosquitto log (上線後應將 log_level debug 關閉)
+auth_opt_log_level debug
+auth_opt_log_dest file
+auth_opt_log_file /var/log/mosquitto/mosquitto.log
+
+auth_opt_mysql_protocol tcp
+
+# 允許使本機密碼
+auth_opt_mysql_allow_native_passwords true
+
+# 連接資料庫的設定
+auth_opt_mysql_host localhost
+auth_opt_mysql_port 3306
+auth_opt_mysql_dbname max_system
+auth_opt_mysql_user max_system
+auth_opt_mysql_password maxsystem@2021
+auth_opt_mysql_connect_tries 5
+auth_opt_mysql_userquery SELECT password_hash FROM test_user WHERE username = ? limit 1
+auth_opt_mysql_superquery SELECT COUNT(*) FROM test_user WHERE username = ? AND is_admin = 1
+auth_opt_mysql_aclquery SELECT topic FROM test_acl WHERE test_user_id = (SELECT id FROM test_user WHERE username = ?) AND (rw >= ?)
+```
+
+### acl 權限設定
+
+其實一般而言只會使用到權限 2、5、7
+
+```log
+0: no access (NULL)
+1: read access (r)  // 不會動
+2: write access (w)
+3: read and write access (rw)
+4: subscribe access (s)
+5: read & subscribe access (rs)
+6: write & subscribe access (ws)
+7: read, write and subscribe access (rws)
+```

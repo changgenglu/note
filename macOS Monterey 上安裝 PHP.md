@@ -10,7 +10,7 @@
 >
 > ### 原因
 >
-> MacOS Monterry 版本，沒有包括 PHP。
+> MacOS Monterry 版本，預設沒有安裝 PHP。
 
 ## 安裝 PHP
 

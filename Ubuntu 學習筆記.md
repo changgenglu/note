@@ -42,12 +42,10 @@ Linux 為多用戶系統，可同時間讓與多用戶使用。
 
 與三種權限
 
-- `read`
-  可以開啟和讀取檔案。若為資料夾，則可以查看目錄下的內容，但無法修改(重新命名、移動、剪下、刪除)
-- `write`
-  可以新增、刪除、修改檔案。若檔案有 write 的權限，但資料夾沒有，則只能修改檔案內容，無法更改資料夾結構(修改檔名，移動檔案、刪除檔案)
-- `execute`
-  執行程式碼的權限。windows 系統中，只要副檔名為 `.exe` 就可以執行，但在 linux 中需要有 execute permission。read 和 write 權限僅能修改程式碼
+- `r` 可以開啟和讀取檔案。若為資料夾，則可以查看目錄下的內容，但無法修改(重新命名、移動、剪下、刪除)
+- `w` 可以新增、刪除、修改檔案。若檔案有 write 的權限，但資料夾沒有，則只能修改檔案內容，無法更改資料夾結構(修改檔名，移動檔案、刪除檔案)
+- `x` 執行程式碼的權限。windows 系統中，只要副檔名為 `.exe` 就可以執行，但在 linux 中需要有 execute permission。read 和 write 權限僅能修改程式碼
+- `-` 無權限
 
 ```bash
 root@rexlitemqtt://home/rexlite_public# ll
@@ -74,19 +72,14 @@ drwx------ 2 rexlite_public rexlite_public  4096 Sep  2 01:10 .ssh/
 
 接下來為三個字元一組，分別代表 `user(owner)`、`group`、`other` 及其擁有的權限
 
-- `r` read permission
-- `w` write permission
-- `x` execute permission
-- `-` no permission
-
 - 各權限的分數
 
-  | 字元 | 權限分數 |
-  | :--: | :------: |
-  |  r   |    4     |
-  |  w   |    2     |
-  |  x   |    1     |
-  |  -   |    0     |
+  | 字元 | 分數 |
+  | :--: | :--: |
+  |  r   |  4   |
+  |  w   |  2   |
+  |  x   |  1   |
+  |  -   |  0   |
 
   分數是累加的，例如 `-rwxrwx---`
 
@@ -130,7 +123,7 @@ drwx------ 2 rexlite_public rexlite_public  4096 Sep  2 01:10 .ssh/
     chmod -R xyz < filename | directory >
     ```
 
-    - 若要將.bashrc 這個檔案所有全線都設為啟用
+    - 若要將.bashrc 這個檔案所有權限都設為啟用
 
       ```bash
       chmod 777 .bashrc
