@@ -91,6 +91,8 @@ drwx------ 2 rexlite_public rexlite_public  4096 Sep  2 01:10 .ssh/
 
   所以該檔的權限數字為 770
 
+第一個帳號為擁有者，第二個群組
+
 ### 指令
 
 - `chown` 更改檔案所有權給其他使用者
