@@ -5,7 +5,7 @@
 - [Git 學習筆記](#git-學習筆記) - [tags: `Git`](#tags-git)
   - [常用指令](#常用指令)
     - [Git 常用指令](#git-常用指令)
-    - [Git Bash 常用指令， rm 與 Windows 檔案管理指令對照](#git-bash-常用指令-rm-與-windows-檔案管理指令對照)
+    - [Git Bash 常用指令](#git-bash-常用指令)
   - [Git Flow 開發流程觀念](#git-flow-開發流程觀念)
     - [分支介紹](#分支介紹)
       - [長期分支](#長期分支)
@@ -62,21 +62,23 @@
 - `git push` 將本地儲存庫內容推送到遠端儲存庫
 - `git pull` 將遠端儲存庫拉回合併更新到本地儲存庫
 
-### Git Bash 常用指令， rm 與 Windows 檔案管理指令對照
+### Git Bash 常用指令
 
-- `pwd` | `cd` 顯示幕前目錄
-- `ls -al` | `dir` 顯示目前目錄下的檔案與子目錄列表
-- `mkdir tmp` | `md tmp` 建立子目錄 tmp
-- `rm -r tmp` | `rd tmp` 刪除子目錄 tmp
-- `cd tmp` | `cd tmp` 切換至子目錄 tmp
-- `cd ..` | `cd ..` 切換至上一層目錄
-- `touch test.txt` | `copy nul > test.txt` 建立空白文字檔案
-- `cat file/more` | `type file` 顯示檔案內容
-- `rm file` | `del file` 刪除檔案 file
-- `mv file1 file2` | `ren file1 file2` 將檔案 file1 更名為 file2
-- `cp file1 file2` | `copy file1 file2` 複製檔案 file1 為 file2
-- `date` | `date` 顯示日期 (Linux 含時間)
-- `clear` | `cls` 清除螢幕
+| Linux            | Windows               | 說明                             |
+| ---------------- | --------------------- | -------------------------------- |
+| `pwd`            | `cd`                  | 顯示幕前目錄                     |
+| `ls -al`         | `dir`                 | 顯示目前目錄下的檔案與子目錄列表 |
+| `mkdir tmp`      | `md tmp`              | 建立子目錄 tmp                   |
+| `rm -r tmp`      | `rd tmp`              | 刪除子目錄 tmp                   |
+| `cd tmp`         | `cd tmp`              | 切換至子目錄 tmp                 |
+| `cd ..`          | `cd ..`               | 切換至上一層目錄                 |
+| `touch test.txt` | `copy nul > test.txt` | 建立空白文字檔案                 |
+| `cat file/more`  | `type file`           | 顯示檔案內容                     |
+| `rm file`        | `del file`            | 刪除檔案 file                    |
+| `mv file1 file2` | `ren file1 file2`     | 將檔案 file1 更名為 file2        |
+| `cp file1 file2` | `copy file1 file2`    | 複製檔案 file1 為 file2          |
+| `date`           | `date`                | 顯示日期 (Linux 含時間)          |
+| `clear`          | `cls`                 | 清除螢幕                         |
 
 ## Git Flow 開發流程觀念
 
@@ -263,12 +265,20 @@ git reset --soft HEAD^
 
 ### 轉移資料庫：git mirror
 
-可以轉移整個 repo 的資訊，包括 beanch, tags
+可以轉移整個 repository 的資訊，包括 beanch, tags
+
+將 repo clone --mirror 到本地
+
+```bash
+git clone --mirror gitolite@git.lab317.org:dinos80152/Authentication
+```
+
+接著在 github 建立新的 repository
 
 進到專案資料夾，設定新的遠端 git repo 位置
 
 ```bash
-cd Authentication.git/
+cd your_project.git/
 git remote set-url --push origin https://github.com/your_name/your_project.git
 ```
 
@@ -500,6 +510,17 @@ git init --bare //fishbone/研發部/韌體區/GitServer/V5/*.git
 
 ```bash
 git push --set-upstream origin main
+```
+
+### Git 別名
+
+修改 `~/.gitconfig`
+
+```vim
+[alias]
+	st = status
+	ptlg = log --color --graph --pretty=format:'%C(yellow)%h%Creset %C(bold brightred)%d%Creset %C()%s%Creset \n %C(blue italic dim)-- %an%Creset %C(green italic dim)(%cr)%Creset'
+	adal = add --all
 ```
 
 ## Git 管理
