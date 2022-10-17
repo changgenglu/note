@@ -24,13 +24,40 @@ redis 127.0.0.1:6379> get test
 "測試測試"
 ```
 
-#### 指令
+### List
 
-| 指令          | 說明                    |
-| ------------- | ----------------------- |
-| SET key value | 設定指定的 key 和 value |
-| GET key       | 取得指定 key 的 value   |
+由多個 redis 的 string 所組成，List 中成員會依照插入的順序儲存，期提供由頭尾插入，以及頭尾拿出的功能。List 實作的功能很多，例如任務列隊，以及優先權列隊等。
 
+- List 的基礎操作
+  - 插入資料: LPUSH RPUSH LPOP RPOP
+  - 資料查詢: LRANGE LLEN LPOS(找元素的 index)
+  - 阻塞操作: BLPOP BRPOP 如果 List 中沒有資料，Redis 會 blocking
+  - LTRIM: 根據輸入的 range 保留 List
+  - LREM: 根據元素出現次數移除多個元素。
+
+### Set
+
+由多個 redis 中的 string 以無序的方式所組成，其保證內部不會有重複的元素，此外 Redis 提供了多個 Set 之間交集、差集與聯集的操作。
+
+- Set 的基礎操作
+  - CRUD: SADD SREM SMEMBERS SCARD SPOP
+  - 集合操作: SDIFF SINTER SUNION
+
+### Hash
+
+為 key-value 的資料類型，也是 Redis 的主結構，非常適合用於儲存物件型資料，例如 User 物件有姓名、年齡、信箱等。當物件非常小時，Hash 會將資料壓縮後儲存，因此單台 redis 可以儲存數百萬個小物件。
+
+- Hash 的基礎操作
+  - CRUD: HSET HGET HDEL
+  - 多欄位讀: HGETALL HKEYS HMGET
+
+### Sorted Set
+
+為有序的 Set，其順序會依照傳入的權重值排序，在查找資料時，可使用 binary search，因此查找效率高。由於 Sorted Set 的高效能查詢，Sorted Set可當做一組Hash 資料的 index，將物件 id 以及 index field 儲存在 Sort Set，單筆物件的完整資料儲存在 Hash。
+
+- Sorted Set 的基礎操作
+  - CRUD: ZADD ZRANGE ZREM
+  - Rank 操作: ZRANK找元素位置，ZSCORE設定元素權重值
 
 ## redis Key
 
