@@ -69,8 +69,6 @@
 
 ### 方法二
 
-
-
 ## 運算子、判斷
 
 ### `+`: 算術相加
@@ -894,3 +892,12 @@ $str = "Mary Had A Little Lamb and She LOVED It So";
 $str = strtoupper($str);
 //  MARY HAD A LITTLE LAMB AND SHE LOVED IT SO
 ```
+
+### `define()` 定義一個常數
+
+- `define(name,value,case_insensitive)`
+  - name 必須，規定常數的名稱。通常為全大寫 + 下划線。
+  - value 必須，規定常數的值。
+  - case_insensitive 必須，規定常數是否大小寫敏感，預設為 false : 大小寫敏感。
+
+- 常數類似變數，但常數在設定之後，其值無法改變，常數名不用 `$` 開頭，作用域不影響對常數的存取，其值只能是字串或數值

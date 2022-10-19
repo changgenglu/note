@@ -1,5 +1,16 @@
 # Redis 學習筆記
 
+- [Redis 學習筆記](#redis-學習筆記)
+  - [資料類型](#資料類型)
+    - [string](#string)
+    - [List](#list)
+    - [Set](#set)
+    - [Hash](#hash)
+    - [Sorted Set](#sorted-set)
+  - [redis Key](#redis-key)
+  - [Redis GUI](#redis-gui)
+  - [windows 安裝 phpredis](#windows-安裝-phpredis)
+
 ## 資料類型
 
 - redis 支援五種資料類型：
@@ -215,3 +226,28 @@ string 最大可以儲存 512MB
 > [Another Redis Desktop Manager](https://github.com/qishibo/AnotherRedisDesktopManager/)
 >
 > [[Tool] Redis 管理工具 - Another Redis Desktop Manager](https://marcus116.blogspot.com/2020/04/tool-redis-another-redis-desktop-manager.html)
+
+## windows 安裝 phpredis
+
+> 下載 phpredis 需要對應 php 的版本
+>
+> PHP Version `7.4.29`
+>
+> Architecture: `x64`
+>
+> PHP Extension Build: API20190902,`TS`,`VC15`
+
+[windows phpredis](https://windows.php.net/downloads/pecl/releases/redis/)
+
+5.3.7 -> php_redis-`5.3.7-7.4`-`ts-vc15`-`x64`.zip
+
+將下載的檔案解壓縮後，將資料夾內 `php_redis.dll` 和 `php_redis.pdb` 複製到 php 的擴充套件 `ext` 目錄之下
+
+最後在 php.ini 檔案中，加入兩行程式碼(注意順序)
+
+```txt
+extension=php_igbinary.dll
+extension=php_redis.dll
+```
+
+最後在 phpinfo 中檢查 php-redis 是否安裝成功

@@ -23,6 +23,9 @@
     - [設置 mosquitto (同 mosquitto-auth-plug 套件)](#設置-mosquitto-同-mosquitto-auth-plug-套件)
     - [安裝 mosquitto-go-auth](#安裝-mosquitto-go-auth)
     - [acl 權限設定](#acl-權限設定)
+  - [MQTT Client](#mqtt-client)
+    - [安裝](#安裝)
+    - [設定 mqtt-client 連線](#設定-mqtt-client-連線)
 
 ## 概述
 
@@ -157,7 +160,7 @@ mosquitto 的 broker 通訊埠號預設為：1833，因此需要在 server 的�
 
 讓外界可以透過這個通道跟 MQTT Broker 溝通
 
-- 打開資訊欄 => 虛擬私有雲網路 => 防火牆 => CREATE FIREWALL POLICY
+- 打開資訊欄 => 虛擬私有雲網路 => 防火牆 => CREATE FIREWALL rule
 - 填入
   - 名稱：自訂名稱
   - 目標：選擇網路中所有執行個體
@@ -521,4 +524,45 @@ auth_opt_mysql_aclquery SELECT topic FROM test_acl WHERE test_user_id = (SELECT 
 5: read & subscribe access (rs)
 6: write & subscribe access (ws)
 7: read, write and subscribe access (rws)
+```
+
+## MQTT Client
+
+> [php-mqtt/client](https://github.com/php-mqtt/client)
+>
+> [php-mqtt/client-examples](https://github.com/php-mqtt/client-examples)
+
+### 安裝
+
+```git
+git clone https://github.com/php-mqtt/client-examples.git
+```
+
+將專案複製到本機，進入專案資料夾，啟動 composer
+
+```bash
+cd client-examples
+composer install
+```
+
+### 設定 mqtt-client 連線
+
+進入 share 資料夾，編輯 config.php
+
+```php
+<?php
+
+declare(strict_types=1);
+
+define('MQTT_BROKER_HOST', '127.0.0.1');  // host
+define('MQTT_BROKER_PORT', 1883);         // port
+define('MQTT_BROKER_TLS_PORT', 8883);     // tls port
+
+define('TLS_SERVER_CA_FILE', '');
+define('TLS_CLIENT_CERTIFICATE_FILE', '');
+define('TLS_CLIENT_CERTIFICATE_KEY_FILE', '');
+define('TLS_CLIENT_CERTIFICATE_KEY_PASSPHRASE', null);
+
+define('AUTHORIZATION_USERNAME', '');     // mqtt broker username
+define('AUTHORIZATION_PASSWORD', '');     // mqtt broker password
 ```
