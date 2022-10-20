@@ -68,8 +68,11 @@ php artisan make:model New -mfsc
 class UserInfo extends Model
 {
     protected $table = 'user_data';  // 資料表名稱
+
     protected $primaryKey = 'id';   // 主鍵
+
     public $timestamps = false;
+
     protected $fillable = [
         'userId',
         'userName',
@@ -77,27 +80,42 @@ class UserInfo extends Model
         'passord',
         'email'
     ];
+
+    protected $casts = [
+        'is_admin' => 'boolean',
+    ];
 }
 ```
 
-- public $timestamps = false // 設定時間戳記
-- $fillable ：調用 create() update() 時，可以大量新增、修改的欄位。若沒有添加這個屬性，新增修改的動作將無法實現。
+- public $timestamps = false // 關閉時間戳記，預設為開啟
+- 批量賦值：調用 create() update() 時，可以大量新增、修改的欄位。若沒有添加這個屬性，新增修改的動作將無法實現。
 
-  - fillable：設定可以大量新增的欄位（白名單）
+  - $fillable 設定可以大量新增的欄位（白名單）
 
-    ```php=
-    class User extends Model {
-        protected $fillable = ['userId','userName','account','pw','email'];
-    }
+    ```php
+    protected $fillable = ['userId','userName','account','pw','email'];
     ```
 
-  - guarded：設定需要被保護的欄位（黑名單）
+  - $guarded 設定需要被保護的欄位（黑名單）
 
-    ```php=
-    class User extends Model {
-        protected $guarded = [‘uuid’, ‘pw’];
-    }
+    ```php
+    protected $guarded = [‘uuid’, ‘pw’];
     ```
+
+- 屬性類型轉換：`$casts` 可以將屬性轉換為指定的類型，支援的類型有
+  - `integer`
+  - `real`
+  - `float`
+  - `double`
+  - `decimal:<digits>` 需定義小數位的個數，如 `decimal:2`
+  - `string`
+  - `boolean`
+  - `object`
+  - `array`
+  - `collection`
+  - `date`
+  - `datetime`
+  - `timestamps`
 
 ## 關聯
 
