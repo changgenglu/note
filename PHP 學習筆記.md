@@ -157,6 +157,8 @@
   }
   ```
 
+  - `continue` 跳出本次循環，繼續執行後面的巡
+
 - `array_key_first()` 取得陣列中第一個 key 值
 - `array_key_last()` 取得陣列中最後一個 key 值
 

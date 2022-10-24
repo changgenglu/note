@@ -95,74 +95,113 @@ drwx------ 2 rexlite_public rexlite_public  4096 Sep  2 01:10 .ssh/
 
 ### 指令
 
-- `chown` 更改檔案所有權給其他使用者
+#### `chown` 更改檔案所有權給其他使用者
 
-  - `-R` 針對檔案或是目錄下檔案做遞歸處理(整個目錄下每一個檔案不遺漏處理)
+- `-R` 針對檔案或是目錄下檔案做遞歸處理(整個目錄下每一個檔案不遺漏處理)
 
-  - 將 home 底下 video 目錄所有者，改為 user
+- 將 home 底下 video 目錄所有者，改為 user
 
-    ```bash
-    chown user /home/video
-    ```
+  ```bash
+  chown user /home/video
+  ```
 
-  - 將 home 底下 video 目錄的所有者，改成 user，擁有群組改為 video
+- 將 home 底下 video 目錄的所有者，改成 user，擁有群組改為 video
 
-    ```bash
-    chown user:video /home/video
-    ```
+  ```bash
+  chown user:video /home/video
+  ```
 
-  - 將 home 底下 video 目錄與目錄裡面所有檔案，擁有者改為 user
+- 將 home 底下 video 目錄與目錄裡面所有檔案，擁有者改為 user
 
-    ```bash
-    chown -R user /home/video
-    ```
+  ```bash
+  chown -R user /home/video
+  ```
 
-- `chmod` 更改檔案權限
+#### `chmod` 更改檔案權限
 
-  - 用數字類型改變檔案權限
+- 用數字類型改變檔案權限
 
-    ```bash
-    chmod -R xyz < filename | directory >
-    ```
+  ```bash
+  chmod -R xyz < filename | directory >
+  ```
 
-    - 若要將.bashrc 這個檔案所有權限都設為啟用
-
-      ```bash
-      chmod 777 .bashrc
-      ```
-
-    - 若要將檔案權限，改為可執行檔，且不開放修改。  
-      則權限為 `-rwxr-xr-x` ，其分數為 755。
-
-    - 若要檔案不希望其他人看到。  
-      其權限為 `-rwxr-----`，分數為 740。
-
-  - 符號類型改變檔案權限
-
-    - `+` 加入
-    - `-` 除去
-    - `=` 設定
+  - 若要將.bashrc 這個檔案所有權限都設為啟用
 
     ```bash
-    chmod [ u | g | o | a ] [ + | - | = ] [ r | w | x ] < filename | directory >
+    chmod 777 .bashrc
     ```
 
-    - 若要將 `.bashrc` 權限設為 `-rwxr-xr-x`
+  - 若要將檔案權限，改為可執行檔，且不開放修改。  
+    則權限為 `-rwxr-xr-x` ，其分數為 755。
 
-      - `user` 可讀、可寫、可執行
-      - `group` | `others` 可讀、可執行
+  - 若要檔案不希望其他人看到。  
+    其權限為 `-rwxr-----`，分數為 740。
 
-      ```bash
-      chmod u=rwx, go=rx .bashrc
-      ```
+- 符號類型改變檔案權限
 
-    - 若權限為 `-rwxr-xr--`
+  - `+` 加入
+  - `-` 除去
+  - `=` 設定
 
-      ```bash
-      chmod u=rwx, g=rx, o=r < filename >
-      ```
+  ```bash
+  chmod [ u | g | o | a ] [ + | - | = ] [ r | w | x ] < filename | directory >
+  ```
 
-    - 若不知道此檔案的權限，但想要將此檔案設定為全部人都可以寫入  
-      `chmod a+w < filename >`
-    - 若要將權限去除，而不更動其他已存在的權限  
-      `chmod a-x < filename >`
+  - 若要將 `.bashrc` 權限設為 `-rwxr-xr-x`
+
+    - `user` 可讀、可寫、可執行
+    - `group` | `others` 可讀、可執行
+
+    ```bash
+    chmod u=rwx, go=rx .bashrc
+    ```
+
+  - 若權限為 `-rwxr-xr--`
+
+    ```bash
+    chmod u=rwx, g=rx, o=r < filename >
+    ```
+
+  - 若不知道此檔案的權限，但想要將此檔案設定為全部人都可以寫入  
+    `chmod a+w < filename >`
+  - 若要將權限去除，而不更動其他已存在的權限  
+    `chmod a-x < filename >`
+
+#### `&` 背景執行程式
+
+- 在執行程式後面加上 `&` 使程式可以在背景執行
+
+```bash
+php subscribe_with_auth.php &
+```
+
+#### `jobs` 檢視任務
+
+```bash
+jobs -l
+[1]+ 1040421 Running php subscribe_with_auth.php &
+```
+
+#### `fg` 將任務切換至前景執行，`bg` 將任務切換至背景執行
+
+```bash
+jobs -l
+[1]+ 1040421 Running php subscribe_with_auth.php &
+```
+
+#### `disown` 卸除目前預設的背景行程
+
+- `disown -a` 卸除所有工作，無論其狀態是否在執行中或是暫停
+- `disown -ar` 僅卸除所有執行中的工作
+- `disown -h` 不要卸除工作，只是單純讓程式可以在登出後繼續執行。
+
+```bash
+jobs -l
+[1]+ 1040421 Running php subscribe_with_auth.php &
+```
+
+#### `ps aux | less` 顯示所有正在執行中的進程
+
+#### `kill 10000` 刪除執行中的進程，`kill` 加上 PID 的數字即可
+
+#### `nohup`
