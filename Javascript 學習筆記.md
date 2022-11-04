@@ -808,37 +808,35 @@ console.log(x); // 100
 
 ## 方法
 
-### 將物件轉換為陣列
+### 取得 base_url
 
-```json
-"params": {
-  "Va": "115.4",
-  "Vb": "116.9",
-  "Vc": "117.1",
-  "Vab": "200.8",
-  "Vbc": "202.4",
-  "Vca": "201.0",
-  "EPS": "30798.85",
-  "Ia": "11.760",
-  "Ib": "20.880",
-  "Ic": "13.520",
-  "PS": "10.040",
-  "F": "60.0",
-  "PFS": "0.962",
-  "EQS": "10067.65",
-  "DM": "26.55",
-  "EPa": "9461.48"
-}
-```
+- 在 html 加入 meta 標籤
 
-- object.values()
-  可以直接傳入一個物件，並將傳入的物件直接轉為陣列的形式。
+  ```html
+  <head>
+    <meta name="base-url" content="{{ url('/') }}" />
+  </head>
+  ```
+
+- 此時就可以透過 meta 標籤取得 base_url
+
+  ```javascript
+  window.base_url = document.head.querySelector('meta[name="base-url"]');
+  ```
+
+### document
+
+#### `.querySelector()` 元素選擇器
+
+用法和 css 一樣，選取 id 元素時用 `#`，選取 class 元素時用 `.`
 
 ```javascript
-
+document.querySelector(".title");
 ```
 
-## 方法
+#### `.querySelectorAll()` 選取所有指定元素
+
+用法和 `.querySelector()` 一樣，但不同於 `.querySelector()`，`.querySelectorAll()` 可以一次選取所有具有相同元素的內容
 
 ## 額外補充
 
