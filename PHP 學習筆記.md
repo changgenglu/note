@@ -2,6 +2,8 @@
 
 ###### tags: `php`
 
+                - [tags: `php`](#tags-php)
+
 - [PHP 學習筆記](#php-學習筆記) - [tags: `php`](#tags-php)
   - [運算子、判斷](#運算子判斷)
     - [`+`: 算術相加](#-算術相加)
@@ -48,7 +50,7 @@
       - [`str_split()`](#str_split)
       - [`array_slice()`](#array_slice)
     - [`implode()` 將陣列轉為字串](#implode-將陣列轉為字串)
-    - [`array_filter()` 過濾陣列元素](#array_filter-過濾陣列元素)
+    - [`array_filter()` 過濾陣列元素(刪除陣列空值)](#array_filter-過濾陣列元素刪除陣列空值)
     - [`str_pad()` 填充字串為指定長度](#str_pad-填充字串為指定長度)
     - [資料序列化及反序列化](#資料序列化及反序列化)
       - [`string serialize()` 序列化](#string-serialize-序列化)
@@ -1134,57 +1136,54 @@ Array
 - `separator` 可選。規定數組元素之間放置的內容。默認是 ""（空字符串）。
 - `array` 必需。要結合為字符串的數組。
 
-```php
-<?php
-$arr = [1,2,3,4,5,6];
-print_r(implode('=', $arr));
-```
+  ```php
+  $arr = [1,2,3,4,5,6];
+  print_r(implode('=', $arr));
+  ```
 
-```log
-"1=2=3=4=5=6"
-```
+  ```log
+  "1=2=3=4=5=6"
+  ```
 
-### `array_filter()` 過濾陣列元素
+### `array_filter()` 過濾陣列元素(刪除陣列空值)
 
 - `array_filter($arrayName, $callbackFunction, $callbackParameter)`
 
 - `$arrayName` 必須，目標陣列
 - `$callbackFunction` 可選，指定刪除的參數，預設刪除陣列中等於 false 的值
-- `$flag` 可選，引用傳遞給回傳函數的參數
+- `$callbackParameter` 可選，引用傳遞給回傳函數的參數
+
   - `ARRAY_FILTER_USE_KEY` 將 key 作為唯一參數傳遞給回調函數，而不是數組的值
   - `ARRAY_FILTER_USE_BOTH` 將值和鍵都作為參數而不是值傳遞給回調
 
-```PHP
-<?php
+  ```php
+  // PHP function to check for even elements in an array
+  function Even($array)
+  {
+      // returns if the input integer is even
+      if($array%2==0)
+         return TRUE;
+      else
+         return FALSE;
+  }
 
-// PHP function to check for even elements in an array
-function Even($array)
-{
-    // returns if the input integer is even
-    if($array%2==0)
-       return TRUE;
-    else
-       return FALSE;
-}
-
-$array = array(12, 0, 0, 18, 27, 0, 46);
-print_r(array_filter($array, "Even"));
-
-```
+  $array = array(12, 0, 0, 18, 27, 0, 46);
+  print_r(array_filter($array, "Even"));
+  ```
 
 輸出
 
-```log
-Array
-(
-    [0] => 12
-    [1] => 0
-    [2] => 0
-    [3] => 18
-    [5] => 0
-    [6] => 46
-)
-```
+    ```log
+    Array
+    (
+        [0] => 12
+        [1] => 0
+        [2] => 0
+        [3] => 18
+        [5] => 0
+        [6] => 46
+    )
+    ```
 
 ### `str_pad()` 填充字串為指定長度
 
