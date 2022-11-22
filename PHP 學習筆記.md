@@ -101,46 +101,46 @@
 
 - 用於確定一個 php 變數是否屬於某一 class 的實例
 
-  ```php
-  class MyClass
-  {
-  }
+      ```php
+      class MyClass
+      {
+      }
 
-  class NotMyClass
-  {
-  }
-  $a = new MyClass;
+      class NotMyClass
+      {
+      }
+      $a = new MyClass;
 
-  var_dump($a instanceof MyClass);
-  var_dump($a instanceof NotMyClass);
-  ```
+      var_dump($a instanceof MyClass);
+      var_dump($a instanceof NotMyClass);
+      ```
 
-  ```log
-  bool(true)
-  bool(false)
-  ```
+      ```log
+      bool(true)
+      bool(false)
+      ```
 
 - 也可以用來確定一個變數是不是繼承自某一父類別的子類別的實例
 
-  ```php
-  class ParentClass
-  {
-  }
+      ```php
+      class ParentClass
+      {
+      }
 
-  class MyClass extends ParentClass
-  {
-  }
+      class MyClass extends ParentClass
+      {
+      }
 
-  $a = new MyClass;
+      $a = new MyClass;
 
-  var_dump($a instanceof MyClass);
-  var_dump($a instanceof ParentClass);
-  ```
+      var_dump($a instanceof MyClass);
+      var_dump($a instanceof ParentClass);
+      ```
 
-  ```log
-  bool(true)
-  bool(true)
-  ```
+      ```log
+      bool(true)
+      bool(true)
+      ```
 
 ## 魔術常數
 
@@ -148,20 +148,20 @@
 
 ### `__LINE__` 檔案中的當前行號
 
-```php
-echo __LINE__ . PHP_EOL; // 1
-echo __LINE__ . PHP_EOL; // 2
-echo __LINE__ . PHP_EOL; // 3
-```
+    ```php
+    echo __LINE__ . PHP_EOL; // 1
+    echo __LINE__ . PHP_EOL; // 2
+    echo __LINE__ . PHP_EOL; // 3
+    ```
 
 ### `__FILE__` 檔案的完整路徑和檔名
 
 - 若將其使用在 `include` 中，則返回包含檔案的名稱。
 - `__FILE__`總是包含一個絕對路徑(如果是符號連線，則是解析後的絕對路徑)。
 
-```php
-echo __FILE__ . PHP_EOL; // D:\phpproject\php\newblog\php-magic-constant.php
-```
+      ```php
+      echo __FILE__ . PHP_EOL; // D:\phpproject\php\newblog\php-magic-constant.php
+      ```
 
 ### `__DIR__` 檔案所在的目錄
 
@@ -169,135 +169,135 @@ echo __FILE__ . PHP_EOL; // D:\phpproject\php\newblog\php-magic-constant.php
 - 其等同於 `dirname(__FILE__)`。
 - 除非是根目錄，否則目錄中名不包括末尾的斜線。
 
-```php
-echo __DIR__ . PHP_EOL; // D:\phpproject\php\newblog
-```
+      ```php
+      echo __DIR__ . PHP_EOL; // D:\phpproject\php\newblog
+      ```
 
 ### `__FUNCTION__` 返回該函數被定義時的名字
 
-```php
-echo __FUNCTION__ . PHP_EOL; // 函數尚未被定義
-function testFunction()
-{
-  echo __FUNCTION__ . PHP_EOL; //  testFunction
-}
+    ```php
+    echo __FUNCTION__ . PHP_EOL; // 函數尚未被定義
+    function testFunction()
+    {
+      echo __FUNCTION__ . PHP_EOL; //  testFunction
+    }
 
-class TestClass
-{
-  function testFunctionButInClass()
-  {
-    echo __FUNCTION__ . PHP_EOL; // testFunctionButInClass
-  }
-}
+    class TestClass
+    {
+      function testFunctionButInClass()
+      {
+        echo __FUNCTION__ . PHP_EOL; // testFunctionButInClass
+      }
+    }
 
-testFunction();
-$test = new TestClass();
-$test->testFunctionButInClass();
-```
+    testFunction();
+    $test = new TestClass();
+    $test->testFunctionButInClass();
+    ```
 
 ### `__CLASS__` 返回類別名稱
 
-```php
-echo __CLASS__ . PHP_EOL; // 類別尚未被宣告
-function testClass()
-{
+    ```php
     echo __CLASS__ . PHP_EOL; // 類別尚未被宣告
-}
-
-trait TestClassTrait
-{
-    function testClass2()
+    function testClass()
     {
-        echo __CLASS__ . PHP_EOL; // TestClassClass
+        echo __CLASS__ . PHP_EOL; // 類別尚未被宣告
     }
-}
 
-class TestClassClass
-{
-    use TestClassTrait;
-
-    function testClass1()
+    trait TestClassTrait
     {
-        echo __CLASS__ . PHP_EOL; // TestClassClass
+        function testClass2()
+        {
+            echo __CLASS__ . PHP_EOL; // TestClassClass
+        }
     }
-}
 
-testClass();
-$test = new TestClassClass();
-$test->testClass1();
-$test->testClass2();
-```
+    class TestClassClass
+    {
+        use TestClassTrait;
+
+        function testClass1()
+        {
+            echo __CLASS__ . PHP_EOL; // TestClassClass
+        }
+    }
+
+    testClass();
+    $test = new TestClassClass();
+    $test->testClass1();
+    $test->testClass2();
+    ```
 
 ### `__TRAIT__` Trait 的名字
 
-```php
-echo __TRAIT__ . PHP_EOL; // 什麼也沒有
-function testTrait()
-{
+    ```php
     echo __TRAIT__ . PHP_EOL; // 什麼也沒有
-}
-
-trait TestTrait
-{
-    function testTrait2()
-    {
-        echo __TRAIT__ . PHP_EOL; // TestTrait
-    }
-}
-
-class TestTraitClass
-{
-    use TestTrait;
-
-    function testTrait1()
+    function testTrait()
     {
         echo __TRAIT__ . PHP_EOL; // 什麼也沒有
     }
-}
 
-testTrait();
-$test = new TestTraitClass();
-$test->testTrait1();
-$test->testTrait2();
-```
+    trait TestTrait
+    {
+        function testTrait2()
+        {
+            echo __TRAIT__ . PHP_EOL; // TestTrait
+        }
+    }
+
+    class TestTraitClass
+    {
+        use TestTrait;
+
+        function testTrait1()
+        {
+            echo __TRAIT__ . PHP_EOL; // 什麼也沒有
+        }
+    }
+
+    testTrait();
+    $test = new TestTraitClass();
+    $test->testTrait1();
+    $test->testTrait2();
+    ```
 
 ### `__METHOD__` 類別的方法名稱，返回該方法被定義時的名字
 
-```php
-echo __METHOD__ . PHP_EOL; // 尚無方法
+    ```php
+    echo __METHOD__ . PHP_EOL; // 尚無方法
 
-function testmethod() {
-  echo __METHOD__ . PHP_EOL; // testMethod
-}
+    function testmethod() {
+      echo __METHOD__ . PHP_EOL; // testMethod
+    }
 
-class TestMethodClass
-{
-  function testmethodButinClass() {
-    echo __METHOD__ . PHP_EOL; // TestMethodClass::testmethodButinClass
-  }
-}
+    class TestMethodClass
+    {
+      function testmethodButinClass() {
+        echo __METHOD__ . PHP_EOL; // TestMethodClass::testmethodButinClass
+      }
+    }
 
-testMethod();
-$test = new TestClassClass();
-$test->testMethodButinClass();
-```
+    testMethod();
+    $test = new TestClassClass();
+    $test->testMethodButinClass();
+    ```
 
 ### `__NAMESPACE__` 當前命名空間的名稱
 
 - 此常數是在編譯時定義的
 
-```php
-echo __NAMESPACE__ . PHP_EOL; // test\magic\constant
-class TestNameSpaceClass
-{
-    function testNamespace() {
+        ```php
         echo __NAMESPACE__ . PHP_EOL; // test\magic\constant
-    }
-}
+        class TestNameSpaceClass
+        {
+            function testNamespace() {
+                echo __NAMESPACE__ . PHP_EOL; // test\magic\constant
+            }
+        }
 
-$test = new TestNameSpaceClass();
-$test->testNamespace();
-```
+        $test = new TestNameSpaceClass();
+        $test->testNamespace();
+        ```
 
 ## 魔術方法
 
@@ -309,199 +309,200 @@ $test->testNamespace();
 
 php 中構造方法是物件創建完成後，第一個被物件自動呼叫的方法。在每個類別中，都有一個構造方法，如果沒有宣告，那麼類別中會預設存在一個沒有參數且內容為空的構造方法。
 
-1. 作用：通常構造方法被用來執行一些初始化任務，如對成員屬性在創建對象時，賦予初始值
-2. 在類別中的聲明格式：
+1.  作用：通常構造方法被用來執行一些初始化任務，如對成員屬性在創建對象時，賦予初始值
+2.  在類別中的聲明格式：
 
-   ```php
-   function __construct (params) {
-    // code
-    // 通常用來對成員屬性進行初始化賦值
-   }
-   ```
+        ```php
+        function __construct (params) {
+         // code
+         // 通常用來對成員屬性進行初始化賦值
+        }
+        ```
 
-3. 在類別中聲明構造方法需要注意的事項
-   1. 在同一個類別中只能宣告一個構造方法
-   2. 必定是以雙底線開始
+3.  在類別中聲明構造方法需要注意的事項
 
-```php
-class Person
-{
-  public $name;
-  public $age;
-  public $sex;
-  /**
-   * 顯示宣告一個構造函數且帶參數
-   */
-  public function __construct($name = "", $age = 22, $sex = "man") {
-    $this->name = $name;
-    $this->sex = $sex;
-    $this->age = $age;
-  }
-  /**
-   * say 方法
-   */
-  public function say()
-  {
-    echo "我叫：" . $this->name . "，性別：" . $this->sex . "，年齡：" . $this->age;
-  }
-}
+    1.  在同一個類別中只能宣告一個構造方法
+    2.  必定是以雙底線開始
 
-/**
- * $persion1
- */
-$persion1 = new Persion()
-echo $persion1->say(); // 我叫：，性別：男，年齡：27
+             ```php
+             class Person
+             {
+               public $name;
+               public $age;
+               public $sex;
+               /**
+                * 顯示宣告一個構造函數且帶參數
+                */
+               public function __construct($name = "", $age = 22, $sex = "man") {
+                 $this->name = $name;
+                 $this->sex = $sex;
+                 $this->age = $age;
+               }
+               /**
+                * say 方法
+                */
+               public function say()
+               {
+                 echo "我叫：" . $this->name . "，性別：" . $this->sex . "，年齡：" . $this->age;
+               }
+             }
 
-/**
- * $persion2
- *
- * @param $name 小明
- */
-$persion2 = new Persion('小明');
-echo $persion2->say(); // 我叫：小明，性別：男，年齡：27
+             /**
+              * $persion1
+              */
+             $persion1 = new Persion()
+             echo $persion1->say(); // 我叫：，性別：男，年齡：27
 
-/**
- * $persion3
- *
- * @param $name 李四
- * @param $sex 男
- * @param $age 25
- */
-$persion3 = new Persion('李四', '男', '25')
-echo $persion3->say(); // 我叫：李四，性別：男，年齡：25
-```
+             /**
+              * $persion2
+              *
+              * @param $name 小明
+              */
+             $persion2 = new Persion('小明');
+             echo $persion2->say(); // 我叫：小明，性別：男，年齡：27
+
+             /**
+              * $persion3
+              *
+              * @param $name 李四
+              * @param $sex 男
+              * @param $age 25
+              */
+             $persion3 = new Persion('李四', '男', '25')
+             echo $persion3->say(); // 我叫：李四，性別：男，年齡：25
+             ```
 
 ### `__destruct()` 類別的解構函數
 
 允許在銷毀一個類別之前，執行一些操作或完成一些功能，比如關閉文件，釋放結果集等
 
-1. 宣告格式
+1.  宣告格式
 
-   ```php
-   function __destruct()
-   {
-     // code
-   }
-   ```
+        ```php
+        function __destruct()
+        {
+          // code
+        }
+        ```
 
-2. 解構函數的作用
+2.  解構函數的作用
 
-```php
+        ```php
 
-class Person{
+        class Person{
 
-    public $name;
-    public $age;
-    public $sex;
+            public $name;
+            public $age;
+            public $sex;
 
-    public function __construct($name="", $sex="男", $age=22)
-    {
-        $this->name = $name;
-        $this->sex  = $sex;
-        $this->age  = $age;
-    }
+            public function __construct($name="", $sex="男", $age=22)
+            {
+                $this->name = $name;
+                $this->sex  = $sex;
+                $this->age  = $age;
+            }
 
-    /**
-     * say 说话方法
-     */
-    public function say()
-    {
-        echo "我叫：".$this->name."，性别：".$this->sex."，年齡：".$this->age;
-    }
+            /**
+             * say 说话方法
+             */
+            public function say()
+            {
+                echo "我叫：".$this->name."，性别：".$this->sex."，年齡：".$this->age;
+            }
 
-    /**
-     * 声明一个析构方法
-     */
-    public function __destruct()
-    {
-        echo "我覺得我還可以搶救一下，我的名字叫".$this->name;
-    }
-}
+            /**
+             * 声明一个析构方法
+             */
+            public function __destruct()
+            {
+                echo "我覺得我還可以搶救一下，我的名字叫".$this->name;
+            }
+        }
 
-$Person = new Person("小明");
-unset($Person); // 銷毀上面建立的物件
-```
+        $Person = new Person("小明");
+        unset($Person); // 銷毀上面建立的物件
+        ```
 
 ### `__call()` 在物件中呼叫一個不可訪問的方法時，呼叫此方法
 
 此方法接受兩參數，`$function_name` 會自動接收不存在的方法名，`$arguments` 則以陣列的方式接收不存在方法的多個參數。
 
-1. 宣告此方法的格式
+1.  宣告此方法的格式
 
-   ```php
-   function __call(string $function_nama, array $arguments){
-     // code
-   }
-   ```
+        ```php
+        function __call(string $function_nama, array $arguments){
+          // code
+        }
+        ```
 
-2. 此方法的作用
+2.  此方法的作用
 
 為避免當呼叫的方法不存在而產生錯誤，導致意外的程序中止，可以使用 `__call()` 方法來避免。
 
 剛方法在呼叫的方法不存在時，會自動呼叫，程式仍會繼續執行下去。
 
-```php
-class Person
-{
-    function say()
+    ```php
+    class Person
     {
+        function say()
+        {
 
-           echo "Hello, world!<br>";
-    }
+               echo "Hello, world!<br>";
+        }
 
-    /**
-     * 宣告此方法用來處理，當呼叫了此物件中不存在的方法
-     */
-    function __call($funName, $arguments)
-    {
-          echo "你所呼叫的函数：" . $funName . "(參數：" ;  // 輸出呼叫的不存在方法名稱
-          print_r($arguments); // 输出呼叫不存在方法的參數列表
-          echo ")不存在！<br>\n"; // 結束換行
+        /**
+         * 宣告此方法用來處理，當呼叫了此物件中不存在的方法
+         */
+        function __call($funName, $arguments)
+        {
+              echo "你所呼叫的函数：" . $funName . "(參數：" ;  // 輸出呼叫的不存在方法名稱
+              print_r($arguments); // 输出呼叫不存在方法的參數列表
+              echo ")不存在！<br>\n"; // 結束換行
+        }
     }
-}
-$Person = new Person();
-$Person->run("teacher"); // 呼叫物件中不存在的方法，此時會自動呼叫物件中的 __call() 方法
-$Person->eat("小明", "蘋果");
-$Person->say();
-```
+    $Person = new Person();
+    $Person->run("teacher"); // 呼叫物件中不存在的方法，此時會自動呼叫物件中的 __call() 方法
+    $Person->eat("小明", "蘋果");
+    $Person->say();
+    ```
 
 輸出
 
-```log
-你所调用的函数：run(参数：Array ( [0] => teacher ) )不存在！
+    ```log
+    你所调用的函数：run(参数：Array ( [0] => teacher ) )不存在！
 
-你所调用的函数：eat(参数：Array ( [0] => 小明 [1] => 苹果 ) )不存在！
+    你所调用的函数：eat(参数：Array ( [0] => 小明 [1] => 苹果 ) )不存在！
 
-Hello, world!
-```
+    Hello, world!
+    ```
 
 ### `__callStatic()` 用靜態方式呼叫一個不可訪問的方法時，呼叫此方法
 
-```php
-<?php
-class Person
-{
-    function say()
+    ```php
+    <?php
+    class Person
     {
+        function say()
+        {
 
-        echo "Hello, world!<br>";
-    }
+            echo "Hello, world!<br>";
+        }
 
-    /**
-     * 宣告此方法用來處理當靜態呼叫了不存在的方法時
-     */
-    public static function __callStatic($funName, $arguments)
-    {
-        echo "你所呼叫的靜態方法：" . $funName . "(參數：" ;  // 輸出呼叫不存在的方法名稱
-        print_r($arguments); // 输出呼叫不存在方法時傳入的參數
-        echo ")不存在！<br>\n"; // 结束换行
+        /**
+         * 宣告此方法用來處理當靜態呼叫了不存在的方法時
+         */
+        public static function __callStatic($funName, $arguments)
+        {
+            echo "你所呼叫的靜態方法：" . $funName . "(參數：" ;  // 輸出呼叫不存在的方法名稱
+            print_r($arguments); // 输出呼叫不存在方法時傳入的參數
+            echo ")不存在！<br>\n"; // 结束换行
+        }
     }
-}
-$Person = new Person();
-$Person::run("teacher"); // 用於呼叫物件中不存在的靜態方法時，會自動呼叫物件中的__callStatic()方法
-$Person::eat("小明", "蘋果");
-$Person->say();
-```
+    $Person = new Person();
+    $Person::run("teacher"); // 用於呼叫物件中不存在的靜態方法時，會自動呼叫物件中的__callStatic()方法
+    $Person::eat("小明", "蘋果");
+    $Person->say();
+    ```
 
 ### `__get()` 獲取一個類別的成員變數時呼叫
 
@@ -509,95 +510,95 @@ $Person->say();
 
 - 此方法的作用：在程式運行中，透過他可以在物件外面獲取私有屬性成員的值
 
-```php
-class Person
-{
-    private $name;
-    private $age;
+        ```php
+        class Person
+        {
+            private $name;
+            private $age;
 
-    function __construct($name="", $age=1)
-    {
-        $this->name = $name;
-        $this->age = $age;
-    }
-
-    /**
-     * 在類別中添加__get()方法，在直接獲取屬性時，自動呼叫一次，以屬性名作為參數傳入並處理
-     * @param $propertyName
-     *
-     * @return int
-     */
-    public function __get($propertyName)
-    {
-        if ($propertyName == "age") {
-            if ($this->age > 30) {
-                return $this->age - 10;
-            } else {
-                return $this->$propertyName;
+            function __construct($name="", $age=1)
+            {
+                $this->name = $name;
+                $this->age = $age;
             }
-        } else {
-            return $this->$propertyName;
-        }
-    }
-}
-$Person = new Person("小明", 60);   // 透過將 Presion 類別實例化的物件，並透過建構函示為屬性添加預設值
-echo "姓名：" . $Person->name . "<br>";   // 直接呼叫私有屬性 $name，自動呼叫了__get()方法可以間接獲取
-echo "年龄：" . $Person->age . "<br>";    // 自動呼叫 __get()方法，根據物件本身的情況會返回不同的值
-```
 
-```log
-姓名：小明
-年齡：50
-```
+            /**
+             * 在類別中添加__get()方法，在直接獲取屬性時，自動呼叫一次，以屬性名作為參數傳入並處理
+             * @param $propertyName
+             *
+             * @return int
+             */
+            public function __get($propertyName)
+            {
+                if ($propertyName == "age") {
+                    if ($this->age > 30) {
+                        return $this->age - 10;
+                    } else {
+                        return $this->$propertyName;
+                    }
+                } else {
+                    return $this->$propertyName;
+                }
+            }
+        }
+        $Person = new Person("小明", 60);   // 透過將 Presion 類別實例化的物件，並透過建構函示為屬性添加預設值
+        echo "姓名：" . $Person->name . "<br>";   // 直接呼叫私有屬性 $name，自動呼叫了__get()方法可以間接獲取
+        echo "年龄：" . $Person->age . "<br>";    // 自動呼叫 __get()方法，根據物件本身的情況會返回不同的值
+        ```
+
+        ```log
+        姓名：小明
+        年齡：50
+        ```
 
 ### `__set()` 設置一個類別的成員變數時呼叫
 
 - 作用：設置私有屬性，給一個未定義的屬性賦值，此方法會被觸發，傳入的參數是被設置的屬性名和值
 
-```php
-class Person
-{
-    private $name;
-    private $age;
+      ```php
+      class Person
+      {
+          private $name;
+          private $age;
 
-    public function __construct($name="",  $age=25)
-    {
-        $this->name = $name;
-        $this->age  = $age;
-    }
+          public function __construct($name="",  $age=25)
+          {
+              $this->name = $name;
+              $this->age  = $age;
+          }
 
-    /**
-     * 宣告此方法需兩個參數，直接為私有屬性賦值時自動呼叫，並可以排除非法賦值
-     *
-     * @param $property
-     * @param $value
-     */
-    public function __set($property, $value) {
-        if ($property=="age")
-        {
-            if ($value > 150 || $value < 0) {
-                return;
-            }
-        }
-        $this->$property = $value;
-    }
+          /**
+           * 宣告此方法需兩個參數，直接為私有屬性賦值時自動呼叫，並可以排除非法賦值
+           *
+           * @param $property
+           * @param $value
+           */
+          public function __set($property, $value) {
+              if ($property=="age")
+              {
+                  if ($value > 150 || $value < 0) {
+                      return;
+                  }
+              }
+              $this->$property = $value;
+          }
 
-    /**
-     * 在類別中宣告 say()，將所有的私有屬性輸出
-     */
-    public function say(){
-        echo "我叫".$this->name."，今年".$this->age."歲了";
-    }
-}
+          /**
+           * 在類別中宣告 say()，將所有的私有屬性輸出
+           */
+          public function say(){
+              echo "我叫".$this->name."，今年".$this->age."歲了";
+          }
+      }
 
-$Person= new Person("小明", 25); // 注意，初始值將被下面所更改
-// 自動呼叫 __set()，將數系名稱name傳遞給第一個參數，將屬性值"小明"傳遞給第二參數
-$Person->name = "小红";     // 赋值成功。如果没有__set()，則出錯。
-// 自動呼叫 __set() 函数，將屬性名稱 age 傳給第一個參數，將屬性值 26 傳給第二個參數
-$Person->age = 16; //赋值成功
-$Person->age = 160; //160是一个非法值，赋值失效
-$Person->say();  //输出：我叫小红，今年 16 歲了
-```
+      $Person= new Person("小明", 25); // 注意，初始值將被下面所更改
+      // 自動呼叫 __set()，將數系名稱name傳遞給第一個參數，將屬性值"小明"傳遞給第二參數
+      $Person->name = "小红";     // 赋值成功。如果没有__set()，則出錯。
+      // 自動呼叫 __set() 函数，將屬性名稱 age 傳給第一個參數，將屬性值 26 傳給第二個參數
+      $Person->age = 16; //赋值成功
+      $Person->age = 160; //160是一个非法值，赋值失效
+      $Person->say();  //输出：我叫小红，今年 16 歲了
+      ```
 
 ### `__isset()` 當私有屬性呼叫 isset() 或 empty() 時呼叫此方法
 
@@ -607,54 +608,54 @@ $Person->say();  //输出：我叫小红，今年 16 歲了
 
 - `foreach()` 尋訪陣列
 
-```php
-foreach ($array as $value) {
-  // 每次尋訪會將陣列的值存到value中，直到陣列結束
-}
-foreach ($array as $key => $value) {
-	// 每次尋訪會將陣列的值以及key，存到value中  key => 流水號
-}
-```
+      ```php
+      foreach ($array as $value) {
+        // 每次尋訪會將陣列的值存到value中，直到陣列結束
+      }
+      foreach ($array as $key => $value) {
+       // 每次尋訪會將陣列的值以及key，存到value中  key => 流水號
+      }
+      ```
 
 - `continue` 跳出本次循環，繼續執行後面的巡
 
 - `array_key_first()` 取得陣列中第一個 key 值
 - `array_key_last()` 取得陣列中最後一個 key 值
 
-```php
-$array  = array("dog", "rabbit", "horse", "rat", "cat");
-foreach($array as $index => $animal) {
-    if ($index === array_key_first($array))
-        echo $animal; // output: dog
+      ```php
+      $array  = array("dog", "rabbit", "horse", "rat", "cat");
+      foreach($array as $index => $animal) {
+          if ($index === array_key_first($array))
+              echo $animal; // output: dog
 
-    if ($index === array_key_last($array))
-        echo $animal; // output: cat
-}
-```
+          if ($index === array_key_last($array))
+              echo $animal; // output: cat
+      }
+      ```
 
 - `break` 跳出迴圈
 
-```php
-<?php
-foreach (array('1','2','3') as $first) {
-    echo "$first ";
-    foreach (array('3','2','1') as $second) {
-        echo "$second ";
-        if ($first == $second) {
-            break;  // this will break both foreach loops
-        }
-    }
-    echo ". ";  // never reached!
-}
-echo "Loop Ended";
-?>
-```
+      ```php
+      <?php
+      foreach (array('1','2','3') as $first) {
+          echo "$first ";
+          foreach (array('3','2','1') as $second) {
+              echo "$second ";
+              if ($first == $second) {
+                  break;  // this will break both foreach loops
+              }
+          }
+          echo ". ";  // never reached!
+      }
+      echo "Loop Ended";
+      ?>
+      ```
 
 - 輸出
 
-```log
-1 3 2 1 . 2 3 2 . 3 3 . Loop Ended
-```
+      ```log
+      1 3 2 1 . 2 3 2 . 3 3 . Loop Ended
+      ```
 
 ### `scandir()` 掃描指定的目錄，並返回為陣列
 
@@ -664,54 +665,159 @@ echo "Loop Ended";
 
 - `list(var1, var2...)` 宣告陣列中的值，使其成為變數
 
-```php
-$my_array = array('dog', 'cat', 'horse');
+      ```php
+      $my_array = array('dog', 'cat', 'horse');
 
-list($a, $b, $c) = $my_array;
-echo "i have serveral animals, a $a, a $b, a $c. ";
+      list($a, $b, $c) = $my_array;
+      echo "i have serveral animals, a $a, a $b, a $c. ";
 
-// i have several animals, a dog, a cat and a horse.
+      // i have several animals, a dog, a cat and a horse.
 
-```
+      ```
 
 ### `append()` 將傳入的值附加進陣列
 
 - `append(var1, var2)`
 
-```php
-// PHP function to illustrate the
-// append() method
+      ```php
+      // PHP function to illustrate the
+      // append() method
 
-$arrObj = new ArrayObject(array('Geeks', 'for', 'Geeks'));
+      $arrObj = new ArrayObject(array('Geeks', 'for', 'Geeks'));
 
-// Appending an array
-$arrObj->append(array('welcomes', 'you'));
+      // Appending an array
+      $arrObj->append(array('welcomes', 'you'));
 
-var_dump($arrObj);
-```
+      var_dump($arrObj);
+      ```
 
 - 輸出
 
-```log
-object(ArrayObject)#1 (1) {
-  ["storage":"ArrayObject":private]=>
-  array(4) {
-    [0]=>
-    string(5) "Geeks"
-    [1]=>
-    string(3) "for"
-    [2]=>
-    string(5) "Geeks"
-    [3]=>
-    array(2) {
-      [0]=>
-      string(8) "welcomes"
-      [1]=>
-      string(3) "you"
-    }
-  }
-}
-```
+      ```log
+      object(ArrayObject)#1 (1) {
+        ["storage":"ArrayObject":private]=>
+        array(4) {
+          [0]=>
+          string(5) "Geeks"
+          [1]=>
+          string(3) "for"
+          [2]=>
+          string(5) "Geeks"
+          [3]=>
+          array(2) {
+            [0]=>
+            string(8) "welcomes"
+            [1]=>
+            string(3) "you"
+          }
+        }
+      }
+      ```
+
+### 在陣列中新增元素
+
+#### 直接賦值
+
+      ```php
+      $array[] = $array;
+      ```
+
+      ```php
+      $flower = array();
+      echo("The array is empty, as you can see. \n");
+      print_r($flowers);
+      echo("Now, we have added the values. \n");
+      $flowers[] = "Rose";
+      $flowers[] = "Jasmine";
+      $flowers[] = "Lili";
+      $flowers[] = "Hibiscus";
+      $flowers[] = "Tulip";
+      print_r($flowers);
+      ```
+
+      ```log
+      The array is empty, as you can see.
+      Array
+      (
+      )
+      Now, we have added the values.
+      Array
+      (
+          [0] => Rose
+          [1] => Jasmine
+          [2] => Lili
+          [3] => Hibiscus
+          [4] => Tulip
+      )
+      ```
+
+#### `array_push()` 在陣列最後新增元素
+
+- `array_push($array, $value1, $value2, ..., $valueN);`
+- `$array` 必須，目標新增元素的陣列
+- `$value1`, `$value2` 必須，欲新增至陣列的元素，可以為字串、整數、浮點數等
+
+        ```php
+        $flowers = array();
+        echo("The array is empty, as you can see. \n");
+        print_r($flowers);
+        echo("Now, we have added the values. \n");
+        array_push($flowers, "Rose", "Jasmine", "Lili", "Hibiscus", "Tulip");
+        print_r($flowers);
+        ```
+
+        ```log
+        The array is empty, as you can see.
+        Array
+        (
+        )
+
+        Now, we have added the values.
+
+        Array
+        (
+            [0] => Rose
+            [1] => Jasmine
+            [2] => Lili
+            [3] => Hibiscus
+            [4] => Tulip
+        )
+        ```
+
+#### `array_unshift()` 在陣列前端插入
+
+- `array_unshift($array, $value1, $value2, ..., $valueN)`
+- `$array` 必須，目標新增元素的陣列
+- `$value1`, `$value2` 必須，欲新增至陣列的元素，可以為字串、整數、浮點數等
+
+      ```php
+      $flowers = ['first', 'second'];
+      print_r($flowers);
+      echo("Now we have added the values. \n");
+      echo(array_unshift($flowers, "Rose", "Jasmine", "Lili", "Hibiscus", "Tulip"));
+      echo("\n");
+      print_r($flowers);
+      ```
+
+      ```log
+      Array
+      (
+        [0] => first
+        [1] => second
+      )
+      Now we have added the values.
+      7
+      Array
+      (
+        [0] => Rose
+        [1] => Jasmine
+        [2] => Lili
+        [3] => Hibiscus
+        [4] => Tulip
+        [5] => first
+        [6] => second
+      )
+      ```
 
 ### `array_fill()` 以填充數值的方式，建立新陣列
 
@@ -723,58 +829,54 @@ object(ArrayObject)#1 (1) {
 
 - `$value` 傳入陣列的值。
 
-```php
-<?php
-$a = array_fill(5, 6, 'banana');
-$b = array_fill(-2, 4, 'pear');
-print_r($a);
-print_r($b);
-?>
-```
+      ```php
+      <?php
+      $a = array_fill(5, 6, 'banana');
+      $b = array_fill(-2, 4, 'pear');
+      print_r($a);
+      print_r($b);
+      ?>
+      ```
 
-- 回傳
-
-```log
-Array
-(
-  [5]  => banana
-  [6]  => banana
-  [7]  => banana
-  [8]  => banana
-  [9]  => banana
-  [10] => banana
-)
-Array
-(
-  [-2] => pear
-  [0] => pear
-  [1] => pear
-  [2] => pear
-)
-```
+      ```log
+      Array
+      (
+        [5]  => banana
+        [6]  => banana
+        [7]  => banana
+        [8]  => banana
+        [9]  => banana
+        [10] => banana
+      )
+      Array
+      (
+        [-2] => pear
+        [0] => pear
+        [1] => pear
+        [2] => pear
+      )
+      ```
 
 ### `array_combine()` 將傳入的參數合併為陣列
 
 - `array_combine(array $keys, array $values): array` `$key`為 key 值，`$value` 為相對應的值。
 
-```php
-$a = array('green', 'red', 'yellow');
-$b = array('avocado', 'apple', 'banana');
-$c = array_combine($a, $b);
+      ```php
+      $a = array('green', 'red', 'yellow');
+      $b = array('avocado', 'apple', 'banana');
+      $c = array_combine($a, $b);
 
-print_r($c);
-```
+      print_r($c);
+      ```
 
-- 輸出
-
-```PHP
-Array
-(
-  [green]  => avocado
-  [red]    => apple
-  [yellow] => banana
-)
-```
+      ```PHP
+      Array
+      (
+        [green]  => avocado
+        [red]    => apple
+        [yellow] => banana
+      )
+      ```
 
 ### `array_unique()` 從陣列中刪除重複的值
 
@@ -791,32 +893,31 @@ Array
 
 - `array_diff( $array1 , $array2 , $array3 , ... ):array` 後面每個陣列都跟第一個陣列做比較，此方法會回傳在第一陣列中有出現，但未出現在其他陣中的值，並會保留鍵名
 
-```php
-<?php
-$array1 = array('A','B','C','D');
-$array2 = array('C','D','E','F');
-$array3 = array('A','B','E','F');
-$newArray1 = array_diff($array1,$array2);
-print_r($newArray1);
-$newArray2 = array_diff($array1,$array3);
-print_r($newArray2);
+      ```php
+      <?php
+      $array1 = array('A','B','C','D');
+      $array2 = array('C','D','E','F');
+      $array3 = array('A','B','E','F');
+      $newArray1 = array_diff($array1,$array2);
+      print_r($newArray1);
+      $newArray2 = array_diff($array1,$array3);
+      print_r($newArray2);
 
-```
+      ```
 
-- 輸出
 
-```PHP
-Array
-(
-  [0] => A,
-  [1] => B
-)
-Array
-(
-  [2] => C,
-  [3] => D
-)
-```
+      ```PHP
+      Array
+      (
+        [0] => A,
+        [1] => B
+      )
+      Array
+      (
+        [2] => C,
+        [3] => D
+      )
+      ```
 
 - 進階用法
 
@@ -824,39 +925,35 @@ Array
 
 因此可用來刪除陣列中多個值，而不影響其索引值。
 
-```php
-<?php
-//Declare the array
-$flowers = [
-  "Rose",
-  "Lili",
-  "Jasmine",
-  "Hibiscus",
-  "Tulip",
-  "Sun Flower",
-  "Daffodil",
-  "Daisy"
-];
+      ```php
+      //Declare the array
+      $flowers = [
+        "Rose",
+        "Lili",
+        "Jasmine",
+        "Hibiscus",
+        "Tulip",
+        "Sun Flower",
+        "Daffodil",
+        "Daisy"
+      ];
 
-$flowers = array_diff($flowers, array("Rose","Lili"));
-echo "The array is:\n";
-print_r($flowers);
-```
+      $flowers = array_diff($flowers, array("Rose","Lili"));
+      echo "The array is:\n";
+      print_r($flowers);
+      ```
 
-輸出
-
-```log
-
-Array
-(
-[2] => Jasmine
-[3] => Hibiscus
-[4] => Tulip
-[5] => Sun Flower
-[6] => Daffodil
-[7] => Daisy
-)
-```
+      ```log
+      Array
+      (
+      [2] => Jasmine
+      [3] => Hibiscus
+      [4] => Tulip
+      [5] => Sun Flower
+      [6] => Daffodil
+      [7] => Daisy
+      )
+      ```
 
 ### `sort` 陣列排序
 
@@ -881,156 +978,152 @@ Array
 - 範例一：
   今天有一個陣列如下
 
-```php
-$unsorted = [
-    ['name'   => 'good',
-     'sorter' => '1',],
+      ```php
+      $unsorted = [
+          ['name'   => 'good',
+           'sorter' => '1',],
 
-    ['name'   => 'bad',
-     'sorter' => '3',],
+          ['name'   => 'bad',
+           'sorter' => '3',],
 
-    ['name'   => 'normal',
-     'sorter' => '2',],
-];
-```
+          ['name'   => 'normal',
+           'sorter' => '2',],
+      ];
+      ```
 
 我要透過 sorter 這個 key 的 value 來做排序
 
-```php
-usort($unsorted, function ($a, $b) {
-    return $a['sorter'] > $b['sorter'];
-    // 如果 a > b 的話 就會輸出 1，而因為 usort 的 根基是 sort
-    // 意即是照 value 由小到大排序，所以輸出 1 的就會往後排，進而達到目的
-});
-```
+      ```php
+      usort($unsorted, function ($a, $b) {
+          return $a['sorter'] > $b['sorter'];
+          // 如果 a > b 的話 就會輸出 1，而因為 usort 的 根基是 sort
+          // 意即是照 value 由小到大排序，所以輸出 1 的就會往後排，進而達到目的
+      });
+      ```
 
-output
-
-```log
-array(3) {
- [0]=>
- array(2) {
-   ["name"]=>
-   string(4) "good"
-   ["sorter"]=>
-   string(1) "1"
- }
- [1]=>
- array(2) {
-   ["name"]=>
-   string(6) "normal"
-   ["sorter"]=>
-   string(1) "2"
- }
- [2]=>
- array(2) {
-   ["name"]=>
-   string(3) "bad"
-   ["sorter"]=>
-   string(1) "3"
- }
-}
-```
+      ```log
+      array(3) {
+       [0]=>
+       array(2) {
+         ["name"]=>
+         string(4) "good"
+         ["sorter"]=>
+         string(1) "1"
+       }
+       [1]=>
+       array(2) {
+         ["name"]=>
+         string(6) "normal"
+         ["sorter"]=>
+         string(1) "2"
+       }
+       [2]=>
+       array(2) {
+         ["name"]=>
+         string(3) "bad"
+         ["sorter"]=>
+         string(1) "3"
+       }
+      }
+      ```
 
 - 範例二：
 
-如果一樣的陣列，但要用來比對的數值是重複的
+  如果一樣的陣列，但要用來比對的數值是重複的
 
-```php
-$unsorted = [
-    ['name'   => 'good',
-     'sorter' => '1',],
+      ```php
+      $unsorted = [
+          ['name'   => 'good',
+           'sorter' => '1',],
 
-    ['name'   => 'bad',
-     'sorter' => '3',],
+          ['name'   => 'bad',
+           'sorter' => '3',],
 
-    ['name'   => 'normal',
-     'sorter' => '3',],
-];
-```
+          ['name'   => 'normal',
+           'sorter' => '3',],
+      ];
+      ```
 
-可以增加一個比對條件
+  可以增加一個比對條件
 
-```php
-$unsorted = [
-    ['name'   => 'good',
-     'sorter' => '1',
-    'newSorter'=> '2'],
+      ```php
+      $unsorted = [
+          ['name'   => 'good',
+           'sorter' => '1',
+          'newSorter'=> '2'],
 
-    ['name'   => 'bad',
-     'sorter' => '3',
-    'newSorter'=> '3'],
+          ['name'   => 'bad',
+           'sorter' => '3',
+          'newSorter'=> '3'],
 
-    ['name'   => 'normal',
-     'sorter' => '3',
-    'newSorter' => '1'],
+          ['name'   => 'normal',
+           'sorter' => '3',
+          'newSorter' => '1'],
 
-    ['name'   => 'hahaha',
-     'sorter' => '2',
-     'newSorter' => '1'],
-];
-```
+          ['name'   => 'hahaha',
+           'sorter' => '2',
+           'newSorter' => '1'],
+      ];
+      ```
 
-依照 sorter 來進行排序，但如果 sorter 數值相同，則使用 newSorter 來進行排序
+  依照 sorter 來進行排序，但如果 sorter 數值相同，則使用 newSorter 來進行排序
 
-```php
-usort($unsorted, function ($a, $b)) {
-    return $a['sorter'] > $b['sorter'] || ($a['sorter'] == $b['sorter'] && $a['newSorter'] > $b['newSorter']);
-}
+      ```php
+      usort($unsorted, function ($a, $b)) {
+          return $a['sorter'] > $b['sorter'] || ($a['sorter'] == $b['sorter'] && $a['newSorter'] > $b['newSorter']);
+      }
 
-// 或這樣寫
+      // 或這樣寫
 
-if ($a['sorter'] > $b['sorter'] || ($a['sorter'] == $b['sorter'] && $a['newSorter'] > $b['newSorter'])) {
-    return 1;
-} elseif ($a['sorter'] < $b['sorter']) {
-    return -1;
-} else {
-    return 0;
-}
-```
+      if ($a['sorter'] > $b['sorter'] || ($a['sorter'] == $b['sorter'] && $a['newSorter'] > $b['newSorter'])) {
+          return 1;
+      } elseif ($a['sorter'] < $b['sorter']) {
+          return -1;
+      } else {
+          return 0;
+      }
+      ```
 
-output
-
-```log
-array(4) {
-  [0]=>
-  array(3) {
-    ["name"]=>
-    string(4) "good"
-    ["sorter"]=>
-    string(1) "1"
-    ["newSorter"]=>
-    string(1) "2"
-  }
-  [1]=>
-  array(3) {
-    ["name"]=>
-    string(6) "hahaha"
-    ["sorter"]=>
-    string(1) "2"
-    ["newSorter"]=>
-    string(1) "1"
-  }
-  [2]=>
-  array(3) {
-    ["name"]=>
-    string(6) "normal"
-    ["sorter"]=>
-    string(1) "3"
-    ["newSorter"]=>
-    string(1) "1"
-  }
-  [3]=>
-  array(3) {
-    ["name"]=>
-    string(3) "bad"
-    ["sorter"]=>
-    string(1) "3"
-    ["newSorter"]=>
-    string(1) "3"
-  }
-}
-```
+      ```log
+      array(4) {
+        [0]=>
+        array(3) {
+          ["name"]=>
+          string(4) "good"
+          ["sorter"]=>
+          string(1) "1"
+          ["newSorter"]=>
+          string(1) "2"
+        }
+        [1]=>
+        array(3) {
+          ["name"]=>
+          string(6) "hahaha"
+          ["sorter"]=>
+          string(1) "2"
+          ["newSorter"]=>
+          string(1) "1"
+        }
+        [2]=>
+        array(3) {
+          ["name"]=>
+          string(6) "normal"
+          ["sorter"]=>
+          string(1) "3"
+          ["newSorter"]=>
+          string(1) "1"
+        }
+        [3]=>
+        array(3) {
+          ["name"]=>
+          string(3) "bad"
+          ["sorter"]=>
+          string(1) "3"
+          ["newSorter"]=>
+          string(1) "3"
+        }
+      }
+      ```
 
 ### 分割字串
 
@@ -1042,44 +1135,42 @@ array(4) {
 - `$string` - 被要處理的字串，字串形態，必填項目。
 - `$limit` - 設定字串切割後最多可輸出的數量，數字形態，可為正整數或負整數，如果填寫正整數，最後的的部份包含切割完剩下的所有部份，，如果填寫負整數，則倒數的部份若在負整數範圍 內將不會顯示，非必填項目
 
-```php
-<?php
-  $str = 'Apple Dog Pig';
-  $str_sec = explode(" ",$str);
-  print_r($str_sec);
-```
+      ```php
+      <?php
+        $str = 'Apple Dog Pig';
+        $str_sec = explode(" ",$str);
+        print_r($str_sec);
+      ```
 
-輸出
-
-```log
-Array (
-　[0] => Apple
-　[1] => Dog
-　[2] => Pig
-)
-```
+      ```log
+      Array (
+      　[0] => Apple
+      　[1] => Dog
+      　[2] => Pig
+      )
+      ```
 
 - 加入`$limit` 參數
 
-```php
-<?php
-  $str = 'Apple Dog Pig';
-  $str_sec_A = explode(" ",$str,2);
-  $str_sec_B = explode(" ",$str,-1);
-  print_r($str_sec_A);
-  print_r($str_sec_B);
-```
+      ```php
+      <?php
+        $str = 'Apple Dog Pig';
+        $str_sec_A = explode(" ",$str,2);
+        $str_sec_B = explode(" ",$str,-1);
+        print_r($str_sec_A);
+        print_r($str_sec_B);
+      ```
 
-```log
-Array (
-　[0] => Apple
-　[1] => Dog Pig
-)
-Array (
-　[0] => Apple
-　[1] => Dog
-)
-```
+      ```log
+      Array (
+      　[0] => Apple
+      　[1] => Dog Pig
+      )
+      Array (
+      　[0] => Apple
+      　[1] => Dog
+      )
+      ```
 
 #### `str_split()`
 
@@ -1088,22 +1179,20 @@ Array (
 - `string` 必需。規定要分割的字符串。
 - `length` 可選。規定每個數組元素的長度。默認是 1。
 
-```php
-<?php
-  $NewString = "M'L2";
-  $Arr2=str_split($NewString,3);//根據每三個字元切割
-  print_r($Arr2);
-```
+      ```php
+      <?php
+        $NewString = "M'L2";
+        $Arr2=str_split($NewString,3);//根據每三個字元切割
+        print_r($Arr2);
+      ```
 
-輸出
-
-```log
-Array
-(
-    [0] => M'L
-    [1] => 2
-)
-```
+      ```log
+      Array
+      (
+          [0] => M'L
+          [1] => 2
+      )
+      ```
 
 #### `array_slice()`
 
@@ -1114,20 +1203,20 @@ Array
 - `length` 選填，規定返回的陣列長度。
 - `preserve` 選填，`true` 保留 key 值，`false` 重置 key 值。
 
-```php
-<?php
-$a=array("red","green","blue","yellow","brown");
-print_r(array_slice($a,2));
-```
+      ```php
+      <?php
+      $a=array("red","green","blue","yellow","brown");
+      print_r(array_slice($a,2));
+      ```
 
-```log
-Array
-(
-    [0] => blue
-    [1] => yellow
-    [2] => brown
-)
-```
+      ```log
+      Array
+      (
+          [0] => blue
+          [1] => yellow
+          [2] => brown
+      )
+      ```
 
 ### `implode()` 將陣列轉為字串
 
@@ -1136,14 +1225,14 @@ Array
 - `separator` 可選。規定數組元素之間放置的內容。默認是 ""（空字符串）。
 - `array` 必需。要結合為字符串的數組。
 
-  ```php
-  $arr = [1,2,3,4,5,6];
-  print_r(implode('=', $arr));
-  ```
+      ```php
+      $arr = [1,2,3,4,5,6];
+      print_r(implode('=', $arr));
+      ```
 
-  ```log
-  "1=2=3=4=5=6"
-  ```
+      ```log
+      "1=2=3=4=5=6"
+      ```
 
 ### `array_filter()` 過濾陣列元素(刪除陣列空值)
 
@@ -1156,34 +1245,32 @@ Array
   - `ARRAY_FILTER_USE_KEY` 將 key 作為唯一參數傳遞給回調函數，而不是數組的值
   - `ARRAY_FILTER_USE_BOTH` 將值和鍵都作為參數而不是值傳遞給回調
 
-  ```php
-  // PHP function to check for even elements in an array
-  function Even($array)
-  {
-      // returns if the input integer is even
-      if($array%2==0)
-         return TRUE;
-      else
-         return FALSE;
-  }
+        ```php
+        // PHP function to check for even elements in an array
+        function Even($array)
+        {
+            // returns if the input integer is even
+            if($array%2==0)
+               return TRUE;
+            else
+               return FALSE;
+        }
 
-  $array = array(12, 0, 0, 18, 27, 0, 46);
-  print_r(array_filter($array, "Even"));
-  ```
+        $array = array(12, 0, 0, 18, 27, 0, 46);
+        print_r(array_filter($array, "Even"));
+        ```
 
-輸出
-
-    ```log
-    Array
-    (
-        [0] => 12
-        [1] => 0
-        [2] => 0
-        [3] => 18
-        [5] => 0
-        [6] => 46
-    )
-    ```
+        ```log
+        Array
+        (
+            [0] => 12
+            [1] => 0
+            [2] => 0
+            [3] => 18
+            [5] => 0
+            [6] => 46
+        )
+        ```
 
 ### `str_pad()` 填充字串為指定長度
 
@@ -1193,33 +1280,30 @@ Array
 - length 必填，規定新字串的長度，若小於傳入的字串長度，則不進行操作。
 - pad_string 可選，提供填充的字串，預設為空白。
 - pad_type 可選，字串填充的方向。
+
   - STR_PAD_BOTH 填充字串的兩側，若不為偶數，則將額外的字串填充至右側。
   - STR_PAD_LEFT 填充到字串的左側。
   - STR_PAD_RIGHT 填充到字串的右側(預設)。
 
-```php
-<?php
-$str = "Hello world";
-echo str_pad($str, 20, ".", STR_PAD_LEFT);
-```
+        ```php
+        <?php
+        $str = "Hello world";
+        echo str_pad($str, 20, ".", STR_PAD_LEFT);
+        ```
 
-輸出
+        ```log
+        .........Hello World
+        ```
 
-```log
-.........Hello World
-```
+        ```php
+        <?php
+        $str = "Hello world";
+        echo str_pad($str, 20, ".:", STR_PAD_BOTH);
+        ```
 
-```php
-<?php
-$str = "Hello world";
-echo str_pad($str, 20, ".:", STR_PAD_BOTH);
-```
-
-輸出
-
-```php
-.:.:Hello World.:.:.
-```
+        ```php
+        .:.:Hello World.:.:.
+        ```
 
 ### 資料序列化及反序列化
 
@@ -1229,18 +1313,16 @@ echo str_pad($str, 20, ".:", STR_PAD_BOTH);
 
 - $value: 要序列化的對象或陣列
 
-```php
-<?php
-$sites = array('Google', 'Runoob', 'Facebook');
-$serialized_data = serialize($sites);
-echo  $serialized_data . PHP_EOL;
-```
+      ```php
+      <?php
+      $sites = array('Google', 'Runoob', 'Facebook');
+      $serialized_data = serialize($sites);
+      echo  $serialized_data . PHP_EOL;
+      ```
 
-輸出
-
-```log
-a:3:{i:0;s:6:"Google";i:1;s:6:"Runoob";i:2;s:8:"Facebook";}
-```
+      ```log
+      a:3:{i:0;s:6:"Google";i:1;s:6:"Runoob";i:2;s:8:"Facebook";}
+      ```
 
 #### `mixed unserialize()` 反序列化
 
@@ -1248,22 +1330,20 @@ a:3:{i:0;s:6:"Google";i:1;s:6:"Runoob";i:2;s:8:"Facebook";}
 
 - $str: 序列化後的字串
 
-```php
-$str = 'a:3:{i:0;s:6:"Google";i:1;s:6:"Runoob";i:2;s:8:"Facebook";}';
-$unserialized_data = unserialize($str);
-print_r($unserialized_data);
-```
+      ```php
+      $str = 'a:3:{i:0;s:6:"Google";i:1;s:6:"Runoob";i:2;s:8:"Facebook";}';
+      $unserialized_data = unserialize($str);
+      print_r($unserialized_data);
+      ```
 
-輸出
-
-```log
-Array
-(
-    [0] => Google
-    [1] => Runoob
-    [2] => Facebook
-)
-```
+      ```log
+      Array
+      (
+          [0] => Google
+          [1] => Runoob
+          [2] => Facebook
+      )
+      ```
 
 ### `file_get_contents()` 將本地文件存入一個變數中
 
@@ -1283,18 +1363,19 @@ Array
 - `$pad_length` 補完後字串長度
 - `$pad_string` 補入的字元
 - `$pad_type` 補入的規則
+
   - `STR_PAD_BOTH` 左右都補
   - `STR_PAD_LEFT` 從左邊開始
   - `STR_PAD_RIGHT` 從右邊開始
 
-把 id 由左邊開始補 0，補到五位數
+  把 id 由左邊開始補 0，補到五位數
 
-```php
-$id=01;
-$id=str_pad($id,5,"0",STR_PAD_LEFT);
-echo $id;
-//00001
-```
+      ```php
+      $id=01;
+      $id=str_pad($id,5,"0",STR_PAD_LEFT);
+      echo $id;
+      //00001
+      ```
 
 ### `str_replace()` 替換字串
 
@@ -1306,10 +1387,10 @@ echo $id;
 
 - 使用類型轉換
 
-```php
-$num = "1000.314";
-echo (int)$num
-```
+      ```php
+      $num = "1000.314";
+      echo (int)$num
+      ```
 
 - 透過運算子將字串轉為數值，例如在字串中 + 0
 
@@ -1331,27 +1412,27 @@ echo (int)$num
 
 #### `ucfirst()` 將字串的首字母轉為大寫
 
-```php
-$foo = 'hello world!';
-$foo = ucfirst($foo);             // Hello world!
-```
+    ```php
+    $foo = 'hello world!';
+    $foo = ucfirst($foo);             // Hello world!
+    ```
 
-#### `strtolower()` 將字串換為小寫
+    #### `strtolower()` 將字串換為小寫
 
-```php
-$str = "Mary Had A Little Lamb and She LOVED It So";
-$str = strtolower($str);
-// mary had a little lamb and she loved it so
+    ```php
+    $str = "Mary Had A Little Lamb and She LOVED It So";
+    $str = strtolower($str);
+    // mary had a little lamb and she loved it so
 
-```
+    ```
 
 #### `strtoupper()` 將字串換為大寫
 
-```php
-$str = "Mary Had A Little Lamb and She LOVED It So";
-$str = strtoupper($str);
-//  MARY HAD A LITTLE LAMB AND SHE LOVED IT SO
-```
+    ```php
+    $str = "Mary Had A Little Lamb and She LOVED It So";
+    $str = strtoupper($str);
+    //  MARY HAD A LITTLE LAMB AND SHE LOVED IT SO
+    ```
 
 ### `define()` 定義一個常數
 
@@ -1369,25 +1450,19 @@ $str = strtoupper($str);
 
 - 在程式的第一行加入路徑 -q
 
-```php
-#! /usr/bin/php -q
-<?php
-$foo = 123;
-?>
-```
+      ```php
+      #! /usr/bin/php -q
+      $foo = 123;
+      ```
 
 - 將 php 檔賦予執行權限
 
-```bash
-chmod +x testing.php
-```
+      ```bash
+      chmod +x testing.php
+      ```
 
 - d/n
 
-```bash
-./testing.php # 可以像其他 shell script 般執行
-```
-
-```
-
-```
+      ```bash
+      ./testing.php # 可以像其他 shell script 般執行
+      ```
