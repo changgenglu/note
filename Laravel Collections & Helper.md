@@ -17,7 +17,7 @@
 
 ### `pluck()` 取得集合中所有陣列的 key 值
 
-```php=
+```php
 $collection = collectc([
     ['product_id' => 'prod-100', 'name' => 'Desk'],
     ['product_id' => 'prod-200', 'name' => 'Chair'],
@@ -34,7 +34,7 @@ $pluck->all();
 
 返回不存在此方法參數中的值
 
-```php=
+```php
 $diff = collect([1, 2, 3, 4, 5])->diff([2, 4, 6, 8]);
 $diff->all();
 
@@ -45,7 +45,7 @@ $diff->all();
 
 返回通過篩選的項目
 
-```php=
+```php
 $filtered = collect([1, 2, 3, 4])->filter(function (item) {
     return $item > 2
 });
@@ -57,7 +57,7 @@ $filtered->all();
 
 ### `concat()` 將傳入的值追加到集合的末端
 
-```php=
+```php
 $collection = collect(['John Doe']);
 
 $concatenated = $collection->concat(['Jane Doe'])->concat(['name' => 'Johnny Doe']);
@@ -67,11 +67,33 @@ $concatenated->all();
 // ['John Doe', 'Jane Doe', 'Johnny Doe']
 ```
 
+### `push()` 把指定的值加入集合的末端
+
+```php
+$collection = collect([1, 2, 3, 4]);
+$collection->push(5);
+$collection->all();
+
+// [1, 2, 3, 4, 5]
+```
+
+### `prepend()` 將指定的值加入集合的開頭
+
+```php
+$collection = collect([1, 2, 3, 4, 5]);
+
+$collection->prepend(0);
+
+$collection->all();
+
+// [0, 1, 2, 3, 4, 5]
+```
+
 ### `contains()` 判斷集合是否包含指定的條件
 
 傳入值
 
-```php=
+```php
 $collection = collect(['name' => 'Desk', 'price' => 100]);
 
 $collection->contains('Desk');
@@ -85,7 +107,7 @@ $collection->contains('New York');
 
 傳入陣列
 
-```php=
+```php
 $collection = collect([
     ['product' => 'Desk', 'price' => 200],
     ['product' => 'Chair', 'price' => 100],
@@ -98,7 +120,7 @@ $collection->contains('product', 'Bookcase');
 
 傳遞匿名函數
 
-```php=
+```php
 $collection = collect([1, 2, 3, 4, 5]);
 
 $collection->contains(function ($value, $key) {
@@ -114,7 +136,7 @@ $collection->contains(function ($value, $key) {
 
 將集合的值透過傳入的匿名函數修改並返回，生成修改過的新集合
 
-```php=
+```php
 $collection = collect([1, 2, 3, 4, 5]);
 
 $multiplied = $collection->map(function ($item, $key) {
