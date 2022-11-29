@@ -556,68 +556,6 @@ var 物件3 = [10, 20, 30];
 物件3[6] = 999; //這時物件3的陣列[10, 20, 30, nill]
 ```
 
-### prototype.forEach()
-
-forEach 會修改原始陣列，且不會回傳值
-
-```javascript
-var forEachIt = people.forEach(function (item, index, array) {
-  console.log(item, index, array); // 物件, 索引, 全部陣列
-  return item; // forEach 沒在 return 的，所以這邊寫了也沒用
-});
-console.log(forEachIt); // undefined
-
-people.forEach(function (item, index, array) {
-  item.age = item.age + 1; // forEach 就如同 for，不過寫法更容易
-});
-
-console.log(people); // 全部 age + 1
-```
-
-### prototype.map()
-
-使用 map 時會需要回傳一個值，他會透過函式內所回傳的值組成一個陣列。
-
-- 如不回傳，則為 undefined
-- 回傳長度等於原始長度
-
-map 很適合將原始的變數運算後，重新組合成一個新的陣列。
-
-使用語法：
-
-```Javascript
-const newArr = arr.map(function (value, index, array){
-  //...
-});
-```
-
-- `newArr` 處理後的新陣列
-- `arr` 要執行 map 的舊陣列
-- `function` 舊陣列中每個元素要執行的函式
-- `value` 陣列中正在處理的值
-- `index` 陣列中正在處理的 key 值(可略)
-- `array` 舊陣列(可略)
-
-```javascript
-let A = [9000, 8500, 5500, 6500];
-let B = A.map(function (value, index, array) {
-  return value * 2;
-});
-
-console.log(A); // [9000, 8500, 5500, 6500] - 原陣列不會被修改
-console.log(B); // [18000, 17000, 11000, 13000] 回傳新陣列
-```
-
-### prototype.push()
-
-添加一個或多個元素至陣列末端，並回傳陣列的新長度。
-
-```javascript
-arr.push(element1[, ...[, elementN]])
-```
-
-- `elementN` 欲添加至陣列末端的元素
-
 ## 函式 function
 
 > function 是物件的一種
@@ -837,6 +775,85 @@ document.querySelector(".title");
 #### `.querySelectorAll()` 選取所有指定元素
 
 用法和 `.querySelector()` 一樣，但不同於 `.querySelector()`，`.querySelectorAll()` 可以一次選取所有具有相同元素的內容
+
+### prototype.forEach()
+
+forEach 會修改原始陣列，且不會回傳值
+
+```javascript
+var forEachIt = people.forEach(function (item, index, array) {
+  console.log(item, index, array); // 物件, 索引, 全部陣列
+  return item; // forEach 沒在 return 的，所以這邊寫了也沒用
+});
+console.log(forEachIt); // undefined
+
+people.forEach(function (item, index, array) {
+  item.age = item.age + 1; // forEach 就如同 for，不過寫法更容易
+});
+
+console.log(people); // 全部 age + 1
+```
+
+### prototype.map()
+
+使用 map 時會需要回傳一個值，他會透過函式內所回傳的值組成一個陣列。
+
+- 如不回傳，則為 undefined
+- 回傳長度等於原始長度
+
+map 很適合將原始的變數運算後，重新組合成一個新的陣列。
+
+使用語法：
+
+```Javascript
+const newArr = arr.map(function (value, index, array){
+  //...
+});
+```
+
+- `newArr` 處理後的新陣列
+- `arr` 要執行 map 的舊陣列
+- `function` 舊陣列中每個元素要執行的函式
+- `value` 陣列中正在處理的值
+- `index` 陣列中正在處理的 key 值(可略)
+- `array` 舊陣列(可略)
+
+```javascript
+let A = [9000, 8500, 5500, 6500];
+let B = A.map(function (value, index, array) {
+  return value * 2;
+});
+
+console.log(A); // [9000, 8500, 5500, 6500] - 原陣列不會被修改
+console.log(B); // [18000, 17000, 11000, 13000] 回傳新陣列
+```
+
+### prototype.push()
+
+添加一個或多個元素至陣列末端，並回傳陣列的新長度。
+
+```javascript
+arr.push(element1[, ...[, elementN]])
+```
+
+- `elementN` 欲添加至陣列末端的元素
+
+### `Math.round()` 四捨五入
+
+```javascript
+Math.round(3.14); // 3
+Math.round(5.49999); // 5
+Math.round(5.5); // 6
+Math.round("5.50001"); // 6
+Math.round(-5.49999); // -5
+Math.round(-5.5); // -5
+Math.round(-5.50001); // -6
+
+let data = 18.62645;
+Math.round(data * 10) / 10; // 18.6
+Math.round(data * 100) / 100; // 18.63
+Math.round(data * 1000) / 1000; // 18.626
+```
 
 ## 額外補充
 

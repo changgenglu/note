@@ -489,6 +489,18 @@ v-model 標籤須使用在 `<select>` 標籤，不能用在 `<option>` 標籤中
 
 和 v-text 類似，但當 data 的內容為 HTML 的語法時，v-html 會將其渲染為 html 語法
 
+```html
+<button v-for="(item, index) in data.links">{{ item.label }}</button>
+<!--  輸出結果 -->
+&laquo; Previous
+```
+
+```html
+<button v-for="(item, index) in data.links" v-html="item.label"></button>
+<!--  輸出結果 -->
+<< Previous
+```
+
 #### v-once
 
 只渲染指定的節點一次，往後就不再更新
@@ -646,4 +658,4 @@ publishedAt: 2016-04-10
 
 ## 備註
 
-- 註 1 Truthy: 假值以外的任何值皆為 true，即所有除了 false, 0, -0, 0n, "", null, undefined, NaN 以外的值皆返回 true
+- 註 1: `Truthy` 假值(false, 0, -0, 0n, "", null, undefined, NaN)以外的任何值皆為 true
