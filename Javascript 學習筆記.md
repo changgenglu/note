@@ -19,14 +19,21 @@
     - [for 迴圈](#for-迴圈)
     - [for of](#for-of)
     - [for in](#for-in)
-    - [prototype.forEach()](#prototypeforeach)
-    - [prototype.map()](#prototypemap)
   - [函式 function](#函式-function)
     - [定義函式](#定義函式)
     - [箭頭函式](#箭頭函式)
     - [變數的有效範圍 (Scope)](#變數的有效範圍-scope)
     - [提升(Hoisting)](#提升hoisting)
     - [全域變數](#全域變數)
+  - [方法](#方法)
+    - [取得 base_url](#取得-base_url)
+    - [document](#document)
+      - [`.querySelector()` 元素選擇器](#queryselector-元素選擇器)
+      - [`.querySelectorAll()` 選取所有指定元素](#queryselectorall-選取所有指定元素)
+    - [prototype.forEach()](#prototypeforeach)
+    - [prototype.map()](#prototypemap)
+    - [prototype.push()](#prototypepush)
+    - [`Math.round()` 四捨五入](#mathround-四捨五入)
   - [額外補充](#額外補充)
     - [randome(亂數)公式](#randome亂數公式)
 
@@ -853,6 +860,80 @@ let data = 18.62645;
 Math.round(data * 10) / 10; // 18.6
 Math.round(data * 100) / 100; // 18.63
 Math.round(data * 1000) / 1000; // 18.626
+```
+
+### `Array.prototype.filter()`
+
+- `arr.filter(function(item, index, array), thisValue)`
+  - `item` 必須，目前元素的值
+  - `index` 可選，目前元素的 key
+  - `array` 可選，目前元素屬於的陣列
+  - `thisValue` 可選，物件作為該次呼叫時使用，傳遞給函數當作 `this` 的值，若省略，則 `this` 的值為 `undefined`
+
+```javascript
+var ages = [32, 33, 12, 40];
+
+function checkAdult(age) {
+  return age >= document.getElementById("ageToCheck").value;
+}
+
+function myFunction() {
+  document.getElementById("demo").innerHTML = ages.filter(checkAdult);
+}
+```
+
+### SET 集合
+
+#### 基本使用
+
+- set 裡面的值是不會重複的
+
+```javascript
+// new Set Type
+let classroom = new Set(); //  建立教室這個 set
+let Aaron = { name: "Aaron", country: "Taiwan" };
+let Jack = { name: "Jack", country: "USA" };
+let Johnson = { name: "Johnson", country: "Korea" };
+
+// 把物件放入 set 中
+classroom.add(Aaron);
+classroom.add(Jack);
+classroom.add(Johnson);
+
+// 檢驗 set 中是否包含某物件
+if (classroom.has(Aaron)) console.log("Aaron is in the classroom");
+
+//  把物件移除 set 中
+classroom.delete(Jack);
+console.log(classroom.size); //    看看 set 中有多少元素
+console.log(classroom);
+```
+
+#### 陣列與集合間轉換
+
+```javascript
+// 集合轉成陣列
+let setToArray = [...classroom]; // Array.from(classroom)
+
+// 陣列轉成集合
+let arrayToSet = new Set(setToArray);
+```
+
+#### 過濾陣列中重複的元素
+
+利用 set 中元素不會重複的特性，來過濾掉陣列中重複的元素，留下唯一
+
+```javascript
+var mySet = new Set();
+
+mySet.add(1); // Set { 1 }
+mySet.add(5); // Set { 1, 5 }
+mySet.add("some text"); // Set { 1, 5, 'some text' }
+var o = { a: 1, b: 2 };
+mySet.add(o); // Set { 1, 5, 'some text', { a: 1, b: 2 } }
+
+// // o is referencing a different object so this is okay
+mySet.add({ a: 1, b: 2 }); // Set { 1, 5, 'some text', { a: 1, b: 2 }, { a: 1, b: 2 } }
 ```
 
 ## 額外補充
