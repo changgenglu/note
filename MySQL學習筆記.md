@@ -320,3 +320,48 @@ SELECT DISTINCT `i`, `p`, `ep`, `eq`, `pf`, `created_at` FROM `02:81:85:34:ED:DC
 drop tables `02:81:85:34:ED:DC`;
 alter table `02:81:85:34:ED:DC_copy` rename to `02:81:85:34:ED:DC`;
 ```
+
+### 匯入 txt 檔
+
+建立資料表
+
+```sql
+create table `city_raw_data` (
+    `geonameid` int(10) NOT NULL,
+    `name` varchar(200) DEFAULT NULL,
+    `latitude` decimal(11, 8) DEFAULT NULL,
+    `longitude` decimal(11, 8) DEFAULT NULL,
+    `country code` varchar(10) DEFAULT NULL,
+    `timezone` varchar(40) DEFAULT NULL,
+    `modification date` date DEFAULT NULL
+) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+```
+
+本地 txt 檔匯入
+在 txt 檔中，每一個欄位用 tab 鍵進行分隔
+
+```sql
+LOAD DATA INFILE "C:/Users/RD/Desktop/ES.txt" INTO TABLE `city_raw_data` (
+    `geonameid`,
+    `name`,
+    `latitude`,
+    `longitude`,
+    `country code`,
+    `timezone`,
+    `modification date`
+);
+```
+
+或用指定的符號進行分隔，如：`|`
+
+```sql
+LOAD DATA INFILE "C:/Users/RD/Desktop/ES.txt" INTO TABLE `city_raw_data` FIELDS TERMINATED BY '|' (
+    `geonameid`,
+    `name`,
+    `latitude`,
+    `longitude`,
+    `country code`,
+    `timezone`,
+    `modification date`
+);
+```
