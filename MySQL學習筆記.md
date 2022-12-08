@@ -290,3 +290,33 @@
 - 可能原因:
   1. 添加外鍵約束時，目標欄位須和引用欄位具有相同的數據類型，int signed with int signed 或 int unsigned with int unsigned
   2. 在 not null 的欄位加上 on delete/update set null 的外鍵約束，須將該欄位設為 DEFAULT NULL
+
+### 刪除重複的資料
+
+#### 使用 `DISTINCT` 去除重複值
+
+需求：查找 `02:81:85:34:ED:DC` 表中的數據，將表中 `i`, `p`, `ep`, `eq`, `pf`, `created_at` 這六個欄位均重複的資料刪除，並重新整理 id
+
+先建立一個表，接者使用 `SELECT DISTINCT` 去除重複的值，並把去除重複值的資料，存入新資料表中
+
+```sql
+CREATE TABLE `02:81:85:34:ED:DC_copy` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `i` json DEFAULT NULL,
+  `p` json DEFAULT NULL,
+  `ep` json DEFAULT NULL,
+  `eq` json DEFAULT NULL,
+  `pf` json DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `02:81:85:34:ED:DC_copy` (`i`, `p`, `ep`, `eq`, `pf`, `created_at`)
+SELECT DISTINCT `i`, `p`, `ep`, `eq`, `pf`, `created_at` FROM `02:81:85:34:ED:DC`;
+```
+
+最後刪掉原表，並將複製的表改名
+
+```sql
+drop tables `02:81:85:34:ED:DC`;
+alter table `02:81:85:34:ED:DC_copy` rename to `02:81:85:34:ED:DC`;
+```

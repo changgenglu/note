@@ -13,8 +13,11 @@
 > [Carbon 使用技巧整理 (上)](https://reurl.cc/eWWbLm)
 >
 > [Carbon 使用技巧整理 (下)](https://reurl.cc/X55rGD)
+>
+> [Laravel 5 學習筆記 - Carbon 時間套件](https://www.kancloud.cn/kancloud/laravel-5-learning-notes/50163)
 
 ## 目錄
+
 - [Carbon 學習筆記](#carbon-學習筆記)
   - [目錄](#目錄)
   - [物件建立](#物件建立)

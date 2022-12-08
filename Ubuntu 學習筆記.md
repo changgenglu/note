@@ -195,7 +195,7 @@ jobs -l
 - `disown -ar` 僅卸除所有執行中的工作
 - `disown -h` 不要卸除工作，只是單純讓程式可以在登出後繼續執行。
 
-```bash
+```bashq
 jobs -l
 [1]+ 1040421 Running php subscribe_with_auth.php &
 ```
@@ -204,4 +204,4 @@ jobs -l
 
 #### `kill 10000` 刪除執行中的進程，`kill` 加上 PID 的數字即可
 
-#### `nohup`
+#### `nohup` 
