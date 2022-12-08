@@ -296,12 +296,7 @@ git push --mirror https://github.com/your_name/your_project.git
 
 ### 將未完成的工作暫存：git stash
 
-有時候會有工作做到一半，需要切換到別的分支進行其他任務。  
-這時有兩種辦法：
-
-1. 先 `commit` 目前進度，之後再 `reset`，將做一半的東西拆回來繼續做。
-2. 使用 `stash`。
-
+工作做到一半，需要切換到別的分支進行其他任務。
 先看一下目前的狀態：
 
 ```bash
@@ -378,6 +373,22 @@ Dropped stash@{0} (87390c02bbfc8cf7a38fb42f6f3a357e51ce6cd1)
 ```bash
 git stash apply stash@{0}
 ```
+
+#### 主要指令
+
+- git stash 將當前分支的修改內容加入暫存
+- git stash -u 將 untracked 檔案加入暫存
+- git stash save -u "" 將 untracked 檔案加入暫存並撰寫註解
+- git stash push 將修改內容加入暫存(完整指令)
+- git stash push -m 將修改內容加入暫存，並加入註解
+- git stash list 瀏覽所有暫存項目
+- git stash pop 將最新暫存套用至當前分支，成功後刪除暫存
+- git stash pop stash@{1} 將指定暫存套用至當前分支，成功後刪除暫存
+- git stash apply 套用最新暫存，成功後保留暫存
+- git stash apply stash@{1} 套用指定暫存，成功後保留暫存
+- git stash drop 清除最新暫存
+- git stash drop stash@{1} 清除指定暫存
+- git stash clear 清除全部暫存
 
 ### 解決合併衝突
 
