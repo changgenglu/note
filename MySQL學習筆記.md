@@ -342,14 +342,8 @@ create table `city_raw_data` (
 
 ```sql
 LOAD DATA INFILE "C:/Users/RD/Desktop/ES.txt" INTO TABLE `city_raw_data` (
-    `geonameid`,
-    `name`,
-    `latitude`,
-    `longitude`,
-    `country code`,
-    `timezone`,
-    `modification date`
-);
+`geonameid`,`name`,`asciiname`,`alternatenames`,`latitude`,`longitude`,`feature class`,`feature code`,`country code`,`cc2`,`admin1 code`,`admin2 code``admin3 code`,`admin4 code`,`population`,`elevation`,`dem`,`timezone`,`modification date`
+)
 ```
 
 或用指定的符號進行分隔，如：`|`

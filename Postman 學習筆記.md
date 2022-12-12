@@ -86,3 +86,19 @@ pm.environment.set(
 ```
 
 接著在 post 的 request 中的 header 加入 `X-XSRF-TOKEN:{{XSRF-TOKEN}}`
+
+## Postman 壓力測試(串行處理)
+
+在要測試的 request test 中定義測試的程式碼
+
+```javascript
+// 檢查 api 是否返回 200 status code
+pm.test("Status code is 200", function () {
+  console.log(JSON.parse(responseBody));
+  pm.response.to.have.status(200);
+});
+```
+
+開啟 Runner 選擇要測試的 api
+
+選擇 environment，調整請求次數: iterations，調整延遲時間：Delay
