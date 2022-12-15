@@ -1238,39 +1238,37 @@ php 中構造方法是物件創建完成後，第一個被物件自動呼叫的�
 
 - `array_filter($arrayName, $callbackFunction, $callbackParameter)`
 
-- `$arrayName` 必須，目標陣列
-- `$callbackFunction` 可選，指定刪除的參數，預設刪除陣列中等於 false 的值
-- `$callbackParameter` 可選，引用傳遞給回傳函數的參數
+  - `$arrayName` 必須，目標陣列
+  - `$callbackFunction` 可選，指定刪除的參數，預設刪除陣列中等於 false 的值
+  - `$callbackParameter` 可選，引用傳遞給回傳函數的參數
+    - `ARRAY_FILTER_USE_KEY` 將 key 作為唯一參數傳遞給回調函數，而不是數組的值
+    - `ARRAY_FILTER_USE_BOTH` 將值和鍵都作為參數而不是值傳遞給回調
 
-  - `ARRAY_FILTER_USE_KEY` 將 key 作為唯一參數傳遞給回調函數，而不是數組的值
-  - `ARRAY_FILTER_USE_BOTH` 將值和鍵都作為參數而不是值傳遞給回調
+  ```php
+  // PHP function to check for even elements in an array
+  function Even($array)
+  {
+      // returns if the input integer is even
+      if($array%2==0)
+         return TRUE;
+      else
+         return FALSE;
+  }
+  $array = array(12, 0, 0, 18, 27, 0, 46);
+  print_r(array_filter($array, "Even"));
+  ```
 
-        ```php
-        // PHP function to check for even elements in an array
-        function Even($array)
-        {
-            // returns if the input integer is even
-            if($array%2==0)
-               return TRUE;
-            else
-               return FALSE;
-        }
-
-        $array = array(12, 0, 0, 18, 27, 0, 46);
-        print_r(array_filter($array, "Even"));
-        ```
-
-        ```log
-        Array
-        (
-            [0] => 12
-            [1] => 0
-            [2] => 0
-            [3] => 18
-            [5] => 0
-            [6] => 46
-        )
-        ```
+  ```log
+    Array
+    (
+        [0] => 12
+        [1] => 0
+        [2] => 0
+        [3] => 18
+        [5] => 0
+        [6] => 46
+    )
+  ```
 
 ### `str_pad()` 填充字串為指定長度
 
