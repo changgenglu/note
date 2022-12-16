@@ -882,6 +882,142 @@ function myFunction() {
 }
 ```
 
+### 物件取值、新增與刪除
+
+#### 物件取值
+
+```javascript
+var family = {
+  name: "ma's family",
+  deposit: 1000,
+  members: {
+    mother: "mom",
+    father: "dad",
+  },
+};
+
+console.log(family.name); // ma's family
+console.log(family.members.mother); // mom
+console.log(family["name"]); // ma's family
+```
+
+用中括號語法，允許以變數的方式取值
+
+```javascript
+var family = {
+  name: "ma's family",
+  deposit: 1000,
+  members: {
+    mother: "mom",
+    father: "dad",
+  },
+};
+var a = "name";
+
+console.log(family.a); // undefind
+console.log(family[a]); // ma's family
+```
+
+`.` 語法是直接以字串的方式尋找該物件的屬性，而 family 物件並無 a 屬性。
+但中括號中的語法是將變數 a 的值帶入，相當於 `family['name']`。
+
+另外，在物件中的屬性一律是字串，因此可以允許各種數字或是特殊字元，但在 `.` 語法中，會受到許多限制。
+
+```javascript
+var family = {
+  name: "ma's family",
+  deposit: 1000,
+  memebers: {
+    mother: "mom",
+    father: "dad"
+  },
+  1: '1',
+  '$-小名家': '$-小名家 string'
+};
+
+console.log(family.1) // 語法錯誤
+console.log(family[1]) // 1
+
+console.log(family.$-小名家) // 語法錯誤
+console.log(family['$-小名家']) // $-小名家 string
+```
+
+執行物件中的方法，也可以用點語法或是中括號
+
+```javascript
+var family = {
+  name: "ma's family",
+  deposit: 1000,
+  memebers: {
+    mother: "mom",
+    father: "dad",
+  },
+  callFamily: function () {
+    console.log("call 2 ma's family");
+  },
+};
+
+family.callFamily(); // call 2 ma's family
+family["callFamily"](); // call 2 ma's family
+```
+
+#### 物件轉為陣列
+
+陣列本身舉有許多好用的方法：`forEach`, `map`, `reduce`, `find`...，但物件無法使用這些陣列方法
+
+利用 `Object` 關鍵字，將物件轉為陣列。
+
+- Object.values 可以直接傳入一個物件，並將物件直接轉為陣列的形式，但無法取得 key 值。
+- Object.keys 傳入一個物件，並將其 key 值以陣列方式呈現，僅只取 key 值。
+- Object.entries 傳入物件，並同時回傳 key 值與 values，但產生的新結構，會另外用一層陣列組成。
+
+#### 新增物件屬性
+
+```javascript
+var family = {
+  name: "ma's family",
+  deposit: 1000,
+  memebers: {
+    mother: "mom",
+    father: "dad",
+  },
+  callFamily: function () {
+    console.log("call 2 ma's family");
+  },
+};
+
+family.dog = "小豬";
+family["kitten"] = "K Ka貓";
+family["$"] = "money";
+console.log(family);
+```
+
+#### 刪除物件屬性
+
+使用 `delete` 關鍵字
+
+```javascript
+var family = {
+  name: "ma's family",
+  deposit: 1000,
+  memebers: {
+    mother: "mom",
+    father: "dad",
+  },
+  callFamily: function () {
+    console.log("call 2 ma's family");
+  },
+};
+
+family.dog = "小豬";
+family["kitten"] = "K Ka貓";
+family["$"] = "money";
+
+delete family.deposit;
+delete family["$"];
+console.log(family);
+```
+
 ### SET 集合
 
 #### 基本使用
