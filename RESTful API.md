@@ -1,4 +1,4 @@
-# Laravel RESTful API
+# RESTful API
 
 ###### tags: `php` `Laravel` `RESTful`
 
@@ -33,3 +33,66 @@
 |   PATCH   | api/v1/posts/1 | 更新文件 id=1 的部分內容 | 只替代掉部分內容，內容會依照發送請求的資料作修改。如果沒有填寫的部分保留原始資料 |
 
 - 其他不符合以上類別的動作用 POST
+
+## Laravel RESTful API
+
+### 建立 controller
+
+```bash
+php artisan make:controller Api/TestController --api
+```
+
+```php
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class TestController extends Controller
+{
+    public function index()
+    {
+        // 列出所有
+    }
+
+    public function store(Request $request)
+    {
+        // 建立資料
+    }
+
+    public function show($id)
+    {
+        // 顯示指定 id 的資料
+    }
+
+    public function update(Request $request, $id)
+    {
+        // 更新指定 id 的資料
+    }
+
+    public function destroy($id)
+    {
+        // 刪除指定 id 的資料
+    }
+}
+```
+
+### 加入 api
+
+routes/api.php
+
+```php
+Route::middleware('auth:api')->group(function () {
+    Route::apiResource('test', 'TestController');
+});
+```
+
+### URL
+
+| action |                 url                  | Controller function |
+| :----: | :----------------------------------: | :-----------------: |
+|  get   |     `{{ server-url }}/api/test`      |        index        |
+|  post  |     `{{ server-url }}/api/test`      |        store        |
+|  get   | `{{ server-url }}/api/test/{{ id }}` |        show         |
+| patch  | `{{ server-url }}/api/test/{{ id }}` |       update        |
+| delete | `{{ server-url }}/api/test/{{ id }}` |       destory       |

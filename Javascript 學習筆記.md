@@ -34,6 +34,20 @@
     - [prototype.map()](#prototypemap)
     - [prototype.push()](#prototypepush)
     - [`Math.round()` 四捨五入](#mathround-四捨五入)
+    - [`Array.prototype.filter()`](#arrayprototypefilter)
+    - [`Array.prototype.splice()` 新增刪除陣列中的元素](#arrayprototypesplice-新增刪除陣列中的元素)
+    - [物件取值、新增與刪除](#物件取值新增與刪除)
+      - [物件取值](#物件取值)
+      - [物件轉為陣列](#物件轉為陣列)
+      - [新增物件屬性](#新增物件屬性)
+      - [刪除物件屬性](#刪除物件屬性)
+    - [SET 集合](#set-集合)
+      - [基本使用](#基本使用)
+      - [陣列與集合間轉換](#陣列與集合間轉換)
+      - [過濾陣列中重複的元素](#過濾陣列中重複的元素)
+    - [JSON 轉換](#json-轉換)
+      - [`JSON.stringify()` 將物件轉為 json 字串](#jsonstringify-將物件轉為-json-字串)
+      - [`JSON.parse()` 將 json 字串轉換為物件](#jsonparse-將-json-字串轉換為物件)
   - [額外補充](#額外補充)
     - [randome(亂數)公式](#randome亂數公式)
 
@@ -110,6 +124,9 @@ console.log(a === b);
 // false
 ```
 
+- 將不同型態的物件通通轉為字串  
+  \`${}\` 在大括號中加入變數
+
 - 宣告原始值：單獨放一個記憶體位址 以 by value 運作
 - 宣告複合值：包含許多原始值，但是只放在一個記憶體位置 以 by reference(參考) 運作
 
@@ -130,8 +147,12 @@ console.log(a === b);
 
 .bind //定義 function 內的 this 是什麼
 
-- 將不同型態的物件通通轉為字串  
-  \`${}\` 在大括號中加入變數
+### 宣告
+
+在 ES5 之前都只會用 `var` 宣告變數，在 ES6 之後加入 `let` 和 `const`，現在應以新加入的特性進行宣告。
+
+`const`：常數，宣告之後無法更改變數的值，只讀不能寫。
+`let`：變數，暫存的資料，可以更動裡面的值。
 
 ## 運算式與運算子
 
@@ -882,6 +903,44 @@ function myFunction() {
 }
 ```
 
+### `Array.prototype.splice()` 新增刪除陣列中的元素
+
+- `array.splice(start, deleteCount, item)`
+
+  - start 必填，陣列中要開始改動的元素索引。若索引長度大於陣列長度，則實際開始的索引值會被預設為陣列長度。若索引值為負，則會從陣列中最後一個元素開始往前改動(起始為 -1)，若其絕對值大於陣列長度，則會被設為 0。
+  - deleteCount 可選，欲刪除的原陣列數量的整數。若省略，或其值大於可以被刪除的元素數量(從 start 到陣列最後的長度)，則將從 start 開始到陣列最後一個元素全部刪除。若 deleteCount 為 0 或負數，則不會有元素被刪除。
+  - item 1, item 2 可選，從 start 開始要加入的元素，若未傳入任何數值，則將 start 到 deleteCount 之間的元素刪除。
+
+- 從 `[2]` 的位置開始，刪除 0 個元素並插入 `drum`
+
+  ```javascript
+  var myFish = ["angel", "clown", "mandarin", "sturgeon"];
+  var removed = myFish.splice(2, 0, "drum");
+
+  // myfish 為 ["angel", "clown", "drum", "mandarin", "sturgeon"]
+  // removed 為 []，沒有任何元素被刪除
+  ```
+
+- 從 `[3]` 的位置開始，刪除一個元素
+
+  ```javascript
+  var myFish = ["angel", "clown", "drum", "mandarin", "sturgeon"];
+  var removed = myFish.splice(3, 1);
+
+  // removed 為 ["mandarin"]
+  // myFish 為 ["angel", "clown", "drum", "sturgeon"]
+  ```
+
+- 從 `[0]` 開始，刪除兩個元素，並插入 "parrot", "anemone", "blue"
+
+  ```javascript
+  var myFish = ["angel", "clown", "trumpet", "sturgeon"];
+  var removed = myFish.splice(0, 2, "parrot", "anemone", "blue");
+
+  // myFish 為 ["parrot", "anemone", "blue", "trumpet", "sturgeon"]
+  // removed 為 ["angel", "clown"]
+  ```
+
 ### 物件取值、新增與刪除
 
 #### 物件取值
@@ -1071,6 +1130,16 @@ mySet.add(o); // Set { 1, 5, 'some text', { a: 1, b: 2 } }
 // // o is referencing a different object so this is okay
 mySet.add({ a: 1, b: 2 }); // Set { 1, 5, 'some text', { a: 1, b: 2 }, { a: 1, b: 2 } }
 ```
+
+### JSON 轉換
+
+- json 為一組字串
+- 在使用 {} 建立物件時，屬性名稱的引號可以省略，但在 json 格式中，屬性名稱一定要有引號。
+- 若物件中的值為 function 時，無法透過 json 傳遞。
+
+#### `JSON.stringify()` 將物件轉為 json 字串
+
+#### `JSON.parse()` 將 json 字串轉換為物件
 
 ## 額外補充
 
