@@ -11,6 +11,8 @@
 - 可以使用 `php artisan event:list` 來列出所有註冊的 `Event` 和 `listener`
 
 ```php
+namespace App\Providers;
+
 use App\Events\OrderShipped;
 use App\Listeners\SendShipmentNotification;
 
@@ -41,6 +43,10 @@ php artisan make:event PodcastProcessed
 
 php artisan make:listener SendPodcastNotification --event=PodcastProcessed
 ```
+
+此時會產生兩個文件，分別為：
+app\Events\OrderShipped.php
+app\Listeners\SendShipmentNotification.php
 
 ### 手動註冊
 
@@ -105,6 +111,8 @@ public function shouldDiscoverEvents()
 Event class 基本上就是一個資料容器，用來保存與該事件相關的資訊。
 
 假設有一個事件會接收 Eloquent ORM 的物件，`App\Events\OrderShipped`
+
+在 class 中加入 $order 屬性，並在建構子中加入 $this->order = $order
 
 ```php
 <?php
@@ -174,6 +182,7 @@ class SendShipmentNotification
     public function handle(OrderShipped $event)
     {
         // Access the order using $event->order...
+        // ex: dd($event->order);
     }
 }
 ```
@@ -181,6 +190,35 @@ class SendShipmentNotification
 ### 停止事件的傳播
 
 若要停止將某個事件傳播到另一個監聽器上，只要在監聽器的 handle 方法是回傳 false 即可
+
+## 觸發事件
+
+將 order 物件傳入 controller，listener 的 handle 方法中可以拿到 event 中的 order 變數，後續就可以觸發事件的邏輯
+
+```php
+namespace App\Http\Controllers;
+
+use App\Models\Order;
+use App\Events\OrderShipped;
+use App\Http\Controllers\Controller;
+
+class OrderController extends Controller
+{
+    public function ship() {
+        $orderId = 1;
+        $order = Order::findOrFail($orderId);
+
+        // 訂單出貨的邏輯
+        // 觸發 event
+        event(new OrderShipped($order));
+
+        return response()->json([
+            'status' => 'success',
+            'message' => ''
+        ]);
+    }
+}
+```
 
 ## 分派 Event
 
