@@ -1,9 +1,8 @@
 # Javascript 學習筆記
 
-###### tags: `前端` `Javascript`
-
-- [Javascript 學習筆記](#javascript-學習筆記) - [tags: `前端` `Javascript`](#tags-前端-javascript)
+- [Javascript 學習筆記](#javascript-學習筆記)
   - [基本概念](#基本概念)
+    - [宣告與命名](#宣告與命名)
   - [運算式與運算子](#運算式與運算子)
     - [嚴謹模式](#嚴謹模式)
     - [賦值運算子](#賦值運算子)
@@ -26,7 +25,7 @@
     - [提升(Hoisting)](#提升hoisting)
     - [全域變數](#全域變數)
   - [方法](#方法)
-    - [取得 base_url](#取得-base_url)
+    - [取得 base\_url](#取得-base_url)
     - [document](#document)
       - [`.querySelector()` 元素選擇器](#queryselector-元素選擇器)
       - [`.querySelectorAll()` 選取所有指定元素](#queryselectorall-選取所有指定元素)
@@ -51,9 +50,9 @@
   - [額外補充](#額外補充)
     - [randome(亂數)公式](#randome亂數公式)
 
-> ### 參考資料
+> **參考資料：**
 >
-> - [重新認識 javascript](https://ithelp.ithome.com.tw/users/20065504/ironman/1259)
+> [重新認識 javascript](https://ithelp.ithome.com.tw/users/20065504/ironman/1259)
 
 ## 基本概念
 
@@ -155,7 +154,7 @@ console.log(a === b);
 `let`：變數，暫存的資料，可以更動裡面的值。
 
 - 命名規則
-  - 開頭字元需要是 ASCII 字元(英文小寫)，或是下底線(_)、錢號($)。開頭字元不得使用數字。
+  - 開頭字元需要是 ASCII 字元(英文小寫)，或是下底線(\_)、錢號($)。開頭字元不得使用數字。
   - 大小寫敏感
   - 名稱不得使用保留字
 

@@ -1,9 +1,6 @@
 # PHP 物件導向
 
-###### tags: `php`
-
 - [PHP 物件導向](#php-物件導向)
-          - [tags: `php`](#tags-php)
   - [物件和類別 `Objects` and `Classes`](#物件和類別-objects-and-classes)
   - [建立類別 `Class`](#建立類別-class)
   - [定義類別的屬性](#定義類別的屬性)

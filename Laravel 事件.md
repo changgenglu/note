@@ -190,14 +190,14 @@ class SendShipmentNotification
 
 ```PHP
 <?php
- 
+
 namespace App\Http\Controllers;
- 
+
 use App\Events\OrderShipped;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
- 
+
 class OrderShipmentController extends Controller
 {
     /**
@@ -209,9 +209,9 @@ class OrderShipmentController extends Controller
     public function store(Request $request)
     {
         $order = Order::findOrFail($request->order_id);
- 
+
         // Order shipment logic...
- 
+
         OrderShipped::dispatch($order);
     }
 }
@@ -219,4 +219,190 @@ class OrderShipmentController extends Controller
 
 ## 實作範例
 
-> [參考資料](https://segmentfault.com/a/1190000010730545)
+> [最簡單易懂的 laravel 事件，這個功能非常的有用](https://segmentfault.com/a/1190000010730545)
+
+### 情境
+
+在用戶註冊時，發送幫助電子郵件給用戶
+
+以下為原始的註冊方法
+
+```php
+namespace  App\Htt\Controllers;
+
+use  Illuminate\Http\Request;
+
+class  UserController  extends  Controller
+ {
+     public  function  register ( Request $request )
+     {
+        //獲取參數
+        //驗證參數
+        //寫入資料庫
+        //return 註冊信息
+    }
+}
+```
+
+現在有一個需求，註冊成功之後，向用戶的電子信箱發送一個廣告
+
+```php
+namespace  App\Htt\Controllers;
+
+use  Illuminate\Http\Request;
+
+class  UserController  extends  Controller
+ {
+     public  function  register ( Request $request )
+     {
+        //獲取參數
+        //驗證參數
+        //寫入資料庫
+
+        //發送廣告電子郵件
+        //return 註冊信息
+
+    }
+}
+```
+
+此時再增加一個發送簡訊的需求
+
+```php
+namespace  App\Htt\Controllers;
+
+use  Illuminate\Http\Request;
+
+class  UserController  extends  Controller
+ {
+     public  function  register ( Request $request )
+     {
+        //獲取參數
+        //驗證參數
+        //寫入資料庫
+
+        //發送廣告電子郵件
+        //發送簡訊
+        //return 註冊信息
+    }
+}
+```
+
+接著又有新的需求：發送 IM 消息，雖然將許多的功能寫在一個 function 中很直觀，但當多人協作時，會產生各種不便。
+
+### 事件功能
+
+laravel 事件功能實際上更傾向於一種管理手段 + 實現的體現。
+
+我們可以透過 laravel 事件功能，宏觀的看到所有的事件，而不需每次都要打開 controller 的方法才能知道註冊之後發生什麼事
+
+我們要在註冊之後作一系列事情，首先在註冊完之後調用一個事件，然後這個事件在做各式各樣的事。
+
+```php
+namespace  App\Htt\Controllers;
+
+use  Illuminate\Http\Request;
+ //我們先引入一個事件類，名字自定義的，之後再一步一步創建
+use  App\Events\Register;
+
+class  UserController  extends  Controller
+ {
+     public  function  register ( Request $request )
+     {
+        // 獲取參數
+        // 驗證參數
+        // 寫入資料庫
+        // 觸發事件，以後所有需要註冊後要做的事情，都不需要再這裡加代碼了，我們只需要管理事件就好了
+        // event 方法是 laravel 自帶方法, $uid是外部參數，看你需要做什麼，傳什麼參數了。註冊之後肯定有 $uid 的嘛
+        event ( new  Register ( $uid ));
+        // return 註冊信息
+
+
+    }
+}
+```
+
+找到 app\Providers\EventServiceProvider.php 文件，並加入關係
+
+```php
+namespace  App\Providers;
+
+use  Laravel\Lumen\Providers\EventServiceProvider  as  ServiceProvider;
+
+class  EventServiceProvider  extends  ServiceProvider
+ {
+     /**
+     * The event listener mappings for the application.
+     *
+     * @var array
+     */
+    protected  $listen = [
+        // 用戶註冊後的事件
+        'App\Events\Register' => [
+            // 發送廣告電子郵件
+            'App\Listeners\SendAdMail',
+            // 發送簡訊
+            'App\Listeners\SendSms',
+            // 發送幫助信息
+            'App\Listeners\SendHelpInformation',
+        ],
+    ];
+}
+```
+
+這是註冊事件的入口，相當於一個總目錄，這樣就可以跟註冊的程式碼，未來增加功能時，便不須再查看註冊方法的程式碼
+
+註冊完成後會觸發 App\Events\Register 類別，然後這個類會被 App\Listeners\SendAdMail, App\Listeners\SendSms, App\Listeners\SendHelpInformation 監聽到
+
+此時進入 App\Events 目錄，建立 Register 這個 class
+
+```php
+namespace  App\Events;
+
+class  Register
+ {
+
+    public  $uid;
+
+    /**
+     * 創建一個新的事件實例.
+     *
+     * @param   Order $order
+     * @return void
+     */
+    public  function  __construct ( $uid )
+     {
+         $this ->uid = $uid;
+    }
+}
+```
+
+接著在 app\Listeners 目錄底下建立各種事件監聽 class
+
+```php
+namespace  App\Listeners;
+
+use  App\Event\Register;
+use  App\Models\User;
+use  Illuminate\Contracts\Queue\ShouldQueue;
+
+class  SendHelpInformation  implements  ShouldQueue
+ {
+
+
+    public  function  __construct ()
+    {
+        //
+    }
+
+
+    public  function  handle ( Register $event )
+    {
+        $uid = $event ->uid;
+
+        $user = User :: find ( $uid );
+
+        //......各種實現
+    }
+}
+```
