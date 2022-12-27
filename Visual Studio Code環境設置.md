@@ -1,8 +1,6 @@
 # Visual Studio Code 環境設置
 
-###### tags: `環境設定`
-
-- [Visual Studio Code 環境設置](#visual-studio-code-環境設置) - [tags: `環境設定`](#tags-環境設定)
+- [Visual Studio Code 環境設置](#visual-studio-code-環境設置)
   - [擴充套件](#擴充套件)
     - [中文化](#中文化)
     - [美化 code](#美化-code)

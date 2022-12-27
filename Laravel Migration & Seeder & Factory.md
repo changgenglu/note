@@ -1,9 +1,6 @@
 # Laravel Migration & Seeder & Factory
 
-###### tags: `php` `Laravel`
-
-- [Laravel Migration & Seeder & Factory](#laravel-migration--seeder--factory)
-          - [tags: `php` `Laravel`](#tags-php-laravel)
+- [Laravel Migration \& Seeder \& Factory](#laravel-migration--seeder--factory)
   - [Migration](#migration)
     - [產生 Migration 檔案](#產生-migration-檔案)
     - [執行 Migrate](#執行-migrate)

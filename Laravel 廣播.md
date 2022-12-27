@@ -197,3 +197,25 @@ window.Echo = new Echo({
 
   - 會將 resources/js build 到 public/js (resources/js/app.js => public/js/app.js)
   - 由於 app.js 中有引用 bootstrap.js，所以在頁面中引用 app.jsa 就能使用 echo 了
+  - Laravel Echo 會需要存取當前 session 的 CSRF token，需要在 header 中設定
+
+## Laravel Echo Server
+
+- 安裝 Laravel Echo Server
+
+  ```bash
+  npm install -g  laravel-echo-server
+  ```
+
+- project 根目錄下，初始化 laravel echo server，所有的問題都用預設
+
+  ```bash
+  laravel-echo-server init
+  ```
+
+- 會再跟目錄產生一個 laravel-echo-server.json，把 devMode 設定為 true
+- 啟動 laravel-echo-server
+
+  ```bash
+  laravel-echo-server start
+  ```

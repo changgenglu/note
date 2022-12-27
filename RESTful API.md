@@ -1,7 +1,5 @@
 # RESTful API
 
-###### tags: `php` `Laravel` `RESTful`
-
 > RESTful API 是一種設計模式
 >
 > 定義一組"物件"(object)，他們是可以被操作的。
