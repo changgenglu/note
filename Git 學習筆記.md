@@ -114,6 +114,7 @@
 #### Commit Message 格式
 
 ```bash
+
 # 標題: <type>(<scope>): <subject>
 # - type: feat, fix, docs, style, refactor, test, chore
 # - scope: 如果修改範圍為全局修改或難以分配給單個組件，可略
@@ -192,6 +193,7 @@ template = ~/.gitmessage
 新建 ~/.gitmessage
 
 ```vim
+
 # 標題: <type>(<scope>): <subject>
 # - type: feat, fix, docs, style, refactor, test, chore
 # - scope: 如果修改範圍為全局修改或難以分配給單個組件，可略
