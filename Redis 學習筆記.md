@@ -1,6 +1,7 @@
 # Redis 學習筆記
 
 - [Redis 學習筆記](#redis-學習筆記)
+  - [redis-cil](#redis-cil)
   - [資料類型](#資料類型)
     - [string](#string)
     - [List](#list)
@@ -10,6 +11,13 @@
   - [redis Key](#redis-key)
   - [Redis GUI](#redis-gui)
   - [windows 安裝 phpredis](#windows-安裝-phpredis)
+
+## redis-cil
+
+```bash
+# redis-cil -h <host> -p <port>
+redis-cil -h 127.0.0.1 -p 6379
+```
 
 ## 資料類型
 
