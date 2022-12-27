@@ -221,7 +221,7 @@ php artisan make:controller NewController
   ```
 
   - 在`function/` 的目錄下，新增一個資源控制器
-  - 生成`index()` `create()` `store()` `show()` `edit()` `update()` `destory()`
+  - 生成`index()` `create()` `store()` `show()` `edit()` `update()` `destroy()`
 
 - `--api`
 
@@ -230,7 +230,7 @@ php artisan make:controller NewController
   ```
 
   - 一般 api 控制器會新增在 Controller/api 的目錄之下
-  - 生成`index()` `store()` `show()` `update()` `destory()`，省略 `create()` `edit()` 方法
+  - 生成`index()` `store()` `show()` `update()` `destroy()`，省略 `create()` `edit()` 方法
 
 ### resource controller function
 
@@ -241,7 +241,7 @@ php artisan make:controller NewController
 - `show()`: 顯示指定 id 的資料
 - `edit()`: 顯示編輯的畫面
 - `update()`: 更新資料
-- `destory()`: 刪除資料
+- `destroy()`: 刪除資料
 
 ### controller 傳入參數
 
@@ -336,7 +336,7 @@ Route::prefix("new")->group(function () {
 - namespace: 若要綁定的 controller 不在預設的 app/Http/Controller 裡，而是有更進一步的分類，可以設定 namespace()方便管理。
 
 ```php
-// app/Http/Conroller/New
+// app/Http/Controller/New
 Route::namespace("new")->group(function () {
     Route::get('new/view/{id}', 'NewController@show');
     Route::post('new/create', 'NewController@create');

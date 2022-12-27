@@ -140,7 +140,7 @@ php artisan db:seed --class=UsersTableSeeder
 
 ## [Factory](https://learnku.com/docs/laravel/6.x/database-testing/5185)
 
-> [深入了解 Facker](https://learnku.com/laravel/t/62386)
+> [深入了解 Faker](https://learnku.com/laravel/t/62386)
 
 ### 產生 Factory 檔案
 
@@ -153,7 +153,7 @@ php artisan make:factory PersonFactory --model=Person
 到`/database/factories/PersonFactory.php`，設定要填充的資料欄位。
 
 ```php=
-$factory->define(Person::class, function (Facker $facker) {
+$factory->define(Person::class, function (Faker $faker) {
     return [
         'last_name' => $faker->lastName,
         'email'     => $faker->safeEmail,

@@ -54,7 +54,7 @@ ln -s /srv/www/your_project.com /var/www/your_project.com
 
    ```bash
    composer dumpautoload -o
-   # 每次更新compsoer install 後，都要再執行一次
+   # 每次更新 composer install 後，都要再執行一次
    ```
 
 5. 建立 keygen
@@ -84,7 +84,7 @@ ln -s /srv/www/your_project.com /var/www/your_project.com
    - migrate 指令
 
    ```bash
-   # 還原 --steph 此參數為後退多少版本
+   # 還原 --step 此參數為後退多少版本
    php artisan migrate:rollback
    php artisan migrate:rollback --step=5
 
@@ -104,7 +104,7 @@ sudo chmod -R 775 /srv/www/your_project.com/storage
 
 ## 2. 設定 Apache
 
-- 設定 Aapche server
+- 設定 Apache server
 
 ```bash
 cd /etc/apache2/sites-available

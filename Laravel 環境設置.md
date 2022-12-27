@@ -16,7 +16,7 @@
     - [開發環境設定](#開發環境設定)
     - [上線環境設定](#上線環境設定)
   - [Laravel ReactJS](#laravel-reactjs)
-  - [Laraval 安裝 bootstrap](#laraval-安裝-bootstrap)
+  - [Laraval 安裝 bootstrap](#laravel-%E5%AE%89%E8%A3%9D-bootstrap)
     - [Laravel 8](#laravel-8)
     - [Laravel 6](#laravel-6)
 
@@ -233,7 +233,7 @@ php artisan serve
 
 ### 上線環境設定
 
-1. 安裝 compsoer 排除 dev 項目
+1. 安裝 composer 排除 dev 項目
 
    ```bash
    composer install --optimize-
@@ -275,7 +275,7 @@ php artisan serve
    ```bash
    composer dump
    load -o
-   # 每次更新compsoer install 後，都要再執行一次
+   # 每次更新composer install 後，都要再執行一次
    ```
 
 6. 類別緩存  
@@ -431,7 +431,7 @@ php artisan serve
         php artisan serve
     ```
 
-## Laraval 安裝 bootstrap
+## Laravel 安裝 bootstrap
 
 ### Laravel 8
 

@@ -27,7 +27,7 @@
     - [Bug 與安全模式](#bug-與安全模式)
   - [時間格式(時區、本地化)](#時間格式時區本地化)
     - [本地語系](#本地語系)
-    - [Fromat](#fromat)
+    - [Fromat](#format)
   - [Getter \& Setter](#getter--setter)
     - [時間屬性](#時間屬性)
     - [時間與語系](#時間與語系)
@@ -134,7 +134,7 @@ Carbon:now()->settings([
 ]);
 ```
 
-### Fromat
+### Format
 
 ```php
 Carbon::now()->format('Y-m-d H:m:s l');             // 2022-11-17 02:11:55 Thursday
@@ -203,7 +203,7 @@ $date->setTimeFrom($sourcel);   // 2001-01-01 22:40:10
 
 ```php
 $first = Carbon::create(2022, 11, 11, 0, 0, 0);
-$seccond = Carbon::create(2022, 11, 11, 0, 0, 0, 'America/Vancouver'); // 時區設定
+$second = Carbon::create(2022, 11, 11, 0, 0, 0, 'America/Vancouver'); // 時區設定
 
 $first->equalTo($second); // false
 $first->notEqualTo($second); // true
@@ -230,7 +230,7 @@ $first <= $second;
 
 ```php
 $first = Carbon::parse('2022-11-11');
-$seccond = Carbon::parse('2022-11-15');
+$second = Carbon::parse('2022-11-15');
 $data = Carbon::parse('2022-11-15');
 $data->between($first, $second);        // true
 $data->between($first, $second, false); // 嚴格模式 false
@@ -238,7 +238,7 @@ $data->between($first, $second, false); // 嚴格模式 false
 
 ```php
 $first = Carbon::parse('2022-11-11');
-$seccond = Carbon::parse('2022-11-15');
+$second = Carbon::parse('2022-11-15');
 
 $first->min($second);   // '2022-11-11'
 $first->max($second);   // '2022-11-15'

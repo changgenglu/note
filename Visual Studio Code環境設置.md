@@ -63,7 +63,7 @@
 
 - markdownlint
 - Markdown All in One
-- Markdown Perview Gitnub Styling
+- Markdown Preview Github Styling
 - Markdown TOC  
   markdown 自動生成目錄，作者：CharlesWan
 
@@ -80,7 +80,7 @@
 
 ### 小工具
 
-- Draw.io Inetgration(繪製表格、流程圖)
+- Draw.io Integration(繪製表格、流程圖)
 
 ## 調整設定
 

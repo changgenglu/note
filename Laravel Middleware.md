@@ -62,4 +62,3 @@ class AfterMiddleware
 ```
 
 ## 註冊 Middleware
-

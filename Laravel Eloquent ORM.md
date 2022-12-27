@@ -48,7 +48,7 @@ php artisan make:model New
 // migration
 php artisan make:model New -m
 
-// fctory
+// factory
 php artisan make:model New -f
 
 // seed
@@ -77,7 +77,7 @@ class UserInfo extends Model
         'userId',
         'userName',
         'account',
-        'passord',
+        'password',
         'email'
     ];
 
@@ -169,12 +169,12 @@ class UserInfo extends Model
 |     images     |
 | :------------: |
 |       id       |
-| imageable_type |
-|  imageable_id  |
+| imaginable_type |
+|  imaginable_id  |
 |      url       |
 
-- imageable_id : 關聯的主鍵值
-- imageable_type : 指定這筆資料是關聯 users 資料表還是 posts 資料表，欄內儲存的是類別名稱，型態為字串，如：'App\Models\User' 'App\Models\Post'
+- imaginable_id : 關聯的主鍵值
+- imaginable_type : 指定這筆資料是關聯 users 資料表還是 posts 資料表，欄內儲存的是類別名稱，型態為字串，如：'App\Models\User' 'App\Models\Post'
 
 #### 多形一對一關聯
 
@@ -185,7 +185,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Image extends Model
 {
-    public function imageable()
+    public function imaginable()
     {
         return $this->morphTo();
     }
@@ -196,7 +196,7 @@ class Post extends Model
 
     public function image()
     {
-        return $this->morphOne(Image::class, 'imageable');
+        return $this->morphOne(Image::class, 'imaginable');
     }
 }
 
@@ -205,45 +205,45 @@ class User extends Model
 
     public function image()
     {
-        return $this->morphOne(Image::class, 'imageable');
+        return $this->morphOne(Image::class, 'imaginable');
     }
 }
 ```
 
 - `morphOne`: hasOne 的多型態版本
 
-  和 hasOne 相比，標類別後面多了一個 name 參數 imageable，Eloquent 會根據這個 name 預設目標表單上的查詢欄位，以 imageable 為例的話就是查詢 imageable_type 跟 imageable_id
+  和 hasOne 相比，標類別後面多了一個 name 參數 imaginable，Eloquent 會根據這個 name 預設目標表單上的查詢欄位，以 imaginable 為例的話就是查詢 imaginable_type 跟 imaginable_id
 
   - 自訂目標的查詢欄位名稱
 
     ```php
     // morphOne(目標表單名稱，多形名稱，目標的型別欄位名稱，目標的外鍵欄位名稱，自己的關聯鍵)
-     $this->morphOne(Image::class, 'imageable','imageable_type',  'imageable_id','id');
+     $this->morphOne(Image::class, 'imaginable','imaginable_type',  'imaginable_id','id');
     ```
 
 - `morphTo`: belongsTo 的多型態版本
 
   ```php
   // 使用時要注意函式的名稱
-  public function imageable()
+  public function imaginable()
   {
       return $this->morphTo();
   }
   ```
 
-  如果沒有帶入參數的話預設會用函式的名稱產出預設名稱，像這裡的函式名稱是 imageable ，那查詢時就會以型別欄位 imageable_type 查對應的資料表，以及鍵值欄位 imageable_id 查資料。
+  如果沒有帶入參數的話預設會用函式的名稱產出預設名稱，像這裡的函式名稱是 imaginable ，那查詢時就會以型別欄位 imaginable_type 查對應的資料表，以及鍵值欄位 imaginable_id 查資料。
 
   - 自訂預設名稱
 
     ```php
-    $this->morphTo('imageable');
+    $this->morphTo('imaginable');
     ```
 
   - 自訂查詢欄位的名稱
 
     ```php
     // morphOne(多形名稱，型別欄位名稱，外鍵欄位名稱)
-    $this->morphTo('imageable'，'imageable_type','imageable_id');
+    $this->morphTo('imaginable'，'imaginable_type','imaginable_id');
     ```
 
 #### 多型一對多關聯
@@ -257,7 +257,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Image extends Model
 {
-    public function imageable()
+    public function imaginable()
     {
         return $this->morphTo();
     }
@@ -268,7 +268,7 @@ class Post extends Model
 
     public function image()
     {
-        return $this->morphMany(Image::class, 'imageable');
+        return $this->morphMany(Image::class, 'imaginable');
     }
 }
 
@@ -277,7 +277,7 @@ class User extends Model
 
     public function image()
     {
-        return $this->morphMany(Image::class, 'imageable');
+        return $this->morphMany(Image::class, 'imaginable');
     }
 }
 ```
@@ -297,7 +297,7 @@ class User extends Model
 |  id   |
 | name  |
 
-|   taggables   |
+|   taggable   |
 | :-----------: |
 |      id       |
 |    tag_id     |
@@ -392,13 +392,13 @@ class Tag extends Model
     )
 
     $this->morphToMany(
-      Tag::class, 'taggable','taggables','taggable_id','tag_id','id','id'
+      Tag::class, 'taggable','taggable','taggable_id','tag_id','id','id'
     );
     ```
 
 #### 自訂多型型別
 
-預設 larave 會使用類別的完整名稱來儲存 model type。
+預設 laravel 會使用類別的完整名稱來儲存 model type。
 
 可以透過自訂多型型別，使用簡單的字串作為 model type，將這些值從專案的內部結構中解耦出來。
 
@@ -407,7 +407,7 @@ class Tag extends Model
 - 例如：  
   Commit Model 可以隸屬於 Post Model 或 Video Model。因此，comments 資料表中的 commentable_type 欄位分別會記載 App\Models\Post 或 App\Models\Video。
 
-  此時可以在 `App\Providers\AppServiceProvider` 中的 `boot` 方法，呼叫`enforceMorphMap`方法。將 post 及 video 等簡單字串作為 modle type。
+  此時可以在 `App\Providers\AppServiceProvider` 中的 `boot` 方法，呼叫`enforceMorphMap`方法。將 post 及 video 等簡單字串作為 model type。
 
 ```php
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -503,7 +503,7 @@ User::find(1)->save([
   $article = Article::find(1);
 
   // 從文章上移除指定tag
-  $article->tags()->detach($tagid);
+  $article->tags()->detach($tag_id);
 
   // 移除文章所有tag
   $article->tags()->detach();
@@ -570,7 +570,7 @@ User::find(1)->save([
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
-Route::get('lazy-loding', function () {
+Route::get('lazy-loading', function () {
   // 開啟 Query Log
   DB::enableQueryLog();
 
@@ -611,7 +611,7 @@ foreach ($users as $user) {
 可以使用 laravel 所提供的預加載功能 `with()`
 
 ```php
-Route::get('lazy-loding', function () {
+Route::get('lazy-loading', function () {
   // 開啟 Query Log
   DB::enableQueryLog();
 
@@ -653,7 +653,7 @@ $users = User::withOnly('loginRecords')->get();
 也可以加載多個關聯
 
 ```php
-$users = User::with(['posts', 'commid'])->get();
+$users = User::with(['posts', 'commit'])->get();
 ```
 
 ## 序列化
@@ -821,7 +821,7 @@ class User extends Model
 return $user->append('is_admin')->toArray();
 
 // 重寫整個追加屬性的陣列
-return $user->setAppeneds(['is_admin'])->toArray();
+return $user->setAppends(['is_admin'])->toArray();
 ```
 
 ### 日期序列化

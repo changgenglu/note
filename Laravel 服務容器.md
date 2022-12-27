@@ -84,8 +84,8 @@ class Superman
 class Flight
 {
     protected $speed;
-    protected $holdtime;
-    public function __construct($speed, $holdtime) {}
+    protected $hold_time;
+    public function __construct($speed, $hold_time) {}
 }
 
 class Force

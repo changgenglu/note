@@ -33,7 +33,7 @@ protected $listen = [
 在 EventServiceProvider 中註冊後，使用 artisan 指令，即可產生 EventServiceProvider 中已註冊但尚未生成的 Event 和 Listener
 
 ```bash
-php artisan event:gnerate
+php artisan event:generate
 ```
 
 或者也可以分別建立 Event 和 Listener

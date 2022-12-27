@@ -48,16 +48,16 @@ public function handle()
 
 - 選項：關鍵字是`--`
 
-  - {--quene=} 選項後面加上 `=`，表示選項需要明確指定值。
-  - {--Q|quene} 可用簡寫
+  - {--queue=} 選項後面加上 `=`，表示選項需要明確指定值。
+  - {--Q|queue} 可用簡寫
   - {--id=_} `_`代表輸入的是陣列
-  - {--quene=:這個工作是否該進入隊列} 加入敘述
+  - {--queue=:這個工作是否該進入隊列} 加入敘述
 
 - 取得參數
 
   - $this->argument('user') 取得單一 user 參數
   - $this->arguments() 取得所有參數，以陣列呈現
-  - $this->options('quene') 取得單一 quene 選項
+  - $this->options('queue') 取得單一 queue 選項
   - $this->options() 取得所有選項，以陣列呈現
 
 - 互動式指令

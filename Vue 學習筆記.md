@@ -39,7 +39,7 @@
 - `beforeUpdate`: Vue 實體中的 data 產生變化後，或是執行 vm.$forceUpdate() 時調用，此時頁面尚未被重新渲染成變過的畫面。
 - `update`: 在重新渲染頁面後調用，此時的頁面已經被重新渲染成改變後的畫面。
 - `beforeDestroy`: 在此實體被銷毀前調用，此時實體依然擁有完整的功能。
-- `destoryed`: 於此實體被銷毀後調用，此時實體中的任何定義(data, methods...)都已被解除綁定，在此做任何操作都會失效。
+- `destroyed`: 於此實體被銷毀後調用，此時實體中的任何定義(data, methods...)都已被解除綁定，在此做任何操作都會失效。
 
 ## 監聽器
 
@@ -59,7 +59,7 @@
 定義
 
 ```javascript
-unwatch = vm.$watch(expOrFn, callback, [options]);
+unwatched = vm.$watch(expOrFn, callback, [options]);
 ```
 
 `$watch` 的回傳值是註銷監聽器的函數，執行此函數可使監聽器失效。
@@ -387,7 +387,7 @@ computed: {
 </script>
 ```
 
-- 如果要控制表單的全選或全部取消，只要控制 data 內的 cheakedNames 陣列內容即可
+- 如果要控制表單的全選或全部取消，只要控制 data 內的 checkedNames 陣列內容即可
 
 當 checkbox 為單選時
 
@@ -540,7 +540,7 @@ v-model 標籤須使用在 `<select>` 標籤，不能用在 `<option>` 標籤中
 
 同時 `v-if` 也是惰性的，若在初始渲染時條件為 false，則不執行，直至條件第一次轉為 true 時，才會開始渲染。
 
-相較之下，`v-show` 就比較單純，無論初始條件，元素總是會被渲染，`v-show `做的只是基於 CSS 進行切換。
+相較之下，`v-show` 就比較單純，無論初始條件，元素總是會被渲染，`v-show` 做的只是基於 CSS 進行切換。
 
 ## 迴圈渲染
 
@@ -568,7 +568,7 @@ Foo
 Bar
 ```
 
-在 v-for 中可以訪問所有父作用域的 propert。v-for 還可加入可選的第二參數作為當前的 key 值。
+在 v-for 中可以訪問所有父作用域的 property。v-for 還可加入可選的第二參數作為當前的 key 值。
 
 ```html
 <ul id="example-2">

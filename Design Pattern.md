@@ -11,7 +11,7 @@
 在軟體工程中將 Pattern 分為：
 
 - Architecture Pattern: 解決軟體系統架構層面的問題。如：MVC 架構、Layer...
-- Deaign Pattern: 提供改善軟體系統中子系統與元件(components)的方案。常見如：Observer, Facade, Adapter...
+- Design Pattern: 提供改善軟體系統中子系統與元件(components)的方案。常見如：Observer, Facade, Adapter...
 - Idioms: 是一種 lowest-level pattern，為 programming(程式撰寫)層級提供程式改善方案，主要透過程式語言的解決方案來實現。
 
 ### 範例
@@ -62,7 +62,7 @@ problem 中有一個很重要的元素：force。在前面的範例中有提到�
 - solution 需要考慮的限制
 - solution 需要包含的特性
 
-但不幸的是，froce 常常是互相矛盾且衝突的，在設計 solution 時常常需要權衡不同的 force 來得到最適合的解決方案。
+但不幸的是，force 常常是互相矛盾且衝突的，在設計 solution 時常常需要權衡不同的 force 來得到最適合的解決方案。
 
 ### Solution(解決方案)
 

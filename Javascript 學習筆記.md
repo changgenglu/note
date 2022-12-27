@@ -25,7 +25,7 @@
     - [提升(Hoisting)](#提升hoisting)
     - [全域變數](#全域變數)
   - [方法](#方法)
-    - [取得 base\_url](#取得-base_url)
+    - [取得 base_url](#取得-base_url)
     - [document](#document)
       - [`.querySelector()` 元素選擇器](#queryselector-元素選擇器)
       - [`.querySelectorAll()` 選取所有指定元素](#queryselectorall-選取所有指定元素)
@@ -48,7 +48,7 @@
       - [`JSON.stringify()` 將物件轉為 json 字串](#jsonstringify-將物件轉為-json-字串)
       - [`JSON.parse()` 將 json 字串轉換為物件](#jsonparse-將-json-字串轉換為物件)
   - [額外補充](#額外補充)
-    - [randome(亂數)公式](#randome亂數公式)
+    - [random(亂數)公式](#random亂數公式)
 
 > **參考資料：**
 >
@@ -70,7 +70,7 @@ undefined; // 未定義
 - Javascript 物件建構式：
 
 ```javascript
-Nunmber()、String()、Boolean()、
+Number()、String()、Boolean()、
 Object()、Array()、Function()、
 Date()、RegExp()、Error()
 ```
@@ -665,12 +665,12 @@ var answer = test(5); //呼叫點，test(5)會將刮號內的參數傳到functio
 ```javascript
 var x = 1;
 
-var someThingHappend = function (y) {
+var someThingHappened = function (y) {
   var x = 100;
   return x + y;
 };
 
-console.log(someThingHappend(50)); // 150
+console.log(someThingHappened(50)); // 150
 console.log(x); // 1
 ```
 
@@ -925,7 +925,7 @@ function myFunction() {
   var myFish = ["angel", "clown", "mandarin", "sturgeon"];
   var removed = myFish.splice(2, 0, "drum");
 
-  // myfish 為 ["angel", "clown", "drum", "mandarin", "sturgeon"]
+  // myFish 為 ["angel", "clown", "drum", "mandarin", "sturgeon"]
   // removed 為 []，沒有任何元素被刪除
   ```
 
@@ -981,7 +981,7 @@ var family = {
 };
 var a = "name";
 
-console.log(family.a); // undefind
+console.log(family.a); // undefine
 console.log(family[a]); // ma's family
 ```
 
@@ -994,7 +994,7 @@ console.log(family[a]); // ma's family
 var family = {
   name: "ma's family",
   deposit: 1000,
-  memebers: {
+  members: {
     mother: "mom",
     father: "dad"
   },
@@ -1015,7 +1015,7 @@ console.log(family['$-小名家']) // $-小名家 string
 var family = {
   name: "ma's family",
   deposit: 1000,
-  memebers: {
+  members: {
     mother: "mom",
     father: "dad",
   },
@@ -1044,7 +1044,7 @@ family["callFamily"](); // call 2 ma's family
 var family = {
   name: "ma's family",
   deposit: 1000,
-  memebers: {
+  members: {
     mother: "mom",
     father: "dad",
   },
@@ -1067,7 +1067,7 @@ console.log(family);
 var family = {
   name: "ma's family",
   deposit: 1000,
-  memebers: {
+  members: {
     mother: "mom",
     father: "dad",
   },
@@ -1151,7 +1151,7 @@ mySet.add({ a: 1, b: 2 }); // Set { 1, 5, 'some text', { a: 1, b: 2 }, { a: 1, b
 
 ## 額外補充
 
-### randome(亂數)公式
+### random(亂數)公式
 
 ```javascript
 function getRandom(start, end) {

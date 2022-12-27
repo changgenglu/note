@@ -36,7 +36,7 @@ class User extends Authenticatable
 建立一個 `migration` 設定檔，在 `users` 資料表中加入儲存帳號角色的 `role` 欄位
 
 ```php
-class AddRoleCloumnToUsersTable extends Migration
+class AddRoleColumnToUsersTable extends Migration
 {
     /**
      * Run the migrations.

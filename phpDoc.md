@@ -45,7 +45,7 @@
  * @abstract
  */
 public class DemoClass {
-	//code...
+ //code...
 }
 ```
 
@@ -71,7 +71,6 @@ public class DemoClass {
     */
     private $_instance;
 }
-
 ```
 
 ### 普通函數和類別中的函數註解

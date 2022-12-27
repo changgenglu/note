@@ -106,4 +106,3 @@ docker rm 6d7e00198a56
 #移除後再檢查一次
 docker ps -a
 ```
-

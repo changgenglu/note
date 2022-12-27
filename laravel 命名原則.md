@@ -1,7 +1,5 @@
 # laravel 命名原則
 
-###### tags: `php` `Laravel`
-
 - 對於類、介面/契約、特性：使用 大駝峰式「PascalCase」
 - 對於常量：使用「TITLE_CASE」
 - 對於函式/方法、類屬性和變數：使用 小駝峰式「camelCase」

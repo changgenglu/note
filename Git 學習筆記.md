@@ -1,8 +1,6 @@
 # Git 學習筆記
 
-###### tags: `Git`
-
-- [Git 學習筆記](#git-學習筆記) - [tags: `Git`](#tags-git)
+- [Git 學習筆記](#git-學習筆記)
   - [常用指令](#常用指令)
     - [Git 常用指令](#git-常用指令)
     - [Git Bash 常用指令](#git-bash-常用指令)
@@ -26,10 +24,12 @@
     - [將未完成的工作暫存：git stash](#將未完成的工作暫存git-stash)
       - [將現階段工作暫存](#將現階段工作暫存)
       - [取出暫存](#取出暫存)
+      - [主要指令](#主要指令)
     - [解決合併衝突](#解決合併衝突)
     - [更改 git remote 位置](#更改-git-remote-位置)
-    - [取消 mrege (清除合併紀錄)](#取消-mrege-清除合併紀錄)
+    - [取消 merge (清除合併紀錄)](#取消-merge-清除合併紀錄)
     - [新增遠端儲存庫](#新增遠端儲存庫)
+    - [Git 別名](#git-別名)
   - [Git 管理](#git-管理)
     - [使用 VSCode 管理 Git](#使用-vscode-管理-git)
   - [GitHub 操作](#github-操作)
@@ -168,7 +168,7 @@ BREAKING CHANGE: isolate scope bindings definition has changed.
       myAttr: '@',
     }
 
-    "The removed `inject` wasn't generaly useful for directives so there should be no code using it."
+    "The removed `inject` wasn't generally useful for directives so there should be no code using it."
 ```
 
 如果當前 commit 還原了先前的 commit，則應以 revert：開頭，後跟還原的 commit 的 header。在 body 中必須寫成：This reverts commit \<hash>。其中 hash 是要還原的 commit 的 SHA 標識。
@@ -183,14 +183,14 @@ This reverts commit 667ecc1654a317a13331b17617d973392f415f02.
 
 在~/.gitconfig 新增
 
-```
+```config
 [commit]
 template = ~/.gitmessage
 ```
 
 新建 ~/.gitmessage
 
-```
+```vim
 # 標題: <type>(<scope>): <subject>
 # - type: feat, fix, docs, style, refactor, test, chore
 # - scope: 如果修改範圍為全局修改或難以分配給單個組件，可略
@@ -265,7 +265,7 @@ git reset --soft HEAD^
 
 ### 轉移資料庫：git mirror
 
-可以轉移整個 repository 的資訊，包括 beanch, tags
+可以轉移整個 repository 的資訊，包括 branch, tags
 
 將 repo clone --mirror 到本地
 
@@ -413,7 +413,7 @@ Automatic merge failed; fix conflicts and then commit the result.
 當前內容。
 =======
 要合併的目標分支上歧異的內容。
->>>>>>> featuer/i_am_old_branch
+>>>>>>> feature/i_am_old_branch
 ```
 
 修正衝突點後，將修改的檔案暫存，最後進行提交。
@@ -439,7 +439,7 @@ git commit
   git remote -v
   ```
 
-### 取消 mrege (清除合併紀錄)
+### 取消 merge (清除合併紀錄)
 
 > [Git 實戰技巧 - 取消合併](https://blog.darkthread.net/blog/git-undo-merge/)
 
@@ -529,9 +529,9 @@ git push --set-upstream origin main
 
 ```vim
 [alias]
-	st = status
-	ptlg = log --color --graph --pretty=format:'%C(yellow)%h%Creset %C(bold brightred)%d%Creset %C()%s%Creset \n %C(blue italic dim)-- %an%Creset %C(green italic dim)(%cr)%Creset'
-	adal = add --all
+st = status
+ptlg = log --color --graph --pretty=format:'%C(yellow)%h%Creset %C(bold brightred)%d%Creset %C()%s%Creset \n %C(blue italic dim)-- %an%Creset %C(green italic dim)(%cr)%Creset'
+adal = add --all
 ```
 
 ## Git 管理

@@ -1,16 +1,20 @@
 # Laravel Collections & Helper
 
-###### tags: `php` `Laravel`
-
-- [Laravel Collections & Helper](#laravel-collections--helper) - [tags: `php` `Laravel`](#tags-php-laravel)
+- [Laravel Collections \& Helper](#laravel-collections--helper)
   - [Collections 集合](#collections-集合)
     - [`pluck()` 取得集合中所有陣列的 key 值](#pluck-取得集合中所有陣列的-key-值)
     - [`diff()` 比較集合或陣列的值](#diff-比較集合或陣列的值)
     - [`filter()` 傳入匿名函式篩選集合](#filter-傳入匿名函式篩選集合)
     - [`concat()` 將傳入的值追加到集合的末端](#concat-將傳入的值追加到集合的末端)
+    - [`push()` 把指定的值加入集合的末端](#push-把指定的值加入集合的末端)
+    - [`prepend()` 將指定的值加入集合的開頭](#prepend-將指定的值加入集合的開頭)
     - [`contains()` 判斷集合是否包含指定的條件](#contains-判斷集合是否包含指定的條件)
     - [`map()` 遍歷集合](#map-遍歷集合)
+    - [`count()` 計數](#count-計數)
+    - [`countBy()` 計算指定數值](#countby-計算指定數值)
   - [Helper 輔助函數](#helper-輔助函數)
+    - [`Arr::add()` 將數值加入陣列](#arradd-將數值加入陣列)
+    - [`Arr::sort()` 將陣列重新排列](#arrsort-將陣列重新排列)
     - [`after()` 返回傳入的字串的值後面所有的內容](#after-返回傳入的字串的值後面所有的內容)
 
 ## Collections 集合
@@ -18,12 +22,12 @@
 ### `pluck()` 取得集合中所有陣列的 key 值
 
 ```php
-$collection = collectc([
+$collection = collect([
     ['product_id' => 'prod-100', 'name' => 'Desk'],
     ['product_id' => 'prod-200', 'name' => 'Chair'],
 ])
 
-$pucked = $colection->pluck('name');
+$picked = $collection->pluck('name');
 
 $pluck->all();
 

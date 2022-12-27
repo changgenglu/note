@@ -130,7 +130,7 @@ class UserController extends Controller
 
 ## API Resource
 
-larave 5.5 新增的 API Resource，和 transformer 功能與思路基本上一樣
+Laravel 5.5 新增的 API Resource，和 transformer 功能與思路基本上一樣
 
 但由於是 laravel 官方釋出，因此與 Laravel Eloquent model 各種功能結合的更加緊密
 

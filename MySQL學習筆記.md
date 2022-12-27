@@ -148,7 +148,7 @@
   - `primary key` 主索引鍵(主鍵)
   - `foreign key` 外部索引鍵(外來鍵)
   - `UNIQUE` 唯一 不能有重複的資料
-  - ` _INCREMENT` 流水號
+  - `_INCREMENT` 流水號
   - `DEFAULT =` 預設值
   - `CHECK ()` 資料寫入前的檢查(預設標準)
 
@@ -411,7 +411,7 @@ create table test
 
   ```sql
   -- 建立索引
-  creata [unique][cluster]index<索引名>
+  create [unique][cluster]index<索引名>
 
   -- 刪除索引
   drop index <索引名>
@@ -424,7 +424,7 @@ create table test
 
   1. 主鍵(預設自帶索引)和外鍵(以及一些可以跟其他表觀聯的字段)
   2. where 子句中基常出現的字段。
-  3. 索引應該建立在小字段上，大數據字段(gbit, image, test, blob)等，不適用
+  3. 索引應該建立在小字段上，大數據字段(bit, image, test, blob)等，不適用
 
 - **聯合(複合)索引**
 
@@ -473,4 +473,4 @@ select * from test where b=2 and d=4 and a=1and c>3;
 
 1. 只要列中包含有 null 值，都將不會被包含在索引中，複合索引中只要有一列含有 null 值，那此列的複合索引就是無效的，因此在資料庫設計時盡量不要讓欄位的預設值為 null
 2. 使用 like 關鍵字須注意：`like "%aaa%"` 不會命中索引，`like "aaa%"` 才會命中索引。
-3. NOT IN 和操作都會變成全表掃描，not in 可以用 not exisit 代替。
+3. NOT IN 和操作都會變成全表掃描，not in 可以用 not exist 代替。

@@ -1,13 +1,34 @@
 # CSS 學習筆記
 
-###### tags: `前端` `CSS`
-
-- [CSS 學習筆記](#css-學習筆記) - [tags: `前端` `CSS`](#tags-前端-css)
+- [CSS 學習筆記](#css-學習筆記)
   - [後裔選擇器](#後裔選擇器)
     - [基本類型](#基本類型)
+    - [複合型](#複合型)
   - [屬性選擇器`[]`](#屬性選擇器)
   - [表格](#表格)
   - [偽元素](#偽元素)
+  - [`display:none`和`visibility:hidden`的差別](#displaynone和visibilityhidden的差別)
+  - [Display](#display)
+    - [Display Outside](#display-outside)
+      - [Block 區塊元素](#block-區塊元素)
+      - [Inline 行內元素](#inline-行內元素)
+    - [Display Inside](#display-inside)
+      - [Table](#table)
+      - [Flex](#flex)
+        - [Flex-direction 方向性](#flex-direction-方向性)
+        - [justify-content 調整內容](#justify-content-調整內容)
+        - [align-items 對齊物件](#align-items-對齊物件)
+        - [align-self 自身對齊](#align-self-自身對齊)
+      - [Wrap 斷行](#wrap-斷行)
+    - [Global 全域屬性](#global-全域屬性)
+      - [inherit 跟隨父層屬性](#inherit-跟隨父層屬性)
+      - [initial 變回原本屬性](#initial-變回原本屬性)
+    - [Display-Box 影響用箱子裝起來的所有元素](#display-box-影響用箱子裝起來的所有元素)
+      - [none](#none)
+    - [Display-Legacy 此屬性繼承兩者的特性](#display-legacy-此屬性繼承兩者的特性)
+      - [inline-block](#inline-block)
+      - [inline-table](#inline-table)
+      - [inline-flex](#inline-flex)
 
 > 將所有物件加上外框
 >
@@ -168,7 +189,7 @@
 - 可以將元素直接模擬成 table 來使用。
 
   - Table-Row 對應 `<tr>`
-  - Table-Row-Groud 對應 `<tbody>`
+  - Table-Row-Group 對應 `<tbody>`
   - Table-Cell `<td>`
   - Table-caption `<caption`
   - Table-Column `<col>`

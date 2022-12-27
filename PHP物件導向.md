@@ -108,8 +108,8 @@ class MyClass
 {
     public $prop1 = "I'm a class property!";
 
-    public function setProperty($newval) {
-        $this->prop1 = $newval;
+    public function setProperty($new_value) {
+        $this->prop1 = $new_value;
     }
 
     public function getProperty() {
@@ -147,8 +147,8 @@ class MyClass
 {
     public $prop1 = "I'm a class property!";
 
-    public function setProperty($newval) {
-        $this->prop1 = $newval;
+    public function setProperty($new_value) {
+        $this->prop1 = $new_value;
     }
 
     public function getProperty() {
@@ -194,9 +194,9 @@ class MyClass
 
     const constant = "value";
 
-    public function setProperty($newval)
+    public function setProperty($new_value)
     {
-        $this->prop1 = $newval;
+        $this->prop1 = $new_value;
     }
 
     public function getProperty()
@@ -245,9 +245,9 @@ class MyClass
         echo 'The class "', __CLASS__, '" was initiated!<br />';
     }
 
-    public function setProperty($newval)
+    public function setProperty($new_value)
     {
-        $this->prop1 = $newval;
+        $this->prop1 = $new_value;
     }
 
     public function getProperty()
@@ -292,9 +292,9 @@ class MyClass
         echo 'The class "', __CLASS__, '" was destroyed.<br />';
     }
 
-    public function setProperty($newval)
+    public function setProperty($new_value)
     {
-        $this->prop1 = $newval;
+        $this->prop1 = $new_value;
     }
 
     public function getProperty()
@@ -342,9 +342,9 @@ class MyClass
         echo 'The class "', __CLASS__, '" was destroyed.<br />';
     }
 
-    public function setProperty($newval)
+    public function setProperty($new_value)
     {
-        $this->prop1 = $newval;
+        $this->prop1 = $new_value;
     }
 
     public function getProperty()
@@ -418,9 +418,9 @@ class MyClass
         return $this->getProperty();
     }
 
-    public function setProperty($newval)
+    public function setProperty($new_value)
     {
-        $this->prop1 = $newval;
+        $this->prop1 = $new_value;
     }
 
     public function getProperty()
@@ -513,9 +513,9 @@ class MyClass
         return $this->getProperty();
     }
 
-    public function setProperty($newval)
+    public function setProperty($new_value)
     {
-        $this->prop1 = $newval;
+        $this->prop1 = $new_value;
     }
 
     public function getProperty()
@@ -533,13 +533,13 @@ class MyOtherClass extends MyClass
 }
 
 // 實例化一個新的物件
-$newobj = new MyOtherClass;
+$new_object = new MyOtherClass;
 
 // 回傳此類別的方法
-echo $newobj->newMethod();
+echo $new_object->newMethod();
 
 // 回傳父層類別的方法
-echo $newobj->getProperty();
+echo $new_object->getProperty();
 ```
 
 結果輸出
@@ -575,9 +575,9 @@ class MyClass
         return $this->getProperty();
     }
 
-    public function setProperty($newval)
+    public function setProperty($new_value)
     {
-        $this->prop1 = $newval;
+        $this->prop1 = $new_value;
     }
 
     public function getProperty()
@@ -600,13 +600,13 @@ class MyOtherClass extends MyClass
 }
 
 // 實例化一個新的物件
-$newobj = new MyOtherClass;
+$new_object = new MyOtherClass;
 
 // 回傳新類別的方法
-echo $newobj->newMethod();
+echo $new_object->newMethod();
 
 // 回傳父層類別的方法
-echo $newobj->getProperty();
+echo $new_object->getProperty();
 ```
 
 在新類別中，覆寫 `__construct` 方法的輸出結果
@@ -670,9 +670,9 @@ class MyClass
         return $this->getProperty();
     }
 
-    public function setProperty($newval)
+    public function setProperty($new_value)
     {
-        $this->prop1 = $newval;
+        $this->prop1 = $new_value;
     }
 
     public function getProperty()
@@ -696,13 +696,13 @@ class MyOtherClass extends MyClass
 }
 
 // 實例化一個新物件
-$newobj = new MyOtherClass;
+$new_object = new MyOtherClass;
 
 // 將物件輸出成字串
-echo $newobj->newMethod();
+echo $new_object->newMethod();
 
 // 使用來自父層的方法
-echo $newobj->getProperty();
+echo $new_object->getProperty();
 ```
 
 結果輸出
@@ -746,9 +746,9 @@ class MyClass
         return $this->getProperty();
     }
 
-    public function setProperty($newval)
+    public function setProperty($new_value)
     {
-        $this->prop1 = $newval;
+        $this->prop1 = $new_value;
     }
 
     protected function getProperty()
@@ -772,10 +772,10 @@ class MyOtherClass extends MyClass
 }
 
 // 實例化一個新物件
-$newobj = new MyOtherClass;
+$new_object = new MyOtherClass;
 
 // 嘗試調用父層的 protected 方法
-echo $newobj->getProperty();
+echo $new_object->getProperty();
 ```
 
 結果輸出
@@ -809,9 +809,9 @@ class MyClass
         return $this->getProperty();
     }
 
-    public function setProperty($newval)
+    public function setProperty($new_value)
     {
-        $this->prop1 = $newval;
+        $this->prop1 = $new_value;
     }
 
     protected function getProperty()
@@ -840,10 +840,10 @@ class MyOtherClass extends MyClass
 }
 
 // 實例化一個新的物件
-$newobj = new MyOtherClass;
+$new_object = new MyOtherClass;
 
 // 用子類別的 public 方法調用父層的 protected 方法
-echo $newobj->callProtected();
+echo $new_object->callProtected();
 ```
 
 輸出結果
@@ -879,9 +879,9 @@ class MyClass
         return $this->getProperty();
     }
 
-    public function setProperty($newval)
+    public function setProperty($new_value)
     {
-        $this->prop1 = $newval;
+        $this->prop1 = $new_value;
     }
 
     private function getProperty()
@@ -910,10 +910,10 @@ class MyOtherClass extends MyClass
 }
 
 // 實例化一個新的物件
-$newobj = new MyOtherClass;
+$new_object = new MyOtherClass;
 
 // 調用父層的方法
-echo $newobj->callProtected();
+echo $new_object->callProtected();
 ```
 
 輸出結果
@@ -952,9 +952,9 @@ class MyClass
         return $this->getProperty();
     }
 
-    public function setProperty($newval)
+    public function setProperty($new_value)
     {
-        $this->prop1 = $newval;
+        $this->prop1 = $new_value;
     }
 
     private function getProperty()
@@ -1140,9 +1140,9 @@ demo2.php
 <?php
   include "Poodle.php";
 
-  $mydog = new Poodle("Windy","白色","貴賓狗",30);
+  $my_dog = new Poodle("Windy","白色","貴賓狗",30);
 
-  echo $mydog->Bark();
+  echo $my_dog->Bark();
 ```
 
 抽象類別的使用時機 : 當「多個類別（Class）」之間有共同的方法（function）或屬性（attribute）時，可以將這些共用的地方寫成「抽象類別（Abstract Class）」，讓其他的「子類別（Class）」去繼承

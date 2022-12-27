@@ -144,13 +144,13 @@ public function index() {
             <span class="pull-right">
                 <form method="post" action="/employees/1">
                     <a href="/employees/1/edit" class="btn btn-xs btn-info">
-            			<span class="glyphicon glyphicon-pencil"></span> 修改
-            		</a> |
+               <span class="glyphicon glyphicon-pencil"></span> 修改
+              </a> |
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-xs btn-danger">
-            			<span class="glyphicon glyphicon-remove"></span> 刪除
-            		</button>
+               <span class="glyphicon glyphicon-remove"></span> 刪除
+              </button>
                 </form>
             </span>
         </td>
@@ -162,13 +162,13 @@ public function index() {
             <span class="pull-right">
                 <form method="post" action="/employees/2">
                     <a href="/employees/2/edit" class="btn btn-xs btn-info">
-            			<span class="glyphicon glyphicon-pencil"></span> 修改
-            		</a> |
+               <span class="glyphicon glyphicon-pencil"></span> 修改
+              </a> |
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-xs btn-danger">
-            			<span class="glyphicon glyphicon-remove"></span> 刪除
-            		</button>
+               <span class="glyphicon glyphicon-remove"></span> 刪除
+              </button>
                 </form>
             </span>
         </td>
@@ -180,13 +180,13 @@ public function index() {
             <span class="pull-right">
                 <form method="post" action="/employees/3">
                     <a href="/employees/3/edit" class="btn btn-xs btn-info">
-            			<span class="glyphicon glyphicon-pencil"></span> 修改
-            		</a> |
+               <span class="glyphicon glyphicon-pencil"></span> 修改
+              </a> |
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-xs btn-danger">
-            			<span class="glyphicon glyphicon-remove"></span> 刪除
-            		</button>
+               <span class="glyphicon glyphicon-remove"></span> 刪除
+              </button>
                 </form>
             </span>
         </td>
@@ -211,24 +211,24 @@ php artisan serve
 ```php
 <tbody>
     @foreach ($employeeList as $emp)
-    	<tr>
-        	<td>{{$emp->firstName}}</td>
-        	<td>{{$emp->lastName}}</td>
-        	<td>
-            	<span class="pull-right">
-                	<form method="post" action="/employees/{{$emp->id}}">
-                    	<a href="/employees/{{$emp->id}}/edit" class="btn btn-xs btn-info">
-    						<span class="glyphicon glyphicon-pencil"></span> 修改
-    					</a> |
-                    	@csrf
-                    	@method('DELETE')
-                    	<button type="submit" class="btn btn-xs btn-danger">
-    						<span class="glyphicon glyphicon-remove"></span> 刪除
-    					</button>
-               	 	</form>
-            	</span>
-        	</td>
-    	</tr>
+     <tr>
+         <td>{{$emp->firstName}}</td>
+         <td>{{$emp->lastName}}</td>
+         <td>
+             <span class="pull-right">
+                 <form method="post" action="/employees/{{$emp->id}}">
+                     <a href="/employees/{{$emp->id}}/edit" class="btn btn-xs btn-info">
+          <span class="glyphicon glyphicon-pencil"></span> 修改
+         </a> |
+                     @csrf
+                     @method('DELETE')
+                     <button type="submit" class="btn btn-xs btn-danger">
+          <span class="glyphicon glyphicon-remove"></span> 刪除
+         </button>
+                  </form>
+             </span>
+         </td>
+     </tr>
     @endforeach
 </tbody>
 ```
@@ -262,10 +262,10 @@ public function create()
 <body>
     <div class="container">
         <form class="form-horizontal">
-    	@csrf
+     @csrf
             <fieldset>
                 <!-- Form Name -->
-                <legend>Emplyee Data</legend>
+                <legend>Employee Data</legend>
                 <!-- Text input-->
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="firstName">First Name:</label>
@@ -285,10 +285,10 @@ public function create()
                     <label class="col-md-4 control-label" for="okOrCancel"></label>
                     <div class="col-md-8">
                         <button type="submit" id="okOrCancel" name="okOrCancel" class="btn btn-success">
-                        	OK
+                         OK
                         </button>
-    					<button type="submit" id="okOrCancel" name="okOrCancel" class="btn btn-danger">
-                        	Cancel
+         <button type="submit" id="okOrCancel" name="okOrCancel" class="btn btn-danger">
+                         Cancel
                         </button>
                     </div>
                 </div>
@@ -342,11 +342,11 @@ public function edit($id)
 <body>
     <div class="container">
         <form class="form-horizontal">
-    	@csrf
-		@method('PUT')
+     @csrf
+  @method('PUT')
             <fieldset>
                 <!-- Form Name -->
-                <legend>Emplyee Data</legend>
+                <legend>Employee Data</legend>
                 <!-- Text input-->
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="firstName">First Name:</label>
@@ -365,11 +365,11 @@ public function edit($id)
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="okOrCancel"></label>
                     <div class="col-md-8">
-                    	<button type="submit" id="okOrCancel" name="okOrCancel" class="btn btn-success">
-                        	OK
+                     <button type="submit" id="okOrCancel" name="okOrCancel" class="btn btn-success">
+                         OK
                         </button>
-    					<button type="submit" id="okOrCancel" name="okOrCancel" class="btn btn-danger">
-                        	Cancel
+         <button type="submit" id="okOrCancel" name="okOrCancel" class="btn btn-danger">
+                         Cancel
                         </button>
                     </div>
                 </div>

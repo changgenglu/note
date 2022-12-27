@@ -61,4 +61,4 @@ example: https://exampleProjN.com/api/card/1
 |  role   | string | required, string, in:member,guest |
 | room_id | array  |     required, exists:rooms,id     |
 
-./postman_doc_gen [C:\Users\RD\Desktop\V5-Cloud.postman_collection.json] -o [C:\Users\RD\Desktop] 
+./postman_doc_gen [C:\Users\RD\Desktop\V5-Cloud.postman_collection.json] -o [C:\Users\RD\Desktop]

@@ -1,7 +1,5 @@
 # macOS Monterey 上安裝 PHP
 
-###### tags: `php` `環境設定`
-
 > ## 動機
 >
 > ### 發現問題
@@ -10,7 +8,7 @@
 >
 > ### 原因
 >
-> MacOS Monterry 版本，預設沒有安裝 PHP。
+> MacOS Monterey 版本，預設沒有安裝 PHP。
 
 ## 安裝 PHP
 

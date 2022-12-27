@@ -99,7 +99,7 @@ MQTT 可以針對網路品質(QoS)，決定操作等級
   sudo apt-get install mosquitto
   ```
 
-  - 安裝好後，borker 會自動運行
+  - 安裝好後，broker 會自動運行
 
 - 控制指令
 
@@ -145,13 +145,13 @@ MQTT 可以針對網路品質(QoS)，決定操作等級
   - 訂閱
 
     ```bash
-    mosquitto_sub -v -d -t <topic> -u <user> -P <Possword>
+    mosquitto_sub -v -d -t <topic> -u <user> -P <Password>
     ```
 
   - 推送
 
     ```bash
-    mosquitto_pub -d -t <Topic> -m <Message> -u <User> -P <Possword>
+    mosquitto_pub -d -t <Topic> -m <Message> -u <User> -P <Password>
     ```
 
 - 開啟 server 防火牆的 port: 1883
@@ -222,7 +222,7 @@ sudo systemctl restart mosquitto
 - `-c` 指定 config 檔
 - `-v` verbose mode 詳細模式
 
-當啟動成功會顯示所有 borker 的即時資訊
+當啟動成功會顯示所有 broker 的即時資訊
 
 ## 測試 Broker
 

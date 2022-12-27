@@ -95,4 +95,4 @@ Route::middleware('auth:api')->group(function () {
 |  post  |     `{{ server-url }}/api/test`      |        store        |
 |  get   | `{{ server-url }}/api/test/{{ id }}` |        show         |
 | patch  | `{{ server-url }}/api/test/{{ id }}` |       update        |
-| delete | `{{ server-url }}/api/test/{{ id }}` |       destory       |
+| delete | `{{ server-url }}/api/test/{{ id }}` |       destroy       |
