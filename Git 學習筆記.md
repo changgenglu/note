@@ -15,6 +15,7 @@
       - [Footer](#footer)
       - [commit 模板](#commit-模板)
   - [Git 操作情境](#git-操作情境)
+    - [將 git 預設的編輯器改為 vim](#將-git-預設的編輯器改為-vim)
     - [取消 commit：git reset](#取消-commitgit-reset)
       - [確認 git 紀錄](#確認-git-紀錄)
       - [利用相對位置取消 commit](#利用相對位置取消-commit)
@@ -209,6 +210,12 @@ template = ~/.gitmessage
 ```
 
 ## Git 操作情境
+
+### 將 git 預設的編輯器改為 vim
+
+```bash
+git config --global core.editor "vim"
+```
 
 ### 取消 commit：git reset
 
