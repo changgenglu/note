@@ -1,5 +1,13 @@
 # Docker 學習筆記
 
+> 參考資料：
+>
+> [Docker 基本知識 以及 Docker Compose 實戰經驗](https://hackmd.io/@leonsnoopy/Sya_DevI7#Docker-%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AD%98-%E4%BB%A5%E5%8F%8A-Docker-Compose%E5%AF%A6%E6%88%B0%E7%B6%93%E9%A9%97)
+>
+> [基礎系統及 docker hub 指令](https://joshhu.gitbooks.io/dockercommands/content/Basics/Basics.html)
+>
+> [How to Deploy Laravel with Docker on Ubuntu 18.04](https://help.clouding.io/hc/en-us/articles/360010679999-How-to-Deploy-Laravel-with-Docker-on-Ubuntu-18-04)
+
 ## 安裝 Docker (Docker for Windows)
 
 > Windows 10

@@ -205,3 +205,111 @@ jobs -l
 #### `kill 10000` 刪除執行中的進程，`kill` 加上 PID 的數字即可
 
 #### `nohup`
+
+## Ubuntu 安裝 MySQL
+
+### 安裝
+
+#### 更新軟體庫
+
+```zsh
+apt update
+```
+
+#### 升級軟體庫
+
+```zsh
+apt upgrade
+```
+
+#### 安裝 MySQL
+
+```zsh
+apt install mysql-server -y
+```
+
+#### 查看 MySQL 版本
+
+```zsh
+mysql --version
+# output
+mysql  Ver 8.0.31-0ubuntu0.22.04.1 for Linux on x86_64 ((Ubuntu))
+```
+
+### 設定 root 密碼
+
+```zsh
+root@DESKTOP-O8SANAT ~ sudo service mysql start
+
+root@DESKTOP-O8SANAT ~ sudo mysql
+
+mysql>  ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'SetRootPasswordHere';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> exit
+Bye
+
+root@DESKTOP-O8SANAT ~ sudo mysql_secure_installation
+Enter password for user root:
+# 輸入：SetRootPasswordHere
+```
+
+- [設定 root 帳號與初始權限](https://www.albert-yu.com/blog/mysql%E8%A8%AD%E5%AE%9Aroot%E5%B8%B3%E8%99%9F%E5%AF%86%E7%A2%BC%E8%88%87%E5%88%9D%E5%A7%8B%E6%AC%8A%E9%99%90ubuntu-20-04/)
+
+### 移除 MySQL
+
+- 移除 MySQL
+
+```bash
+apt-get purge --auto-remove mysql-common mysql-server mariadb-server
+apt-get autoremove
+apt-get autoclean
+```
+
+- 刪除 mysql 使用者
+
+```bash
+killall -9 mysql (或 killall -9 mysqld) userdel mysql
+```
+
+- 刪除設定檔
+
+```bash
+rm -rf /etc/mysql rm -rf /var/lib/mysql
+```
+
+## 完全移除 nginx
+
+- 停止 nginx 服務
+
+```bash
+sudo service nginx stop
+```
+
+- 刪除 nginx 及設定文件
+
+```bash
+sudo apt-get purge nginx
+```
+
+- 自動刪除不使用的軟體包
+
+```bash
+sudo apt-get autoremove
+```
+
+- 列出與 nginx 相關的軟體，並刪除
+
+```bash
+dpkg --get-selections | grep nginx
+
+sudo apt-get purge nginx
+sudo apt-get purge nginx-common
+sudo apt-get purge nginx-full
+```
+
+- 確認 nginx 是否完全刪除
+
+```bash
+which nginx
+```
