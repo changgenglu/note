@@ -206,29 +206,61 @@ jobs -l
 
 #### `nohup`
 
-## Ubuntu 安裝 MySQL
+## 安裝 php
 
-### 安裝
+```bash
+apt install -y php7.4 php7.4-cli php7.4-fpm php7.4-mbstring php7.4-xml php7.4-bcmath php7.4-curl php7.4-gd php7.4-mysql php7.4-opcache php7.4-zip php7.4-sqlite3
+```
 
-#### 更新軟體庫
+- 查看是否安裝成功
+
+  ```bash
+  php -v
+  ```
+
+- 安裝最新版 php
+
+由於通常 ubuntu 的套件資訊不會包含最新版本的 php，若需要最新版本，需添加第三方的套件資訊
+
+```bash
+apt install -y software-properties-common
+```
+
+將第三方套件資訊加入 ubuntu 套件資訊庫
+
+```bash
+add-apt-repository -y ppa:ondrej/php
+```
+
+更新套件資訊
+
+```bash
+apt-get update
+```
+
+更新後即可安裝最新的 php
+
+## 安裝 MySQL
+
+### 更新軟體庫
 
 ```zsh
 apt update
 ```
 
-#### 升級軟體庫
+### 升級軟體庫
 
 ```zsh
 apt upgrade
 ```
 
-#### 安裝 MySQL
+### 安裝指令
 
 ```zsh
 apt install mysql-server -y
 ```
 
-#### 查看 MySQL 版本
+### 查看 MySQL 版本
 
 ```zsh
 mysql --version
@@ -313,3 +345,65 @@ sudo apt-get purge nginx-full
 ```bash
 which nginx
 ```
+
+## 找不到 sudo
+
+- 先檢查 `/etc/sudoers.d` 檔案是否在，若無則下安裝命令
+
+```bash
+apt-get install sudo
+```
+
+- 若系統中已經存在 `/etc/sudoers.d` 檔案，表示系統已經安裝 sudo 但尚未設定環境。
+  - 用文件編輯器 (vim) 開啟 `/etc/sudoers.d`，找到 `secure_path` 添加路徑
+
+```bash
+Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
+```
+
+## 安裝 composer
+
+> 安裝前須先安裝 PHP Command-Line Interface（PHP-CLI)
+
+### 更新系統的套件資訊
+
+```bash
+sudo apt-get update && sudo apt-get upgrade -y
+```
+
+### 下載 composer 並將其設定為全域可執行的指令
+
+- 從官網下載 composer 安裝檔至 tmp 資料夾
+
+  ```bash
+  php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php')"
+  ```
+
+- 驗證下載的安裝檔
+
+  使用 composer 官方提供的 SHA-384 簽章來驗證安裝檔 [Composer Public Keys / Checksums](https://composer.github.io/pubkeys.html)
+
+  輸入驗證的簽章
+
+  ```bash
+  php -r "if (hash_file('SHA384', '/tmp/composer-setup.php') === '55ce33d7678c5a611085589f1f3ddf8b3c52d662cd01d4ba75c0ee0459970c2200a51f492d557530c71c15d8dba01eae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('/tmp/composer-setup.php'); } echo PHP_EOL;"
+  ```
+
+- 安裝 composer
+  為了要讓 composer 在全域中使用，所以要將 composer 安裝到 `usr/local/bin` 的資料夾中，以及將 `Composer` 重新命名為 `composer`。
+
+  ```bash
+  sudo php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
+  ```
+
+- 查看 composer 版本
+
+  ```bash
+  composer -v
+  ```
+
+- 刪除 composer 的安裝檔
+
+  ```bash
+  rm /tmp/composer-setup.php
+  ```
