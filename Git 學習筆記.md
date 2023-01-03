@@ -10,8 +10,8 @@
       - [任務分支(Topic)](#任務分支topic)
     - [Git Commit 規範](#git-commit-規範)
       - [Commit Message 格式](#commit-message-格式)
-      - [Header Type](#header-type)
-      - [Body](#body)
+      - [標題](#標題)
+      - [正文](#正文)
       - [Footer](#footer)
       - [commit 模板](#commit-模板)
   - [Git 操作情境](#git-操作情境)
@@ -132,26 +132,38 @@
 #
 ```
 
-#### Header Type
+#### 標題
 
-- **feat** - 新增/修改功能 (Feature)
-- **fix** - 修正 Bug (bug fix)
-- **docs** - 修改/新增文件 (documentation)
-- **style** - 修改程式碼格式或風格，不影響原有運作，例如 ESLint (formatting, missing semi colons, …)
-- **refactor** - 重構 or 優化，不屬於 bug 也不屬於新增功能等
-- **test** - 增加測試功能 (when adding missing tests)
-- **chore** - 增加或修改第三方套件(輔助工具)等 (maintain)
-- **perf** - 改善效能 (A code change that improves performance)
-- **revert** - 撤銷回覆先前的 commit 例如：revert: type(scope): subject (回覆版本：xxxx)。
+- Type 類型
+  - **feat** - 新增/修改功能 (Feature)
+  - **fix** - 修正 Bug (bug fix)
+  - **docs** - 修改內容/新增文件 (documentation)
+  - **style** - 修改程式碼格式或風格，不影響原有運作，包含修改縮排、新增縮排...等等
+  - **refactor** - 重構程式碼，不屬於 bug 修正，也不屬於新功能
+  - **perf** - 改善效能 (A code change that improves performance)
+  - **test** - 增加/修改測試功能 (when adding missing tests)
+  - **chore** - 增加或修改第三方套件(輔助工具)等 (maintain)
+  - **revert** - 撤銷回覆先前的 commit 例如：revert: type(scope): subject (回覆版本：xxxx)。
+  - **build** - 改變打包流程
+- scope 範圍
+  - 任何可以劃分程式碼改變的範圍，例如：page, router, compile, component...等等。
+- subject 主題
+  - 對程式碼修改做簡單描述
 
-#### Body
+#### 正文
 
-可選的。與 subject 一樣，使用命令式現在時態， 如 change，而不是 changed 或 changes。  
-body 應包括改變的動機，並將其與以前的行為進行對比。也就是說，描述為什麼修改，做了什麼樣的修改，以及開發的思路等，是 commit 的詳細描述。
+描述測次程式碼變更的動機，並說出這個提交與改變前的對比。
+
+1. 為什麼這個提交是必要的？
+2. 他如何解決問題？
+3. 這個提交會對專案產生什麼副作用？
+   - 可以有效辨認次提交是做了太多改變。若有一兩個副作用尚可接受，但若五、六個以上，則表示改變幅度太大。
 
 #### Footer
 
-Breaking Changes 應以單詞 BREAKING CHANGE 開頭：用空格或兩個換行符。後面是對變動的描述和變動的理由。
+結尾通常會有兩種：
+
+1. 標註 Breaking Changes 應以單詞 BREAKING CHANGE 開頭：用空格或兩個換行符。後面是對變動的描述和變動的理由。
 
 ```bash
 BREAKING CHANGE: isolate scope bindings definition has changed.

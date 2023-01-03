@@ -407,3 +407,30 @@ sudo apt-get update && sudo apt-get upgrade -y
   ```bash
   rm /tmp/composer-setup.php
   ```
+
+## 安裝 Git
+
+```bash
+sudo apt-get install git
+```
+
+## 安裝 Docker
+
+```bash
+sudo apt install docker.io
+```
+
+確認安裝
+
+```bash
+docker --version
+```
+
+啟動 docker 
+
+```bash
+sudo systemctl start docker
+
+# 啟動時運行
+sudo systemctl enable docker
+```

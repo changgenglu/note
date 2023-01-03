@@ -1,5 +1,29 @@
 # Docker 學習筆記
 
+- [Docker 學習筆記](#docker-學習筆記)
+  - [安裝 Docker (Docker for Windows)](#安裝-docker-docker-for-windows)
+  - [基本概念](#基本概念)
+    - [Image](#image)
+    - [Container](#container)
+    - [Repository](#repository)
+  - [Hello World](#hello-world)
+    - [確認 Image 存在於 Repository](#確認-image-存在於-repository)
+    - [建立 Container 並執行](#建立-container-並執行)
+    - [列出所有已建立的 container](#列出所有已建立的-container)
+    - [移除 container](#移除-container)
+  - [ubuntu](#ubuntu)
+    - [pull](#pull)
+    - [啟動](#啟動)
+  - [For Laravel: Laradock](#for-laravel-laradock)
+    - [環境要求](#環境要求)
+    - [資料結構](#資料結構)
+      - [laradock/.env](#laradockenv)
+      - [mysql](#mysql)
+      - [PhpMyAdmin](#phpmyadmin)
+      - [apache2](#apache2)
+      - [nginx](#nginx)
+    - [啟動](#啟動-1)
+
 > 參考資料：
 >
 > [Docker 基本知識 以及 Docker Compose 實戰經驗](https://hackmd.io/@leonsnoopy/Sya_DevI7#Docker-%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AD%98-%E4%BB%A5%E5%8F%8A-Docker-Compose%E5%AF%A6%E6%88%B0%E7%B6%93%E9%A9%97)
@@ -114,3 +138,144 @@ docker rm 6d7e00198a56
 #移除後再檢查一次
 docker ps -a
 ```
+
+## ubuntu
+
+### pull
+
+```bash
+# 搜尋 ubuntu
+docker search ubuntu
+# 將 ubuntu 的 image pull 下來
+docker pull ubuntu
+```
+
+查看 docker 的 image，應可以看到最新版本的 ubuntu
+
+```bash
+docker images
+```
+
+| REPOSITORY | TAG    | IMAGE ID     | CREATED     | SIZE   |
+| ---------- | ------ | ------------ | ----------- | ------ |
+| ubuntu     | latest | 6b7dfa7e8fdb | 3 weeks ago | 77.8MB |
+
+### 啟動
+
+```bash
+> docker run -itd --name ubuntu-test ubuntu
+6ffebdd2bce193afe7e3fbaa53c6f2e1dffa845e2c8ec55fef899ba191470dbc
+```
+
+進入容器
+
+```bash
+> docker exec -it ubuntu-test bash
+root@6ffebdd2bce1:/#
+```
+
+## For Laravel: Laradock
+
+### 環境要求
+
+> Git
+> docker
+> docker-compose
+
+- 將 laradock 的 repository clone 下來
+
+  ```bash
+  git clone https://github.com/Laradock/laradock.git Laradock
+  ```
+
+### 資料結構
+
+#### laradock/.env
+
+- 在 laradock 的資料夾中複製 .env.example 並改名為 .env
+
+  ```bash
+  cp .env.example .env
+  ```
+
+- 編輯 .env 中的設定
+
+```vim
+### Paths #################################################
+# Point to the path of your applications code on your host
+# 專案要放在本機的哪個資料夾中
+# 這邊放在與 laradock 同層級的 test 資料夾中
+APP_CODE_PATH_HOST=../test
+
+# Point to where the `APP_CODE_PATH_HOST` should be in the container
+# 設定專案要同步到 container 中的哪一個路徑，預設為 /var/www
+APP_CODE_PATH_CONTAINER=/var/www
+
+# You may add flags to the path `:cached`, `:delegated`. When using Docker Sync add `:nocopy`
+APP_CODE_CONTAINER_FLAG=:cached
+
+# Choose storage path on your machine. For all storage systems
+# 設定你的儲存資料(ex. database, redis 內的數據)要存放在哪。
+# 這邊是放在跟 laradock 專案同層級的 data 資料夾中
+DATA_PATH_HOST=../data
+```
+
+#### mysql
+
+若 PhpMyAdmin 登不進去，可能是版本問題
+
+```vim
+# 預設值
+MYSQL_VERSION=latest
+
+# 改為
+MYSQL_VERSION=5.7
+```
+
+#### PhpMyAdmin
+
+```vim
+### PHP MY ADMIN ##########################################
+
+# Accepted values: mariadb - mysql
+# 連接的 BD (預設為 mysql)
+PMA_DB_ENGINE=mysql
+
+# Credentials/Port:
+
+# 預設的使用者
+PMA_USER=default
+# 預設密碼
+PMA_PASSWORD=secret
+# sql root 帳號的密碼
+PMA_ROOT_PASSWORD=secret
+# phpMyAdmin 執行的 port 號
+PMA_PORT=8081
+PMA_MAX_EXECUTION_TIME=600
+PMA_MEMORY_LIMIT=256M
+PMA_UPLOAD_LIMIT=2G
+```
+
+#### apache2
+
+#### nginx
+
+### 啟動
+
+- 啟動 laradock
+
+```bash
+docker-compose up -d apache2 phpMyAdmin nginx ...想啟動的服務
+```
+
+Laradock 會自動啟動包括 php-fpm 在內的 php-fpm 及 workspace，啟動 phpMyAdmin 時也會連帶啟動 mysql
+
+- 進入 laravel 專案
+
+在啟動 laradock 之後，會建立一個 workspace 的 container，此時進入 workspace 建立 laravel 專案
+
+```bash
+docker-compose exec workspace bash
+```
+
+進入後，terminal 會顯示自己在 `/var/www` 中，此時 `/var/www` 是連接我們在 .env 中設定的資料夾 `../test`
