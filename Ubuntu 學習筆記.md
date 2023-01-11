@@ -310,7 +310,13 @@ killall -9 mysql (或 killall -9 mysqld) userdel mysql
 rm -rf /etc/mysql rm -rf /var/lib/mysql
 ```
 
-## 完全移除 nginx
+## nginx
+
+### service nginx restart 執行出現 fail
+
+[參考資料](https://weijutu.github.io/2019/03/12/web/ubuntu-nginx-restart-fail/)
+
+### 完全移除 nginx
 
 - 停止 nginx 服務
 
@@ -399,7 +405,7 @@ sudo apt-get update && sudo apt-get upgrade -y
 - 查看 composer 版本
 
   ```bash
-  composer -v
+  composer -V
   ```
 
 - 刪除 composer 的安裝檔
@@ -426,7 +432,7 @@ sudo apt install docker.io
 docker --version
 ```
 
-啟動 docker 
+啟動 docker
 
 ```bash
 sudo systemctl start docker
