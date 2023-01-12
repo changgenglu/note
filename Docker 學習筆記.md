@@ -281,3 +281,4 @@ docker-compose exec workspace bash
 ```
 
 進入後，terminal 會顯示自己在 `/var/www` 中，此時 `/var/www` 是連接我們在 .env 中設定的資料夾 `../test`
+
