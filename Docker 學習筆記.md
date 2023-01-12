@@ -31,6 +31,8 @@
 > [基礎系統及 docker hub 指令](https://joshhu.gitbooks.io/dockercommands/content/Basics/Basics.html)
 >
 > [How to Deploy Laravel with Docker on Ubuntu 18.04](https://help.clouding.io/hc/en-us/articles/360010679999-How-to-Deploy-Laravel-with-Docker-on-Ubuntu-18-04)
+>
+> [Laravel 實戰經驗分享 - Day26 Dockerize 你的 Laravel 專案](https://ithelp.ithome.com.tw/articles/10251844)
 
 ## 安裝 Docker (Docker for Windows)
 
