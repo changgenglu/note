@@ -1,7 +1,5 @@
 # 在 GCP 部署 laravel 專案
 
-###### tags: `網管` `GCP` `Laravel`
-
 > [執行環境設定](https://bugswarehouse.blogspot.com/2018/07/gcpgceubuntuapachelaravel56.html)
 >
 > - Ubuntu 20.04.1 LTS \n \l
@@ -166,3 +164,5 @@ sudo service apache2 restart
 [ubuntu設定apache部署多個站點](https://www.796t.com/content/1545633208.html)
 
 [SSL憑證設定](https://ithelp.ithome.com.tw/articles/10081759)
+
+[輕鬆部署 Laravel 應用](https://learnku.com/blog/Wi1dcard/tags/easy-deployment-of-laravel-applications_50034)
