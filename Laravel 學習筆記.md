@@ -1,10 +1,8 @@
 # Laravel 學習筆記
 
-###### tags: `php` `Laravel`
-
 > 請先完成 laravel 環境設置
 
-- [Laravel 學習筆記](#laravel-學習筆記) - [tags: `php` `Laravel`](#tags-php-laravel)
+- [Laravel 學習筆記](#laravel-學習筆記)
   - [基礎建立](#基礎建立)
   - [連線資料庫將資料顯示在畫面上](#連線資料庫將資料顯示在畫面上)
   - [新增一個 html 測試`input`到資料庫](#新增一個-html-測試input到資料庫)
@@ -18,6 +16,9 @@
     - [route 基本寫法](#route-基本寫法)
     - [resource controller 資源控制器](#resource-controller-資源控制器)
     - [route 分組](#route-分組)
+  - [Laravel 功能實現](#laravel-功能實現)
+    - [儲存檔案並刪除舊檔](#儲存檔案並刪除舊檔)
+  - [Class not found](#class-not-found)
 
 ## 基礎建立
 
@@ -384,3 +385,19 @@ public function updateProfile(Request $request)
   $user->update($validated);
 }
 ```
+
+## Class not found
+
+當出現 `Class 'xxx\\xxx\\xxx\\xxx' not found` 時，可能原因為 composer autoload 尚未註冊或是註冊錯誤。
+
+解決方法：
+
+- 方法一
+
+  ```terminal
+  composer dump-autoload -o
+  ```
+
+- 方法二
+
+  檢查 vendor/composer 下面的 autoload 資料夾中的檔案 autoload_classmap.php 和 autoload_static.php

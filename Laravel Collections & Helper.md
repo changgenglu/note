@@ -12,6 +12,8 @@
     - [`map()` 遍歷集合](#map-遍歷集合)
     - [`count()` 計數](#count-計數)
     - [`countBy()` 計算指定數值](#countby-計算指定數值)
+    - [`intersect` 從原集合中移除在指定陣列中或集合中不存在的值](#intersect-從原集合中移除在指定陣列中或集合中不存在的值)
+    - ['first' 返回陣列中指令條件的第一元素](#first-返回陣列中指令條件的第一元素)
   - [Helper 輔助函數](#helper-輔助函數)
     - [`Arr::add()` 將數值加入陣列](#arradd-將數值加入陣列)
     - [`Arr::sort()` 將陣列重新排列](#arrsort-將陣列重新排列)
@@ -186,6 +188,32 @@ $counted = $collection->countBy(function ($email) {
 $counted->all();
 
 // ['gmail.com' => 2, 'yahoo.com' => 1]
+```
+
+### `intersect` 從原集合中移除在指定陣列中或集合中不存在的值
+
+```php
+$collection = collect(['a', 'b', 'c']);
+$intersect = $collection->intersect(['a', 'c', 'e', 'f']);
+$intersect->all(); // [0 => 'a', 2 => 'c']
+```
+
+### 'first' 返回陣列中指令條件的第一元素
+
+```php
+collect([1, 2, 3, 4, 5, 6])->first(function ($value, $key) {
+    return $value > 2;
+});
+
+// 3
+```
+
+若 `first` 方法不傳入參數，則返回集合中第一元素。若集合為空，則返回 `null`
+
+```php
+collect([1, 2])->first();
+
+// 1
 ```
 
 ## Helper 輔助函數

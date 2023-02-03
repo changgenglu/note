@@ -11,6 +11,7 @@
     - [`is_null($var)`: 檢查變數是否為 null](#is_nullvar-檢查變數是否為-null)
     - [`var_dump($var);`: 將變數的訊息印出於螢幕上](#var_dumpvar-將變數的訊息印出於螢幕上)
     - [`instanceof` 型態運算子](#instanceof-型態運算子)
+  - [Autoload 自動載入](#autoload-自動載入)
   - [魔術常數](#魔術常數)
     - [`__LINE__` 檔案中的當前行號](#__line__-檔案中的當前行號)
     - [`__FILE__` 檔案的完整路徑和檔名](#__file__-檔案的完整路徑和檔名)
@@ -210,6 +211,19 @@
   bool(false)
   bool(false)
   ```
+
+## Autoload 自動載入
+
+一般可以透過 `include`, `include_once`, `require`, `require_once`，來將檔案引入到我們目前正在編寫的這個檔案。
+
+習慣上我們會將一個 class 存放在單一的 php 檔案中，例如 Member.php 相對於 Member class。
+
+但當程式需要引用到這個 class，就可以用上面的方法來引用此 class 以供後續操作。
+
+而 php autoload 機制可以讓我們在需要這個物件的時候，才去真正的引入這個 class，這個動作就是常聽到的 lazyload 延遲載入。
+
+- `__autoload`
+  php5 提供了 `__autoload()` 這個魔術方法實現上述 Autoload 機制，雖然這個方法效能及方便性並不是非常理想。
 
 ## 魔術常數
 
