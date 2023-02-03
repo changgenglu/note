@@ -347,3 +347,160 @@ echo \Test1\USER; // ivan_1
 一個 php 文件裡面沒有 namespace 關鍵字宣告，則該文件的元素都存在於公共空間。
 
 存取公共空間的元素統一設為：`\元素`
+
+### CommonSpace.php include 引入 CommonSpace1.php
+
+- CommonSpace.php
+
+  ```php
+  namespace AAA;
+
+  function f1() {
+    echo "in good mood";
+  }
+
+  // 在公共空間的檔案會被引入，針對當前空間不發生影想
+
+  include("CommonSpace1.php"); // 公共空間
+
+  // 存取元素
+  f1(); // in good mood 當前空間就是 AAA 空間
+  echo \NAME; // 存取公共空間的元素
+
+  // 本身有命名空間，引入的檔案是公共空間，本身的空間存取不到時，會到別的空間去尋找此元素
+  ```
+
+- CommonSpace1.php
+
+  ```php
+  const NAME = 'ivan';
+
+  function f1() {
+    echo "okay";
+  }
+
+  function f2() {
+    echo 'all good';
+  }
+  ```
+
+CommonSpace.php 有 namespace，CommonSpace1.php 沒有(CommonSpace1.php 處於公共空間)。被引入的檔案空間，此時被引入的文件 CommonSpace1.php 屬於公共空間，針對當前空間不發生影響。
+
+- 透過非限定名稱呼叫一個元素(function、常數)
+  - 首先取得本空間元素
+  - 其次取得公共空間元素
+
+若在 CommonSpace.php 中將 function fi() 註解，此時 f1() 呼叫的 function 為公共空間 function f1()，輸出：
+
+```log
+okay
+ivan
+```
+
+將 CommonSpace.php 的 function f1() 取消註解，此時 f1() 呼叫的是 AAA 命名空間的 function f1()。
+
+```log
+in good mood
+ivan
+```
+
+### ReverseCommonSpace.php include 引入 ReverseCommonSpace １.php
+
+- ReverseCommonSpace.php
+
+  ```php
+  function f1() {
+    echo "in good mood";
+  }
+
+  const NAME = "cindy";
+
+  function f2() {
+    echo "good";
+  }
+
+  include("ReverseCommonSpace1.php") // 有命名空間
+
+  \f2(); // good 存取公共空間需要有"反斜線"，提高程式碼可讀性
+  echo NAME;
+  echo \AAA\NAME;
+  // f3(); // 無法存取會報錯，正確的存取寫法為： \AAA\f3();
+  \AAA\f3();
+
+  // 本身是公共空間，引入的檔案是有命名空間的，本身的空間無法存取時，不會到別的空間去找尋元素。
+  ```
+
+  若 f3(); 沒有註解掉會報錯：
+
+  ```log
+  good
+  cindy
+  ivan
+
+  (!) Fatal error: Uncaught Error: Call to undefined function f3() in...
+  ```
+
+  將其註解後輸出：
+
+  ```log
+  good
+  cindy
+  ivan
+  buy book
+  ```
+
+- ReverseCommonSpace1.php
+
+  ```php
+  namespace AAA;
+
+  const NAME = 'ivan';
+
+  function f2() {
+    echo 'good';
+  }
+
+  function f3(){
+    echo "buy book";
+  }
+  ```
+
+## 範例與總結
+
+### 錯誤範例
+
+```php
+const USER = 'ivan';
+
+namespace AAA;
+
+function getInfo() {
+  echo 'OK';
+}
+
+// Fatal error: Namespace declaration statement has to be the very first statement or after any declare call in the script in...
+```
+
+正確做法：
+
+```php
+namespace AAA;
+
+const USER = 'ivan';
+
+function getInfo() {
+  echo 'OK';
+}
+
+getInfo(); // OK
+```
+
+不能宣告常數在公共空間，而 function 在命名空間。
+
+宣告命名空間時，在 namespace 關鍵字前面不能有任何程式碼，包刮 header 也要寫在下面。
+
+### 命名空間總結
+
+1. 宣告命名空間時，在 namespace 關鍵字前面不能有任何程式碼(可以註解)，包刮 header 也要寫在下面。
+2. 命名空間是虛擬抽象的空間，非真實的檔案路徑。
+3. 同一請求多檔案可以使用相同的命名空間，只要這些檔案中不會出現多的同名稱、同類型的元素(function, const)即可。
