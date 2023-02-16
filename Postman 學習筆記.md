@@ -102,3 +102,11 @@ pm.test("Status code is 200", function () {
 開啟 Runner 選擇要測試的 api
 
 選擇 environment，調整請求次數: iterations，調整延遲時間：Delay
+
+## http status
+
+- 資訊回應 (informational responses) 100 - 199
+- 成功回應 (Successful responses) 200 - 299
+- 重定向 (Redirect) 300 - 399
+- 用戶端錯誤 (Client errors) 400 - 499
+- 伺服器端錯誤 (Server error) 500-599
