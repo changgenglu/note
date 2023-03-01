@@ -195,7 +195,7 @@ jobs -l
 - `disown -ar` 僅卸除所有執行中的工作
 - `disown -h` 不要卸除工作，只是單純讓程式可以在登出後繼續執行。
 
-```bashq
+```bash
 jobs -l
 [1]+ 1040421 Running php subscribe_with_auth.php &
 ```
@@ -204,7 +204,24 @@ jobs -l
 
 #### `kill 10000` 刪除執行中的進程，`kill` 加上 PID 的數字即可
 
-#### `nohup`
+```bash
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root           1  0.0  0.3 173272 12812 ?        Ss    2022  85:07 /lib/systemd/systemd --system --deserialize 23
+root           2  0.0  0.0      0     0 ?        S     2022   0:06 [kthreadd]
+root           3  0.0  0.0      0     0 ?        I<    2022   0:00 [rcu_gp]
+root           4  0.0  0.0      0     0 ?        I<    2022   0:00 [rcu_par_gp]
+root           5  0.0  0.0      0     0 ?        I<    2022   0:00 [netns]
+root           7  0.0  0.0      0     0 ?        I<    2022   0:00 [kworker/0:0H-events_highpri]
+root           9  0.0  0.0      0     0 ?        I<    2022   2:45 [kworker/0:1H-events_highpri]
+```
+
+#### `nohup` 讓程式可以在離線或是登出系統後繼續執行
+
+當 Linux 使用者登出系統後正在執行的程式會接收到 SIGHUP(hangup) 信號，收到信號的程式會立刻停止執行。
+
+```bash
+nohup /path/my_program &
+```
 
 ## 安裝 php
 

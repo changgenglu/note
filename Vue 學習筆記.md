@@ -178,6 +178,7 @@ export default {
       axios
         .get(base_url + "/api/category/")
         .then((response) => {
+          this.name = response.data.name;
           eventHub.$emit("categoryupdate", this.name);
         })
         .catch(function (error) {
