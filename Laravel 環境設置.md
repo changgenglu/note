@@ -1,11 +1,9 @@
 # Laravel 環境設置
 
-###### tags: `php` `Laravel` `環境設定`
-
-- [Laravel 環境設置](#laravel-環境設置) - [tags: `php` `Laravel` `環境設定`](#tags-php-laravel-環境設定)
+- [Laravel 環境設置](#laravel-環境設置)
   - [環境初始設定](#環境初始設定)
     - [1. 安裝 XAMPP or phpEnv](#1-安裝-xampp-or-phpenv)
-      - [xampp 更改 php 版本 (版本 5 => 7)](#xampp-更改-php-版本-版本-5--7)
+      - [xampp 更改 php 版本 (版本 5 =\> 7)](#xampp-更改-php-版本-版本-5--7)
     - [2. 安裝 composer](#2-安裝-composer)
       - [windows 透過 composer 官網下載 composer 安裝檔](#windows-透過-composer-官網下載-composer-安裝檔)
       - [下載 Composer(MacOS)](#下載-composermacos)
@@ -16,7 +14,7 @@
     - [開發環境設定](#開發環境設定)
     - [上線環境設定](#上線環境設定)
   - [Laravel ReactJS](#laravel-reactjs)
-  - [Laraval 安裝 bootstrap](#laravel-%E5%AE%89%E8%A3%9D-bootstrap)
+  - [Laravel 安裝 bootstrap](#laravel-安裝-bootstrap)
     - [Laravel 8](#laravel-8)
     - [Laravel 6](#laravel-6)
 

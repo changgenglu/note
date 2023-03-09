@@ -6,6 +6,7 @@
     - [介紹](#介紹)
     - [$watch](#watch)
     - [watch](#watch-1)
+    - [watch 和 computed 差別](#watch-和-computed-差別)
   - [eventHub 事件中心 (vue 2)](#eventhub-事件中心-vue-2)
   - [指令(directive)](#指令directive)
     - [屬性綁定](#屬性綁定)
@@ -28,6 +29,14 @@
     - [v-show](#v-show)
   - [迴圈渲染](#迴圈渲染)
   - [事件監聽器](#事件監聽器)
+  - [props](#props)
+    - [命名與使用](#命名與使用)
+    - [傳遞 props 值的方法](#傳遞-props-值的方法)
+      - [傳遞字串](#傳遞字串)
+      - [傳遞數字、布林值、陣列、物件](#傳遞數字布林值陣列物件)
+    - [單向數據流](#單向數據流)
+    - [改變子模組內的 prop 值](#改變子模組內的-prop-值)
+    - [物件型別的 prop 傳遞](#物件型別的-prop-傳遞)
   - [備註](#備註)
 
 ## Vue 實體的生命週期
@@ -117,6 +126,8 @@ watch: (
     - deep 布林值，是否監聽物件下層屬性
     - immediate 布林值 使否在實體初始化時立即調用 callback
   - array 當有多個監聽器時，使用陣列帶入多個 callback 函數
+
+### watch 和 computed 差別
 
 ## eventHub 事件中心 (vue 2)
 
@@ -656,6 +667,187 @@ publishedAt: 2016-04-10
 > - 在 Vue 實體上設定生命週期鉤子，監聽各個鉤子事件。
 
 當要在執行時去動態增減事件的監聽，這時就要用到 $on, $once, and $off 這些 js 函式來做設定。
+
+## props
+
+### 命名與使用
+
+可以使用 PascalCase 或是 camelCase 的命名方法，但在 html 中必須使用 kebab-case 且應該小寫(html 大小寫不敏感)
+
+像是 PostTitle 、 CartItem 、 TodoItem 等，在 HTML 中使用時就會變成 post-title 、 cart-item 、 todo-item。
+
+```vue
+<div id="vm">
+<!--post-title 跟 post-content 都是props -->
+  <blog-post post-title="Blog1" post-content="I\'m content1"></blog-post>
+</div>
+
+<script>
+Vue.component("blog-post", {
+  props: ["PostTitle", "postContent"],
+  template: `<div>
+    <h3>{{ PostTitle }}</h3>
+    <div>{{ postContent }}</div>
+  </div>`,
+});
+</script>
+```
+
+### 傳遞 props 值的方法
+
+#### 傳遞字串
+
+```vue
+<blog-post
+  post-title="Blog1"
+  post-content="I\'m content1"
+  post-complete="true"
+  post-total-num="500"
+  post="{title:'Blog1'}"
+></blog-post>
+```
+
+只要是直接傳遞(靜態傳遞)都是字串，所以 prop 接收的值 log1、I\'m content1、true、500、{...} 等等都是字串。
+
+#### 傳遞數字、布林值、陣列、物件
+
+利用 vue 的 v-bind 傳遞字串以外的值。
+
+```vue
+<blog-post
+  post-title="動態傳遞"
+  post-content="I\'m content1"
+  v-bind:post-complete="true"
+  v-bind:post-total-num="500"
+  v-bind:post="{ title: '動態傳遞' }"
+></blog-post>
+```
+
+也可以透過給予變數來獲得數字、布林值、陣列或物件等型別
+
+```vue
+<blog-post
+  :post-title="postTitle"
+  :post-content="postContent"
+  :post-complete="postComplete"
+  :post-total-num="postTotalNum"
+  :post="post"
+></blog-post>
+
+<script>
+const vm = new Vue({
+  el: "#vm",
+  data: {
+    postTitle: "動態傳遞",
+    postContent: "I'm content",
+    postComplete: true,
+    postTotalNum: 500,
+    post: { title: "動態傳遞" },
+  },
+});
+</script>
+```
+
+### 單向數據流
+
+prop 是為了接收從富組件傳遞過來的資料，而這些資料是單向綁定的，已就是說父模組資料的更新，會影響子模組裡的 prop，但子模組裡 prop 值改變並不會影響父模組。
+
+```vue
+<prop-change :counter="counter"></prop-change>
+<br />
+<span>外 {{counter}}</span>
+<button type="button" @click="changeOuterCounter">改變外面數字</button>
+
+<script>
+Vue.component("prop-change", {
+  props: ["counter"],
+  template: `<div>
+    <span>component內的  {{counter}}</span>
+    <button type="button" @click="changeInnerCounter">改變component數字</button>
+  </div>`,
+  methods: {
+    changeInnerCounter() {
+      this.counter += 2;
+    },
+  },
+});
+
+const vm = new Vue({
+  el: "#vm",
+  data: {
+    counter: 1,
+  },
+  methods: {
+    changeOuterCounter() {
+      this.counter += 1;
+    },
+  },
+});
+</script>
+```
+
+以上測試可以得知：
+
+- 外面(父層)的資料 counter 改變會影響子模組 prop 的 counter 的值。
+- 子模組 prop 的 counter 值改變僅影響內部 counter 值
+- 不論子模組的 prop 的 counter 值是否有變動，只要父模組資料 counter 改變時，子模組 prop 的 counter 值一定會連動。
+
+### 改變子模組內的 prop 值
+
+- 在 data 內創建一個值
+  賦予 data 跟 prop 初始值相同的值，且之後也是針對該 data 內的值操作，並且不會再受到該 prop 的影響了
+
+  ```javascript
+  Vue.component("one-way-data", {
+    props: ["counter"],
+    template: `<div>
+      <span>component內的  {{newCounter}}</span>
+      <button type="button" @click="changeNewCounter">改變component數字</button>
+    </div>`,
+    data() {
+      return {
+        newCounter: this.counter,
+      };
+    },
+    methods: {
+      changeNewCounter() {
+        this.newCounter += 10;
+      },
+    },
+  });
+  ```
+
+### 物件型別的 prop 傳遞
+
+- 父層透過標籤傳遞參數
+
+```javascript
+<ExLogLineComponent :channel-names="channel_names" :region-id="region.id" :bx-mac="region.bx_mac"></ExLogLineComponent>
+```
+
+- 子層 prop 接收參數後，透過 watch 將參數存入 data.return
+
+```javascript
+props: ['channelNames', 'regionId', 'bxMac'],
+    data() {
+        return {
+            channel_names: [],
+            region_id: '',
+            mac: ''
+        }
+    },
+    watch: {
+        channelNames(names) {
+            this.channel_names = names;
+        },
+        regionId(id) {
+            this.region_id = id;
+        },
+        bxMac(mac) {
+            this.mac = mac;
+        }
+    },
+```
 
 ## 備註
 

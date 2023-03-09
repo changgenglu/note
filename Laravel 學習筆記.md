@@ -19,6 +19,10 @@
   - [Laravel 功能實現](#laravel-功能實現)
     - [儲存檔案並刪除舊檔](#儲存檔案並刪除舊檔)
   - [Class not found](#class-not-found)
+  - [框架設計模式](#框架設計模式)
+    - [每一層的職責](#每一層的職責)
+    - [MVC 框架](#mvc-框架)
+    - [Web API Service](#web-api-service)
 
 ## 基礎建立
 
@@ -156,56 +160,56 @@
 
 1. with: 用於簡單傳遞變數，但不易擴充傳遞變數，所以不常用到
 
-```php
-$name = "test";
-$age = 23; 
+   ```php
+   $name = "test";
+   $age = 23; 
 
-return view('my_laravel')->with('name', $name);
-// &
-return view('my_laravel')->with('name', $name)->with('age', $age);
+   return view('my_laravel')->with('name', $name);
+   // &
+   return view('my_laravel')->with('name', $name)->with('age', $age);
 
-// 用陣列包起來
-$data = [
-  'name' = 'test',
-  'age'  =26
-];
- 
-return view('my_laravel')->with('data', $data);
+   // 用陣列包起來
+   $data = [
+     'name' = 'test',
+     'age'  =26
+   ];
 
-// view
-{{ $data['name'] }}
-```
+   return view('my_laravel')->with('data', $data);
+
+   // view
+   {{ $data['name'] }}
+   ```
 
 2. Array
 
-```php
-$data = [
-  'name' => 'test',
-  'age' => 26
-]
+   ```php
+   $data = [
+     'name' => 'test',
+     'age' => 26
+   ]
 
-return view('my_laravel', $data)
+   return view('my_laravel', $data)
 
-// view
-{{ $name }}
-```
+   // view
+   {{ $name }}
+   ```
 
 3. compact
 
-```php
-// 常用於複雜變數，不用包裝成新的變數名稱
-$data = [
-  'name' => 'test',
-  'age' => 26
-];
-$title = 'title';
+   ```php
+   // 常用於複雜變數，不用包裝成新的變數名稱
+   $data = [
+     'name' => 'test',
+     'age' => 26
+   ];
+   $title = 'title';
 
-return view('my_laravel', compact('data', 'title'));
+   return view('my_laravel', compact('data', 'title'));
 
-// view
-{{ $data['name'] }}  // 因為在 data 陣列中 
-{{ $title }}  // 變數值直接使用
-```
+   // view
+   {{ $data['name'] }}  // 因為在 data 陣列中 
+   {{ $title }}  // 變數值直接使用
+   ```
 
 ## Controller
 
@@ -401,3 +405,45 @@ public function updateProfile(Request $request)
 - 方法二
 
   檢查 vendor/composer 下面的 autoload 資料夾中的檔案 autoload_classmap.php 和 autoload_static.php
+
+## 框架設計模式
+
+在小型專案中，典型的 MVC 架構沒什麼問題，但隨著系統越來越複雜，必須再細分更多層，於是衍生出 View - Presenter - Controller - Service - Repository - Model 六層框架設計模式。
+
+### 每一層的職責
+
+- Model 盡可能隱藏操作資料的 know-how，將資料抽象化，作為一個 Object Relational Mapping。
+- Repository 藉由操作 Model，幫助 Service 實現各種商務邏輯對應的資料庫操作方法。
+- Service 實現商務邏輯，並且讓 Controller 僅需要專注在溝通上。
+- Controller 作為 View 與商務邏輯間的溝通橋樑。
+- Presenter 負責 "如何處理資料"
+- View 負責"要給客戶看到什麼"
+
+### MVC 框架
+
+若將這六個 layer 的職責對應到 MVC 框架中，小專案下的 model 其實就是 Business Model，包含商業邏輯以及和資料庫溝通。而 View 也不會刻意把資料操作邏輯與資料處理方式獨立成一個 Presenter，因此
+小型專案的 View 往往混著一些邏輯判斷。
+
+- Model
+  - Service
+  - Repository
+  - Model
+- Controller
+  - Controller
+- View
+  - View
+  - Presenter
+
+### Web API Service
+
+通 Web API Service 僅僅是將 service 送來的資料變成 JSON format 輸出到 View 上，所以有時 Controller 就涵蓋了 Presenter 的職責，View 純粹只是 JSON, XML 等格式資料。
+
+- Model
+  - Service
+  - Repository
+  - Model
+- Controller
+  - Presenter
+  - Controller
+- View
+  - View

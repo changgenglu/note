@@ -1,7 +1,5 @@
 # Laravel 實作權限
 
-###### tags: `php` `Laravel`
-
 ## Gates
 
 ### 使用者角色
