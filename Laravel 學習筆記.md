@@ -421,6 +421,10 @@ public function updateProfile(Request $request)
 
 ### MVC 框架
 
+> 參考資料：
+>
+> [Laravel 加入 Repository 與 Service](https://vocus.cc/article/5fa7fe49fd8978000125da22)
+
 若將這六個 layer 的職責對應到 MVC 框架中，小專案下的 model 其實就是 Business Model，包含商業邏輯以及和資料庫溝通。而 View 也不會刻意把資料操作邏輯與資料處理方式獨立成一個 Presenter，因此
 小型專案的 View 往往混著一些邏輯判斷。
 

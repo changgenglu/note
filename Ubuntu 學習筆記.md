@@ -457,3 +457,122 @@ sudo systemctl start docker
 # 啟動時運行
 sudo systemctl enable docker
 ```
+
+## logrotate 記錄檔管理工具
+
+### 安裝
+
+一般而言 linux 發行版都會安裝好 logrotate
+
+```bash
+# 安裝 logrotate（Ubuntu/Debian）
+sudo apt install logrotate
+
+# 安裝 logrotate（RHEL/CentOS）
+sudo yum install logrotate
+```
+
+### 設定檔
+
+logrotate 設定檔位於 `/etc/logrotate.conf`，裡面會包含一些預設的設定值，例如紀錄檔的輪替頻率，保留數量等等
+
+```bash
+# 每週進行一次記錄檔輪替
+weekly
+
+# 記錄檔擁有者與群組為 root 與 syslog
+su root syslog
+
+# 保留 4 次輪替的記錄檔
+rotate 4
+
+# 輪替之後，自動建立新的記錄檔
+create
+
+# 壓縮輪替後的記錄檔
+compress
+
+# 套用一般套件的記錄檔設定
+include /etc/logrotate.d
+
+# ...
+```
+
+個別套件或服務的紀錄檔設定會放在`/etc/logrotate.d` 目錄中，透過這裡的 `include` 來套用個別套件的紀錄檔設定。
+
+```bash
+# nginx 記錄檔輪替設定
+/var/log/nginx/*.log { # 記錄檔位置
+    daily                # 每日輪替一次
+    missingok            # 忽略記錄檔不存在問題
+    rotate 14            # 保留 14 次輪替的記錄檔
+    compress             # 壓縮輪替後的記錄檔
+    delaycompress        # 延遲壓縮記錄檔
+    notifempty           # 不輪替空的記錄檔
+    create 0640 www-data adm # 記錄檔擁有者/群組為 www-data/adm，權限為 0640
+    sharedscripts        # 所有記錄檔輪替，只執行一次 prerotate 與 postrotate 指令稿
+    prerotate            # 輪替前指令稿
+        if [ -d /etc/logrotate.d/httpd-prerotate ]; then \
+            run-parts /etc/logrotate.d/httpd-prerotate; \
+        fi \
+    endscript
+    postrotate           # 輪替後指令稿
+        invoke-rc.d nginx rotate >/dev/null 2>&1
+    endscript
+}
+```
+
+若在個別服務設定中沒有指定的話，就會套用 `/etc/logrotate.conf` 中預設的設定。
+
+### 基本設定
+
+| 指令           | 說明                                |
+| -------------- | ----------------------------------- |
+| su root syslog | 紀錄檔擁有者與群組為 root 與 syslog |
+| missingok      | 忽略紀錄檔不存在的問題              |
+| notifempty     | 不輪替空檔案                        |
+| ifempty        | 輪替空檔案                          |
+| rotate 7       | 保留七次輪替紀錄                    |
+
+### 紀錄檔輪替頻率設定
+
+| 指令      | 說明            |
+| --------- | --------------- |
+| daily     | 每日輪替        |
+| weekly    | 每週輪替        |
+| monthly   | 每月輪替        |
+| yearly    | 每年輪替        |
+| size 100k | 當檔案超過 100K |
+| size 2m   | 當檔案超過 2M   |
+| size 1G   | 當檔案超過 1G   |
+
+進階設定
+
+| 指令         | 說明                                                            |
+| ------------ | --------------------------------------------------------------- |
+| minage 3     | 三天以內建立的檔案不輪替                                        |
+| maxage 30    | 不保留三十天以前的紀錄檔                                        |
+| maxsize 100k | 搭配 daily 等間隔條件使用，檔案超過 100k 或達到間隔條件時輪替   |
+| minsize 100k | 搭配 daily 等間隔條件使用，檔案超過 100k 同時達到間隔條件時輪替 |
+
+### 紀錄檔壓縮
+
+| 指令            | 說明                 |
+| --------------- | -------------------- |
+| compress        | 壓縮輪替後的舊紀錄檔 |
+| nocompress      | 不壓縮輪替後的檔案   |
+| delaycompress   | 延遲壓縮紀錄檔       |
+| nodelaycompress | 不延遲壓縮紀錄檔     |
+
+### 測試 logrotate 設定
+
+修改完設定後，可以用以下指令測試設定檔是否正確
+
+```bash
+# 測試 logrotate 設定
+sudo logrotate -d /etc/logrotate.conf
+```
+
+如果沒出現錯誤訊息，就完成了
+
+logrotate 是透過 cron 來觸發的，通常是寫在 /etc/cron.daily/logrotate 中，所以更改 logrotate 設定檔之後，只要確認設定無誤，就會自動生效，不需要重新載入設定檔的動作。
