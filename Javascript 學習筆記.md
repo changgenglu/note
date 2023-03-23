@@ -25,7 +25,7 @@
     - [提升(Hoisting)](#提升hoisting)
     - [全域變數](#全域變數)
   - [方法](#方法)
-    - [取得 base_url](#取得-base_url)
+    - [取得 base\_url](#取得-base_url)
     - [document](#document)
       - [`.querySelector()` 元素選擇器](#queryselector-元素選擇器)
       - [`.querySelectorAll()` 選取所有指定元素](#queryselectorall-選取所有指定元素)
@@ -909,6 +909,12 @@ function checkAdult(age) {
 function myFunction() {
   document.getElementById("demo").innerHTML = ages.filter(checkAdult);
 }
+```
+
+若要去除陣列中的空值
+
+```javascript
+var myArrayNew = myArray.filter(el => el);
 ```
 
 ### `Array.prototype.splice()` 新增刪除陣列中的元素
