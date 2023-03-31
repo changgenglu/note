@@ -914,7 +914,7 @@ function myFunction() {
 若要去除陣列中的空值
 
 ```javascript
-var myArrayNew = myArray.filter(el => el);
+var myArrayNew = myArray.filter((el) => el);
 ```
 
 ### `Array.prototype.splice()` 新增刪除陣列中的元素
