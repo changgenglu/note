@@ -42,6 +42,7 @@
     - [`array_combine()` 將傳入的參數合併為陣列](#array_combine-將傳入的參數合併為陣列)
     - [`array_unique()` 從陣列中刪除重複的值](#array_unique-從陣列中刪除重複的值)
     - [`array_diff()` 判斷陣列之間差異](#array_diff-判斷陣列之間差異)
+    - [日期/時間](#日期時間)
     - [`sort` 陣列排序](#sort-陣列排序)
       - [依 value 排序](#依-value-排序)
       - [依 key 排序](#依-key-排序)
@@ -699,7 +700,7 @@ $Person->say();
   }
   ```
 
-- `continue` 跳出本次循環，繼續執行後面的巡
+- `continue` 跳出本次循環，繼續執行下向執行
 
 - `array_key_first()` 取得陣列中第一個 key 值
 - `array_key_last()` 取得陣列中最後一個 key 值
@@ -1021,6 +1022,38 @@ Array
 [7] => Daisy
 )
 ```
+
+### 日期/時間
+
+- `date(string $format, ?int $timestamp = null)` 格式化 Unix timestamps
+
+  - `$format` 指定的格式
+    - `Y` 年份，四位數
+    - `y` 年份二位數
+    - `F` 月份英文全名；如 'March'
+    - `M` 月份英文縮寫；如 'Mar'
+    - `m` 月份數字，不足二位前面補 0
+    - `n` 月份數字
+    - `D` 星期英文縮寫；如：'Fri'
+    - `l` 星期英文全稱；如：'Friday'
+    - `w` 星期數字
+    - `d` 幾日數字，不足二位前面補 0
+    - `j` 幾日數字
+    - `H` 24 小時制，不足二位前面補 0
+    - `h` 12 小時制，不足二位前面補 0
+    - `G` 24 小時制
+    - `g` 12 小時制
+    - `i` 分鐘
+    - `A` Am 或 Pm
+    - `a` am 或 pm
+    - `s` 秒
+    - `U` 總秒數
+    - `t` 指定月份的天數；如"28", "31"
+    - `z` 一年中的第幾天
+  - `$timestamp` 時間戳(可選)
+
+- `mktime($hour, $minute = null, $second = null, $month = null, $day = null, $year = null)` 取得指定日期的時間戳
+  - 任何省略的變數，將依據本地時間設置
 
 ### `sort` 陣列排序
 

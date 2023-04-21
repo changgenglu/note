@@ -38,6 +38,7 @@
     - [改變子模組內的 prop 值](#改變子模組內的-prop-值)
     - [物件型別的 prop 傳遞](#物件型別的-prop-傳遞)
   - [備註](#備註)
+    - [判斷當前環境是否為開發環境](#判斷當前環境是否為開發環境)
 
 ## Vue 實體的生命週期
 
@@ -241,10 +242,7 @@ export default {
 可以在對象中傳入更多屬性，來動態切換多個 class。此外 v-bind:class 也可以與普通的 class attribute 共存
 
 ```html
-<div
-  class="static"
-  v-bind:class="{ active: isActive, 'text-danger': hasError }"
-></div>
+<div class="static" v-bind:class="{ active: isActive, 'text-danger': hasError }"></div>
 ```
 
 data:
@@ -584,9 +582,7 @@ Bar
 
 ```html
 <ul id="example-2">
-  <li v-for="(item, index) in items">
-    {{ parentMessage }} - {{ index }} - {{ item.message }}
-  </li>
+  <li v-for="(item, index) in items">{{ parentMessage }} - {{ index }} - {{ item.message }}</li>
 </ul>
 ```
 
@@ -647,9 +643,7 @@ publishedAt: 2016-04-10
 還可以傳入第三個參數作為索引值
 
 ```html
-<div v-for="(value, name, index) in object">
-  {{ index }}. {{ name }}: {{ value }}
-</div>
+<div v-for="(value, name, index) in object">{{ index }}. {{ name }}: {{ value }}</div>
 ```
 
 ```log
@@ -683,13 +677,13 @@ publishedAt: 2016-04-10
 </div>
 
 <script>
-Vue.component("blog-post", {
-  props: ["PostTitle", "postContent"],
-  template: `<div>
+  Vue.component("blog-post", {
+    props: ["PostTitle", "postContent"],
+    template: `<div>
     <h3>{{ PostTitle }}</h3>
     <div>{{ postContent }}</div>
   </div>`,
-});
+  });
 </script>
 ```
 
@@ -698,13 +692,7 @@ Vue.component("blog-post", {
 #### 傳遞字串
 
 ```vue
-<blog-post
-  post-title="Blog1"
-  post-content="I\'m content1"
-  post-complete="true"
-  post-total-num="500"
-  post="{title:'Blog1'}"
-></blog-post>
+<blog-post post-title="Blog1" post-content="I\'m content1" post-complete="true" post-total-num="500" post="{title:'Blog1'}"></blog-post>
 ```
 
 只要是直接傳遞(靜態傳遞)都是字串，所以 prop 接收的值 log1、I\'m content1、true、500、{...} 等等都是字串。
@@ -735,16 +723,16 @@ Vue.component("blog-post", {
 ></blog-post>
 
 <script>
-const vm = new Vue({
-  el: "#vm",
-  data: {
-    postTitle: "動態傳遞",
-    postContent: "I'm content",
-    postComplete: true,
-    postTotalNum: 500,
-    post: { title: "動態傳遞" },
-  },
-});
+  const vm = new Vue({
+    el: "#vm",
+    data: {
+      postTitle: "動態傳遞",
+      postContent: "I'm content",
+      postComplete: true,
+      postTotalNum: 500,
+      post: { title: "動態傳遞" },
+    },
+  });
 </script>
 ```
 
@@ -759,30 +747,30 @@ prop 是為了接收從富組件傳遞過來的資料，而這些資料是單向
 <button type="button" @click="changeOuterCounter">改變外面數字</button>
 
 <script>
-Vue.component("prop-change", {
-  props: ["counter"],
-  template: `<div>
+  Vue.component("prop-change", {
+    props: ["counter"],
+    template: `<div>
     <span>component內的  {{counter}}</span>
     <button type="button" @click="changeInnerCounter">改變component數字</button>
   </div>`,
-  methods: {
-    changeInnerCounter() {
-      this.counter += 2;
+    methods: {
+      changeInnerCounter() {
+        this.counter += 2;
+      },
     },
-  },
-});
+  });
 
-const vm = new Vue({
-  el: "#vm",
-  data: {
-    counter: 1,
-  },
-  methods: {
-    changeOuterCounter() {
-      this.counter += 1;
+  const vm = new Vue({
+    el: "#vm",
+    data: {
+      counter: 1,
     },
-  },
-});
+    methods: {
+      changeOuterCounter() {
+        this.counter += 1;
+      },
+    },
+  });
 </script>
 ```
 
@@ -852,3 +840,13 @@ props: ['channelNames', 'regionId', 'bxMac'],
 ## 備註
 
 - 註 1: `Truthy` 假值(false, 0, -0, 0n, "", null, undefined, NaN)以外的任何值皆為 true
+
+### 判斷當前環境是否為開發環境
+
+```javascript
+if (process.env.NODE_ENV !== "production") {
+  this.is_dev = true;
+} else {
+  this.is_dev = false;
+}
+```
