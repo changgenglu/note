@@ -1,8 +1,11 @@
 # MySQL 學習筆記
 
-###### tags: `資料庫` `MySQL`
-
-- [MySQL 學習筆記](#mysql-學習筆記) - [tags: `資料庫` `MySQL`](#tags-資料庫-mysql)
+- [MySQL 學習筆記](#mysql-學習筆記)
+  - [環境設定](#環境設定)
+    - [設定時區](#設定時區)
+    - [MariaDB 設定命名時區](#mariadb-設定命名時區)
+      - [從 zoneinfo 匯入時區](#從-zoneinfo-匯入時區)
+      - [從 mysql 提供的指令碼匯入](#從-mysql-提供的指令碼匯入)
   - [資料表語法](#資料表語法)
   - [資料型態](#資料型態)
   - [DB 命名原則](#db-命名原則)
@@ -11,9 +14,106 @@
     - [欄位命名](#欄位命名)
     - [索引命名](#索引命名)
       - [外鍵索引](#外鍵索引)
+  - [Function](#function)
+    - [CONVERT\_TZ(dt,from\_tz,to\_tz) 轉換時區](#convert_tzdtfrom_tzto_tz-轉換時區)
   - [使用情境](#使用情境)
     - [外鍵 onDelete 約束情況](#外鍵-ondelete-約束情況)
     - [ERROR: #1215 - Cannot add foreign key constraint](#error-1215---cannot-add-foreign-key-constraint)
+    - [刪除重複的資料](#刪除重複的資料)
+      - [使用 `DISTINCT` 去除重複值](#使用-distinct-去除重複值)
+    - [匯入 txt 檔](#匯入-txt-檔)
+    - [複合主鍵與聯合主鍵，索引與聯合(複合)索引](#複合主鍵與聯合主鍵索引與聯合複合索引)
+      - [複合主鍵與聯合主鍵](#複合主鍵與聯合主鍵)
+      - [索引、聯合(複合)索引](#索引聯合複合索引)
+
+## 環境設定
+
+### 設定時區
+
+- `show variables like '%time_zone%'` 查看當前時區
+  - 會返回兩行紀錄，第一行為 system_time_zone(系統時區)，第二行為 time_zone(資料庫時區)
+- `set time_zone='+8:00'` 設置當前請求的時區
+  - 不須重新連接 mysql
+  - 僅當前的請求有效，若關閉則回復原始值。
+- `set global time_zone='+8:00` 設定全域時區
+  - 全域請求有效，但必須重新連接 mysql 才會生效(exit 後重新 mysql -uroot -p 進行連接)。
+  - 不須重啟 mysql，重啟後回復原始值
+- 修改 mysql 設定文件
+  - 在 my.ini 中添加
+  - 須重啟 mysql
+
+```ini
+[mysqld]
+default-time-zone=+00:00
+character-set-server=utf8mb4
+```
+
+### MariaDB 設定命名時區
+
+命名時區是指使用時區的名字，而不是標準時間的小時差。例如 `Asia/Taipei` 就是命名時區，而不是 +08:00。
+在 MariaDB 中域設有時區表，但預設為空，需要填充這些表後才能使用。
+
+#### 從 zoneinfo 匯入時區
+
+若系統環境為類 Unix 系統(Mac OS, Linux, FreeBSD, Sun Solaris)，zoneinfo 文件已經包含在系統中。
+輸入指令將時區表加入 MariaDB 中的 MySQL 資料庫中
+
+```bash
+mysql_tzinfo_to_sql /usr/share/zoneinfo | mariadb -u root -p mysql
+&
+mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root -p mysql
+```
+
+#### 從 mysql 提供的指令碼匯入
+
+由於 windows 沒有 zoneinfo 資料庫，所以必須透過 sql 指令碼匯入時區表
+
+- 下載 sql 指令碼並解壓縮：[https://downloads.mysql.com/general/timezone_2022g_posix_sql.zip](https://downloads.mysql.com/general/timezone_2022g_posix_sql.zip)
+- 登入 mariaDB
+
+```bash
+.\mysql.exe -u root -p
+# 輸入 root 使用者密碼
+```
+
+- 連接 MySQL 資料庫
+
+```bash
+USE mysql
+```
+
+- 從 SQL 指令碼匯入資料
+
+```bash
+SOURCE C:\Users\Adam\Downloads\timezone_posix.sql
+```
+
+- 檢查是否正確匯入
+
+```bash
+SELECT * FROM mysql.time_zone_name;
+```
+
+```output
++----------------------------------+--------------+
+| Name                             | Time_zone_id |
++----------------------------------+--------------+
+| Africa/Abidjan                   |            1 |
+| Africa/Accra                     |            2 |
+| Africa/Addis_Ababa               |            3 |
+| Africa/Algiers                   |            4 |
+| Africa/Asmara                    |            5 |
+| Africa/Asmera                    |            6 |
+| Africa/Bamako                    |            7 |
+| Africa/Bangui                    |            8 |
+| Africa/Banjul                    |            9 |
+| Africa/Bissau                    |           10 |
+...
+...
+| Zulu                             |          597 |
++----------------------------------+--------------+
+597 rows in set (0.000 sec)
+```
 
 ## 資料表語法
 
@@ -268,6 +368,26 @@
 #### 外鍵索引
 
 - 資料表名稱\_關聯欄位名稱\_foreign
+
+## Function
+
+### CONVERT_TZ(dt,from_tz,to_tz) 轉換時區
+
+- dt 日期/時間
+- from_tz 原始時區
+- to_tz 目標時區
+
+```sql
+SELECT CONVERT_TZ('2020-12-01 01:00:00','+00:00','+08:00') AS Result;
+```
+
+```output
++---------------------+
+| Result              |
++---------------------+
+| 2020-12-01 09:00:00 |
++---------------------+
+```
 
 ## 使用情境
 
