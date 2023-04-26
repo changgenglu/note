@@ -1,14 +1,12 @@
 # Laravel 資料庫設計範例
 
-###### tags: `php` `Laravel`
-
-### 建立新專案
+## 建立新專案
 
 ```cmd
 laravel new blog
 ```
 
-### 編輯 .env
+## 編輯 .env
 
 ```php
 DB_CONNECTION=mysql
@@ -21,7 +19,7 @@ DB_PASSWORD=your_password
 
 - XAMPP 預設的密碼是空白，phpEnv 要先行設定資料庫密碼
 
-### 同時建立 migration controller model
+## 同時建立 migration controller model
 
 終端機執行
 
@@ -55,7 +53,7 @@ public function up()
 php artisan migrate
 ```
 
-### 建立資料
+## 建立資料
 
 終端機開啟 tinker 工具程式
 
@@ -83,7 +81,7 @@ App\Models\Employee::find(1);
 exit
 ```
 
-### 渲染員工清單
+## 渲染員工清單
 
 編輯 web.php
 
@@ -204,7 +202,7 @@ public function index() {
 php artisan serve
 ```
 
-### 動態渲染員工資料
+## 動態渲染員工資料
 
 修改 resources\views\employees\index.blade.php
 
@@ -233,7 +231,7 @@ php artisan serve
 </tbody>
 ```
 
-### 新增員工資料
+## 新增員工資料
 
 修改 EmployeesController.php
 
@@ -312,7 +310,7 @@ public function store(Request $request)
     }
 ```
 
-### 修改會員資料
+## 修改會員資料
 
 修改 EmployeesController.php
 
@@ -393,7 +391,7 @@ public function update(Request $request, $id)
     }
 ```
 
-### 刪除會員資料
+## 刪除會員資料
 
 修改 EmployeesController.php
 
