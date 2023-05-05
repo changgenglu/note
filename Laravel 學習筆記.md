@@ -5,6 +5,8 @@
 - [Laravel 學習筆記](#laravel-學習筆記)
   - [基礎建立](#基礎建立)
   - [連線資料庫將資料顯示在畫面上](#連線資料庫將資料顯示在畫面上)
+    - [mysql](#mysql)
+    - [redis](#redis)
   - [新增一個 html 測試`input`到資料庫](#新增一個-html-測試input到資料庫)
     - [將變數傳入 `view` 的三種方法](#將變數傳入-view-的三種方法)
   - [Controller](#controller)
@@ -74,6 +76,8 @@
 
 ## 連線資料庫將資料顯示在畫面上
 
+### mysql
+
 - Laravel 資料庫設定檔 `.env`
 
   ```php
@@ -123,6 +127,46 @@
   ```php
   Route::post('/home/news', "App\Http\Controllers\NewController@store");
   ```
+
+### redis
+
+> 需先在環境安裝 redis
+
+- 安裝 `predis`
+
+  ```bash
+  composer require predis/predis
+  ```
+
+- redis 預設有 16 個資料庫，Laravel 會使用預設的資料庫`0`
+- 修改 `env`
+
+  ```config
+  REDIS_HOST=127.0.0.1
+  REDIS_PASSWORD=null
+  REDIS_PORT=6379
+  REDIS_CLIENT=predis
+  REDIS_PREFIX=""
+  ```
+
+- 使用方法
+
+  ```php
+  use Illuminate\Support\Facades\Redis;
+  Redis::set('name', 'Vic');
+  Redis::get('name');
+  ```
+
+- redis-cil
+
+  ```bash
+  $ redis-cli
+  $ select 0   //選擇資料庫0
+  $ keys *     //列出所有keys
+  $ get laravel_database_name  //取得key value
+  ```
+
+- 須注意 laravel 預設的 redis key 會有 `laravel_database_` 這個前綴：`$ get laravel_database_${your_key}`。這個前綴設定可以在 `env` 中的 `REDIS_PREFIX` 修改
 
 ## 新增一個 html 測試`input`到資料庫
 

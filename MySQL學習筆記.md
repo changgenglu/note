@@ -16,6 +16,9 @@
       - [外鍵索引](#外鍵索引)
   - [Function](#function)
     - [CONVERT\_TZ(dt,from\_tz,to\_tz) 轉換時區](#convert_tzdtfrom_tzto_tz-轉換時區)
+    - [Event 事件](#event-事件)
+      - [範例](#範例)
+      - [基本使用](#基本使用)
   - [使用情境](#使用情境)
     - [外鍵 onDelete 約束情況](#外鍵-ondelete-約束情況)
     - [ERROR: #1215 - Cannot add foreign key constraint](#error-1215---cannot-add-foreign-key-constraint)
@@ -387,6 +390,50 @@ SELECT CONVERT_TZ('2020-12-01 01:00:00','+00:00','+08:00') AS Result;
 +---------------------+
 | 2020-12-01 09:00:00 |
 +---------------------+
+```
+
+### Event 事件
+
+用於定期執行某些資料庫任務
+
+- 用途：
+  - 自動化維護
+  - 刪除過期數據
+  - 複製存檔、生成報告
+
+#### 範例
+
+- devices 資料表需要定時刪除已被標記 delete_at 的裝置
+
+```sql
+CREATE EVENT delete_old_devices
+ON SCHEDULE
+-- 每半年檢查一次，並刪除超過半年以上的資料
+EVERY 6 MONTH
+DO
+  DELETE FROM devices WHERE deleted_at < DATE_SUB(NOW(), INTERVAL 6 MONTH);
+```
+
+#### 基本使用
+
+- 查詢、刪除
+
+```sql
+SHOW EVENTS; -- 查詢
+
+DROP EVENT IF EXISTS <event_name>; --刪除，IF EXISTS可以避免報錯
+```
+
+- 啟用事件排程
+
+```sql
+SET GLOBAL event_scheduler = ON;
+```
+
+- 查看目前正在執行的程序
+
+```sql
+SHOW PROCESSLIST;
 ```
 
 ## 使用情境
