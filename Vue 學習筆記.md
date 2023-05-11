@@ -2,11 +2,14 @@
 
 - [Vue 學習筆記](#vue-學習筆記)
   - [Vue 實體的生命週期](#vue-實體的生命週期)
-  - [監聽器](#監聽器)
-    - [介紹](#介紹)
-    - [$watch](#watch)
-    - [watch](#watch-1)
-    - [watch 和 computed 差別](#watch-和-computed-差別)
+  - [Vue 屬性](#vue-屬性)
+    - [監聽器(watch)](#監聽器watch)
+      - [$watch](#watch)
+      - [watch](#watch-1)
+    - [計算(computed)](#計算computed)
+      - [watch 和 computed 差別](#watch-和-computed-差別)
+        - [依賴更新才會重新執行](#依賴更新才會重新執行)
+    - [computed、watch 和 methods 的使用時機](#computedwatch-和-methods-的使用時機)
   - [eventHub 事件中心 (vue 2)](#eventhub-事件中心-vue-2)
   - [指令(directive)](#指令directive)
     - [屬性綁定](#屬性綁定)
@@ -37,6 +40,12 @@
     - [單向數據流](#單向數據流)
     - [改變子模組內的 prop 值](#改變子模組內的-prop-值)
     - [物件型別的 prop 傳遞](#物件型別的-prop-傳遞)
+    - [子組件接收來自父組件的 props](#子組件接收來自父組件的-props)
+      - [在模板中](#在模板中)
+      - [在 data 中](#在-data-中)
+      - [在 methods 中](#在-methods-中)
+      - [在 mounted 中](#在-mounted-中)
+      - [在 computed 中](#在-computed-中)
   - [備註](#備註)
     - [判斷當前環境是否為開發環境](#判斷當前環境是否為開發環境)
 
@@ -51,11 +60,11 @@
 - `beforeDestroy`: 在此實體被銷毀前調用，此時實體依然擁有完整的功能。
 - `destroyed`: 於此實體被銷毀後調用，此時實體中的任何定義(data, methods...)都已被解除綁定，在此做任何操作都會失效。
 
-## 監聽器
+## Vue 屬性
+
+### 監聽器(watch)
 
 當資料變化時調用函數，函數會有兩個傳入參數：改變前的值、改變後的後的值，可以使用這個函數做跟此資料變化有的處理。
-
-### 介紹
 
 監聽器在 vue.js 中有兩種使用方式：
 
@@ -64,9 +73,7 @@
 
 `$watch` 是註冊監聽器的函數，而 watch 是為了開發者方便在實體上設置監聽器而提供的，其實 watch 本身也是使用 $watch 註冊監聽器。
 
-### $watch
-
-定義
+#### $watch
 
 ```javascript
 unwatched = vm.$watch(expOrFn, callback, [options]);
@@ -108,7 +115,7 @@ vm.$watch('a', function(newA, oldA) {
 });
 ```
 
-### watch
+#### watch
 
 ```javascript
 watch: (
@@ -128,7 +135,103 @@ watch: (
     - immediate 布林值 使否在實體初始化時立即調用 callback
   - array 當有多個監聽器時，使用陣列帶入多個 callback 函數
 
-### watch 和 computed 差別
+### 計算(computed)
+
+和 watch 一樣，都是用來監聽數據的方式，但使用場景不同。
+
+computed 是一個計算屬性，他根據依賴的資料，動態計算出一個新的值，並且會自動存入快取。當依賴的資料發生變化時，computed 會自動重新計算。這樣可以有效避免重複計算和提高性能。
+
+computed 通常用計算衍生的資料，例如從一個列表中過濾出符合條件的資料，或根據資料的狀態產生顯示內容等等。在模板中，可以像普通的資料屬性一樣使用 computed
+
+```javascript
+export default {
+  data() {
+    return {
+      count: 0,
+    };
+  },
+  computed: {
+    doubleCount() {
+      return this.count * 2;
+    },
+  },
+};
+```
+
+`doubleCount` 為一個計算屬性，他依賴於 count 屬性。當 count 屬性發生變化時，doubleCount 會自動重新計算。在模板中，可以像下面這樣使用：
+
+```html
+<p>count: {{ count }}</p>
+<p>double count: {{ doubleCount }}</p>
+```
+
+#### watch 和 computed 差別
+
+computed 最大特點是必須回傳一個值，並且將其存入快取，當方法中的依賴改變時，才會重新執行和求值。
+
+但 watch 和 methods 不會強制要求回傳一個值，他們只需要執行動作，不一定要回傳值。
+
+watch 會偵測單一個值，當她有變化時就執行。methods 只要呼叫，就會執行。
+
+- computed 的特點
+  - 當元件被建立時(created 生命週期)，computed 方法會被建立和執行一次。之後如果依賴沒有更新，就不會重新執行和求值，僅回傳快取的值。
+  - computed 只能被該 computed 修改，不能被其他方法修改。例如：this.some_computed_function = 123 就會報錯。
+  - computed 的方法必須回傳一個值。
+  - computed 方法無法傳入參數
+
+##### 依賴更新才會重新執行
+
+> vue 官方文件
+>
+> 计算属性是基于它们的响应式依赖进行缓存的。只在相关响应式依赖发生改变时它们才会重新求值。
+
+響應式依賴：在一個 computed 方法中，他所用到在 data 建立的資料，當資料產生變化，此方法就會重新執行和求值。
+
+```javascript
+computed:{
+    total(){
+        return this.price * this.quantity * this.discount
+    }
+}
+```
+
+total 的依賴就是 this.price, this.quantity, this.discount。只要其中一樣產生變化，就會重新執行 total()，並回傳新的值。
+
+當 computed 內所有的依賴都沒有發生變化，此 computed 函示就會一直回傳之前儲存起來的值。
+
+```javascript
+<div id="app">
+  <button @click="num = 1">按我改num</button>
+  <p> 用add方法把以下的值由0變1：</p>
+  <p> {{ add }} </p>
+</div>
+```
+
+```javascript
+// 當num變成1之後，changeOne()就不會再觸發，而「我有被觸發了！」這句也不會印出來
+
+import { createApp } from "https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.9/vue.esm-browser.js";
+createApp({
+  data() {
+    return {
+      num: 0,
+    };
+  },
+  computed: {
+    add() {
+      console.log("我有被觸發了！");
+      return this.num;
+    },
+  },
+}).mount("#app");
+```
+
+當元件剛建立時(created)時，會打印一次，然後第一次按下按鈕時，會在打印一次，並且 num 會變成 1。
+但第二次之後按下按鈕，就不會再觸發 add() 方法，因為每次按下按鈕，都會將 num 賦值為 1，和之前快取儲存的值相同。
+
+### computed、watch 和 methods 的使用時機
+
+當三者都能實現同一效果，但 computed 的效能較好
 
 ## eventHub 事件中心 (vue 2)
 
@@ -835,6 +938,86 @@ props: ['channelNames', 'regionId', 'bxMac'],
             this.mac = mac;
         }
     },
+```
+
+### 子組件接收來自父組件的 props
+
+#### 在模板中
+
+```vue
+<template>
+  <div>{{ parentData }}</div>
+</template>
+
+<script>
+  export default {
+    props: ["parentData"],
+  };
+</script>
+```
+
+#### 在 data 中
+
+```vue
+<script>
+  export default {
+    props: ["parentData"],
+    data() {
+      return {
+        parent_data: this.parentData,
+      };
+    },
+  };
+</script>
+```
+
+#### 在 methods 中
+
+```vue
+<script>
+  export default {
+    props: ["parentData"],
+    methods: {
+      printParentData: function () {
+        console.log(this.$props.parentData);
+      },
+    },
+  };
+</script>
+```
+
+#### 在 mounted 中
+
+```vue
+<script>
+  export default {
+    props: ["parentData"],
+    mounted() {
+      console.log(this.message);
+    },
+  };
+</script>
+```
+
+#### 在 computed 中
+
+```vue
+<template>
+  <div>
+    <p>{{ parentDataLength }}</p>
+  </div>
+</template>
+
+<script>
+  export default {
+    props: ["parentData"],
+    computed: {
+      parentDataLength() {
+        return this.parentData.length;
+      },
+    },
+  };
+</script>
 ```
 
 ## 備註
