@@ -110,3 +110,10 @@ pm.test("Status code is 200", function () {
 - 重定向 (Redirect) 300 - 399
 - 用戶端錯誤 (Client errors) 400 - 499
 - 伺服器端錯誤 (Server error) 500-599
+
+## postman 無法開啟 collection
+
+1. 將 postman 解除安裝
+2. 刪除 C:\Users\AppData\Local\Postman
+3. 刪除 C:\Users\AppData\Roaming\Postman
+4. 下載最新版本的 postman

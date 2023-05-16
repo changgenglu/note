@@ -3,6 +3,14 @@
 - [Javascript 學習筆記](#javascript-學習筆記)
   - [基本概念](#基本概念)
     - [宣告與命名](#宣告與命名)
+      - [let, const 特性：](#let-const-特性)
+      - [如何分辨使用 let 和 const 的時機？](#如何分辨使用-let-和-const-的時機)
+    - [let 和 const 解決了什麼問題？](#let-和-const-解決了什麼問題)
+  - [存取資料的方法](#存取資料的方法)
+    - [基本型別](#基本型別)
+    - [物件型別](#物件型別)
+    - [把基本型別當作參數傳入函式](#把基本型別當作參數傳入函式)
+    - [將物件協別當作參數傳入函式](#將物件協別當作參數傳入函式)
   - [運算式與運算子](#運算式與運算子)
     - [嚴謹模式](#嚴謹模式)
     - [賦值運算子](#賦值運算子)
@@ -148,11 +156,6 @@ console.log(a === b);
 
 ### 宣告與命名
 
-在 ES5 之前都只會用 `var` 宣告變數，在 ES6 之後加入 `let` 和 `const`，現在應以新加入的特性進行宣告。
-
-`const`：常數，宣告之後無法再次指定值，只讀不能寫。
-`let`：變數，暫存的資料，可以更動裡面的值。
-
 - 命名規則
   - 開頭字元需要是 ASCII 字元(英文小寫)，或是下底線(\_)、錢號($)。開頭字元不得使用數字。
   - 大小寫敏感
@@ -161,6 +164,171 @@ console.log(a === b);
 **注意** 下底線開頭的命名常為特別用途：如類別中的私有變數、常數或方法。錢符號也通常為特殊用途命名。
 
 變數與方法名稱都用小駝峰式的命名，類別用大駝峰式命名。
+
+在 ES5 之前都只會用 `var` 宣告變數，在 ES6 之後加入 `let` 和 `const`，現在應以新加入的特性進行宣告。
+
+#### let, const 特性：
+
+- 區塊作用域
+
+  - 變數只存活在 {} 花括號裡面，外面不能調用
+
+  ```javascript
+  {
+    const x = 10;
+  }
+  console.log(x); //Uncaught ReferenceError: x is not defined
+  {
+    let y = 20;
+  }
+  console.log(y); //Uncaught ReferenceError: y is not defined
+  {
+    var z = 30;
+  }
+  console.log(z); //30
+  ```
+
+- 變量會提升，但若未宣告該變數，會回報錯誤，而非 undefined
+  - var 變數的宣告，初始預設值為 undefined，但 let, const 不會有這個預設，當執行 let 變數宣告語句時，才會初始化且能夠被訪問。
+- 不允許重複宣告
+- 全域變數不會成為 window 的屬性
+
+#### 如何分辨使用 let 和 const 的時機？
+
+> 如果變數會變，就使用 let，不變就用 const
+
+更改指的是記憶體地址的改變，而不是值的改變
+
+- 記憶體存放變數的原則：
+  - 基本型別值：
+    - 字串、數值、undefined、null、symbol
+    - 以上不能更改他的值，只能重新賦值，此時會更改記憶體位址
+- 引用值：
+  - 物件、陣列、函式
+  - 可以修改裡面的值，這樣不會更改記憶體位置，但若重新賦予一個新的值，就會更改記憶體位址。
+
+### let 和 const 解決了什麼問題？
+
+用 var 宣告時，容易導致意外汙染全域變數的問題，例如，區域變數覆蓋全域變數
+
+```javascript
+var food = "apple";
+function func() {
+  var result = "I eat " + food;
+  console.log(result);
+}
+func(); //I eat apple
+```
+
+在 func 方法中用到全域變數 food，組合字串及回傳。
+
+但如果程式碼變得複雜時，沒注意到 food 已經在第一行宣告過了
+
+## 存取資料的方法
+
+- 基本類型：傳值(pass by value)
+- 物件類型：傳址(pass by reference)、pass by sharing
+
+### 基本型別
+
+當一個變數被賦予基本型別的值時，整個值就會存在記憶體中。
+
+當複製基本型別的值到另一個變數時，只會複製他們的值，而該兩變數並不會影響到對方。
+
+這個情況稱作傳值。
+
+```javascript
+var box1 = 10;
+var box2 = "hello";
+
+//拷貝box1,box2的值
+var boxA = box1;
+var boxB = box2;
+
+boxA = 30;
+boxB = "goodbye";
+
+console.log(box1, box2, boxA, boxB); // 10,"hello",30,"goodbye"
+```
+
+一開始 boxA 和 boxB 只是各自複製了 box1 和 box2 的值，boxA 和 box1，以及 boxB 和 box2 是沒有關係的，所以當要重新賦值給 boxA. boxB 時，box1, box2 不會受到影響。
+
+### 物件型別
+
+當變數被賦予是物件型別的資料時，記憶體會被存放該物件在記憶體中的位置，並引用該地址來指向該物件。
+
+當複製一個物件到另一個變數時，複製的是該物件的地址，若此物件有被修改，所有引用該物件的變數，值都會被修改
+
+```javascript
+var user = {
+  name: "Mary",
+  age: 30,
+};
+
+//拷貝user物件的地址
+var userCopy = user;
+userCopy.age = 20;
+
+console.log(user); // {name: 'Mary', age:20}
+console.log(userCopy); // {name: 'Mary', age:20}
+console.log(user === userCopy); // true
+```
+
+但若將變數重新賦予一個新變數
+
+```javascript
+var user = {
+  name: "Mary",
+  age: 30,
+};
+
+var userCopy = user;
+
+userCopy = {
+  name: "Mary",
+  age: 20,
+};
+
+console.log(user); // {name: Mary", age: "30"}
+console.log(userCopy); // {name: Mary", age: "20"}
+console.log(user === userCopy); // false
+```
+
+當一個變數被重新賦予一個新的物件，並非修改該物件，因此地址整個變了，並指向另一個新的物件。
+
+### 把基本型別當作參數傳入函式
+
+當我們把基本型別當作參數傳入函式時，函式的參數會複製那些基本型別的值，所以在函式外的變數並不會被影響。
+
+```javascript
+var box1 = 100;
+var box2 = 200;
+
+function add(a, b) {
+  a = 10;
+  b = 20;
+}
+
+add(box1, box2);
+console.log(box1, box2); //100,200
+```
+
+以上例子中，像之前提及的傳值概念一樣，a 和 b 複製了 box1, box2 的值。即使修改 a 和 b，box1, box2 都不會被修改。
+
+### 將物件協別當作參數傳入函式
+
+```javascript
+var user = {
+  name: "Mary",
+  age: 30,
+};
+
+function change(obj) {
+  obj.name = "Peter";
+}
+change(user);
+console.log(user); //{name: "Peter", age: 30}
+```
 
 ## 運算式與運算子
 
