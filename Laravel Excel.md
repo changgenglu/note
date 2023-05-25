@@ -248,4 +248,10 @@ class UserExport implements WithEvents
 }
 ```
 
+### 搭配 vue 前端
+
+> 參考資料
+>
+> [Day17 使用 Laravel Excel 來匯出資料](https://ithelp.ithome.com.tw/articles/10302013)
+
 ## excel 匯入
