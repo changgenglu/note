@@ -6,7 +6,7 @@
 
 ## 什麼是設計模式
 
-> 模式 (Pattern)：描述在特定情境(context)下，解決設計問題(Problem)的最佳實踐
+> 每一個模式(Pattern)都是在某個特定情境(context)下，針對某問題(Problem)提出的解決方案(solution)。
 
 在軟體工程中將 Pattern 分為：
 
@@ -16,9 +16,9 @@
 
 ### 範例
 
-情境：每個人都喜歡坐在窗邊，有低矮的大窗台與舒適的椅子，若一個房間中沒有如此環境，很難讓人感到舒服。
+情境(context)：每個人都喜歡坐在窗邊，有低矮的大窗台與舒適的椅子，若一個房間中沒有如此環境，很難讓人感到舒服。
 
-此時的問題正是：如何讓人感到舒服自在？
+此時的問題(problem)正是：如何讓人感到舒服自在？
 
 此時有兩個需求(Force)：
 
@@ -127,3 +127,65 @@ problem 中有一個很重要的元素：force。在前面的範例中有提到�
 - 為了證明 pattern 的實用性，可列舉出已知應用 pattern 中相似解法的例子(known uses)
 - 最後列出應用該 pattern 後產生的優點與限制(consequences)
 - 通常在 pattern 完成之後可以依據 pattern 的特性為 pattern 命名(name)，也可以邊撰寫時邊思考。
+
+## 如何完善已完成的設計模式？
+
+### Big Picture
+
+- 如何掌握設計模式的主旨：
+
+  - 設計模式的初稿通常難以理解。而描述得太簡潔往往缺乏實質的內容；相反的，內容太過龐大（描述的多而深入）通常因為太專注細節的描述而模糊了模式的核心概念。
+
+- ThereFore
+  - shepherd 在剛剛接觸設計模式的時候必須先閱讀 problem 與 solution 的部分來掌握該模式的大綱，這主要是因為 sheep 通常最注重再解決方案的設計部分，並將所有對模式的想法，灌輸在 solution 中。
+
+### Matching Problem and Solution
+
+- 如何確定模式真的是模式的樣子(pattern-ish)
+
+  - 在撰寫模式時，常會先寫好 solution （因為可能在不斷實作中領悟到通用解決方法），而後在去設計模式的問題，所以在審稿的時候，常常讀起來不清楚這個模式的真正目的是什麼。
+
+- ThereFore
+  - 審稿的時候要確認設計模式的 solution 有完整的針對 problem 解決，解決方案也不能超過 problem 的範圍（剛好就好，不能多餘），之後再加強其中不足的部分（problem 或是 solution ）。
+
+### Convincing Solution
+
+- 如何提高設計模式的可信度(believable)
+  - 有時候 solution 提供的解法根本無濟於事，看起來沒有實現的能力。
+- therefore
+  - 一般的 pattern 在看完 solution 後通常要有「原來可以者麼解決」的感覺。如果沒有，則比需要提供真正實作應用的細節，才能使人信服。
+
+### Forces Define Problem
+
+- 如何更深層的瞭解問題
+  - 很多設計模式的初稿，對於 problem 的描述都很薄弱。
+- Therefore
+  - 須要透過 Force 來具體化對 problem 的敘述。而作者須要以迭代的方式不對斷修正與增強對 Force 與 Problem 的敘述，透過列出具體化不同的 Force，尋找交集後，最後為其總結出核心問題。
+
+### Balance Context
+
+- 如何為 pattern 劃定出合適的範圍
+  - 在撰寫設計模式的 context 時，常常不小心把情境的範圍界定的太大或太小，也往往忽略了界定該情境應用 pattern 之後可能的結果。
+- Therefore
+  - 在撰寫設計模式時，必須要具體思考並說明情境使用與不適用這個模式前後的差異，這樣不僅能夠賦予模式的使用者對模式應有的期望，也能幫助我們界定剛好符合所提出的模式範圍。
+
+### War Store
+
+- 如何推進模式前進？
+  - 有時不管如何 sheep 如何修改或是更正 shepherd 的建議，shepherd 還是覺得設計模式描述的不清楚、缺乏對該模式的實際應用想像。
+- Therefore
+  - 這時 shepherd 應要求 sheep 提供設計模式應用的真實案例，幫助對模式的想像更為生動實際。
+
+### Form Follows Function
+
+- 如何將設計模式套用到一個新的格式(form)
+  - 有時 sheep 所選擇得 patten 格式，沒辦法完表達(或是不適合)所提出的設計模式，這可能是因為 sheep 對 patten 的格式不熟悉(可能只知道一兩個)，或是因為要把格式整個換掉，須要花費相當大的功夫，因此選擇不換。
+- Therefore
+  - shepherd 須要一步一步的引導 sheep 修改原本模式所應用的格式(一次改一些就好)，而終極目的是「making the form serve the patten」
+
+### Small Patterns
+
+- 如何使設計模式變的更可消化
+  - 設計模式常常經由不斷修正(可能是因為 sheep 不願意對已完成的內容做刪減)後，內容變的很龐大。
+- Therefore
+  - 先放任內容增加，最後再做刪減。刪減可以透過移除不必要的區塊，或是將過於龐大模式，拆分成多個小模式(要做到一個模式只能有一個 context, problem 與 solution)

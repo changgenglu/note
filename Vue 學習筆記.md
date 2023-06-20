@@ -46,6 +46,13 @@
       - [在 methods 中](#在-methods-中)
       - [在 mounted 中](#在-mounted-中)
       - [在 computed 中](#在-computed-中)
+  - [VueX](#vuex)
+    - [什麼是 VueX](#什麼是-vuex)
+    - [如何使用](#如何使用)
+      - [install](#install)
+      - [Define VueX](#define-vuex)
+      - [import](#import)
+      - [usage in component](#usage-in-component)
   - [備註](#備註)
     - [判斷當前環境是否為開發環境](#判斷當前環境是否為開發環境)
 
@@ -1019,6 +1026,309 @@ props: ['channelNames', 'regionId', 'bxMac'],
   };
 </script>
 ```
+
+## VueX
+
+> 參考資料：
+>
+> [Vuex 是什麼? 怎麼用? — State、Mutations](https://medium.com/itsems-frontend/vue-vuex1-state-mutations-364163b3acac)
+
+### 什麼是 VueX
+
+在專案結構下面可能會有多個組件，組件中又會有組件，組件的溝通，通常會會透過 emit 和 prop，而為了處理大型專案的兄弟組件間的溝通，VueX 就這樣誕生了。
+
+VueX 可以作為網站的全域狀態管理，可以將全域狀態集中管理。
+
+### 如何使用
+
+在 VueX 中，儲存的狀態為 State，組件須要更動狀態時，需透過 Actions 發出一個 commit 去呼叫 Mutations，再由 Mutations 去更改 state。整個 VueX 的方法也稱為 store。
+
+#### install
+
+```bash
+npm i -S vuex
+```
+
+#### Define VueX
+
+安裝好之後，在 /src 資料夾中新增一個 store.js 的檔案，新增好之後來建立一個 State 跟 Mutations
+
+```javascript
+import Vue from "vue";
+import Vuex from "vuex";
+
+Vue.use(Vuex);
+
+// 定義一個新的 Vue Store
+const store = new Vuex.Store({
+  state: {
+    isLoading: false,
+  },
+  mutations: {
+    // 將state設定為參數
+    Loaded(state) {
+      // state的isLoading true/false 互轉
+      state.isLoading = !state.isLoading;
+    },
+  },
+});
+export default store;
+```
+
+這邊要注意 state 有一點像是 component 的 data，`mutate` 本身單字的意思就是`變異`，也就是專門用來變動 state 的。若 mutations 要做更改，不可以變動在 State 還沒定義的 data。
+
+```javascript
+import Vue from "vue";
+import Vuex from "vuex";
+
+Vue.use(Vuex);
+
+const store = new Vuex.Store({
+  state: {
+    isLoading: false,
+  },
+  mutations: {
+    Loaded(state) {
+      state.isLoading = !state.isLoading;
+
+      // state沒有age這個屬性
+      state.age = 18;
+    },
+  },
+});
+export default store;
+```
+
+若要在 mutations 定義新的 state，可以這樣寫：
+
+```javascript
+import Vue from "vue";
+import Vuex from "vuex";
+
+Vue.use(Vuex);
+
+const store = new Vuex.Store({
+  state: {
+    isLoading: false,
+  },
+  mutations: {
+    Loaded(state) {
+      state.isLoading = !state.isLoading;
+
+      // 這樣每執行一次都會設定一次
+      Vue.set(state, "clicked", false);
+    },
+  },
+});
+export default store;
+```
+
+#### import
+
+接下來在 main.js 裡面，將 store 拉進來：
+
+```javascript
+import store from "./store";
+new Vue({
+  store,
+  render: (h) => h(App),
+}).$mount("#app");
+```
+
+#### usage in component
+
+在 component 中，將要顯示的動作在 template 寫好：
+
+```javascript
+<template>
+  <div>
+    <p>Loading: {{ifLoading}}</p>
+    <button @click="reverseLoad()">Reverse</button>
+  </div>
+</template>
+```
+
+在 script 中：
+
+```javascript
+<script>
+export default {
+  name: "app",
+  computed: {
+    ifLoading() {
+      // 在這邊吐回state裡面的isLoading
+      return this.$store.state.isLoading;
+    }
+  },
+  methods: {
+    // 在這邊commit store裡面的Loaded這個mutation
+    reverseLoad() {
+      this.$store.commit("Loaded");
+    }
+  }
+};
+</script>
+```
+
+template 裡面的 ifLoading 是 computed 裡面的 ifLoading 函示，會 return state 的 isLoading 狀態。button 的 click 事件 reverseLoad 則在 methods 裡面會呼叫 store commit Loaded 這個 mutations，以上是簡單的 state。
+
+> 但是我如果有不只一個 state 呢？如果我還要看我點了幾次這個 button？
+
+以上作法就會變成：
+在 store.js 再新增一個 state 跟 mutations：
+
+/store.js
+
+```javascript
+const store = new Vuex.Store({
+  state: {
+    isLoading: false,
+    clickedTimes: 0,
+  },
+  mutations: {
+    Loaded(state) {
+      state.isLoading = !state.isLoading;
+    },
+    addTimes(state) {
+      state.clickedTimes += 1;
+    },
+  },
+});
+```
+
+/App.vue
+
+```javascript
+<template>
+<button @click="reverseLoad();addTimes()">Reverse</button>
+<p>Button Clicked Times: {{clicked}}</p>
+</template>
+
+<script>
+computed: {
+  ifLoading() {
+    return this.$store.state.isLoading;
+  },
+  clicked() {
+    // 抓 state 的 clickedTimes
+    return this.$store.state.clickedTimes;
+  }
+},
+methods: {
+  reverseLoad() {
+    this.$store.commit("Loaded");
+  },
+  addTimes() {
+    // commit 執行 addTimes 這個 mutations
+    this.$store.commit("addTimes");
+  }
+}
+</script>
+```
+
+這樣做如果再多幾個，就會變的很醜。
+VueX 提供了一個 mapState 的方法，他有兩種方法可以使用：
+
+1. 陣列指定：
+
+```javascript
+<template>
+  <div id="app">
+    <p>Loading: {{isLoading}}</p>
+    <button @click="reverseLoad();addTimes()">Reverse</button>
+    <p>Button Clicked Times: {{clickedTimes}}</p>
+  </div>
+</template>
+
+
+
+<script>
+// 這裡要先import進來
+import { mapState } from "vuex";
+export default {
+  name: "app",
+  components: {},
+  computed: mapState([
+    // 需要的state在這邊
+    'isLoading',
+    'clickedTimes'
+    ]),
+  methods: {
+    reverseLoad() {
+      this.$store.commit("Loaded");
+    },
+    addTimes() {
+      this.$store.commit("addTimes");
+    }
+  }
+};
+</script>
+```
+
+這邊陣列裡面的字串 isLoading，就是 store 裡面的 state，所以 template 不能像剛剛自訂名稱，要設定 store 裡面 state 的名稱。
+
+原本 computed 是一個物件，但是 mapState 也會回傳物件，所以可以直接這樣寫。
+
+2. 物件指定
+
+如果你還是想要在 template 上面設定一個不一樣的名字，就可以用物件的方式：
+
+```javascript
+<template>
+  <div id="app">
+    <p>Loading: {{ifLoading}}</p>
+    <button @click="reverseLoad();addTimes()">Reverse</button>
+    <p>Button Clicked Times: {{Times}}</p>
+  </div>
+</template>
+
+<script>
+import { mapState } from "vuex";
+export default {
+  name: "app",
+  components: {},
+  // 改用物件來指定state裡面的值
+  computed: mapState({
+    ifLoading: "isLoading",
+    Times: "clickedTimes"
+  }),
+  methods: {
+    reverseLoad() {
+      this.$store.commit("Loaded");
+    },
+    addTimes() {
+      this.$store.commit("addTimes");
+    }
+  }
+};
+</script>
+```
+
+這邊的 isLoading 的地方除了是字串，也可以寫成函示。
+
+```javascript
+computed: mapState({
+  ifLoading(state) {
+    return state.isLoading;
+  },
+  Times(state) {
+    return state.clickedTimes;
+  }
+}),
+```
+
+因為沒有 this，也只有一個 state 參數，可以簡化成箭頭函示：
+
+```javascript
+computed: mapState({
+  ifLoading: state => state.isLoading,
+  Times: state => state.clickedTimes
+}),
+```
+
+通常我們的 compoted 中，不會只有 mapState，也會有別的 computed 要使用，可使用 
+
+
 
 ## 備註
 

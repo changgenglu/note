@@ -43,6 +43,9 @@
     - [`array_unique()` 從陣列中刪除重複的值](#array_unique-從陣列中刪除重複的值)
     - [`array_diff()` 判斷陣列之間差異](#array_diff-判斷陣列之間差異)
     - [日期/時間](#日期時間)
+      - [`date(string $format, ?int $timestamp = null)` 格式化 Unix timestamps](#datestring-format-int-timestamp--null-格式化-unix-timestamps)
+      - [`mktime($hour, $minute = null, $second = null, $month = null, $day = null, $year = null)` 取得指定日期的時間戳](#mktimehour-minute--null-second--null-month--null-day--null-year--null-取得指定日期的時間戳)
+      - [`date_diff()` 獲取以分鐘為單位的時間差](#date_diff-獲取以分鐘為單位的時間差)
     - [`sort` 陣列排序](#sort-陣列排序)
       - [依 value 排序](#依-value-排序)
       - [依 key 排序](#依-key-排序)
@@ -1025,35 +1028,50 @@ Array
 
 ### 日期/時間
 
-- `date(string $format, ?int $timestamp = null)` 格式化 Unix timestamps
+#### `date(string $format, ?int $timestamp = null)` 格式化 Unix timestamps
 
-  - `$format` 指定的格式
-    - `Y` 年份，四位數
-    - `y` 年份二位數
-    - `F` 月份英文全名；如 'March'
-    - `M` 月份英文縮寫；如 'Mar'
-    - `m` 月份數字，不足二位前面補 0
-    - `n` 月份數字
-    - `D` 星期英文縮寫；如：'Fri'
-    - `l` 星期英文全稱；如：'Friday'
-    - `w` 星期數字
-    - `d` 幾日數字，不足二位前面補 0
-    - `j` 幾日數字
-    - `H` 24 小時制，不足二位前面補 0
-    - `h` 12 小時制，不足二位前面補 0
-    - `G` 24 小時制
-    - `g` 12 小時制
-    - `i` 分鐘
-    - `A` Am 或 Pm
-    - `a` am 或 pm
-    - `s` 秒
-    - `U` 總秒數
-    - `t` 指定月份的天數；如"28", "31"
-    - `z` 一年中的第幾天
-  - `$timestamp` 時間戳(可選)
+- `$format` 指定的格式
+  - `Y` 年份，四位數
+  - `y` 年份二位數
+  - `F` 月份英文全名；如 'March'
+  - `M` 月份英文縮寫；如 'Mar'
+  - `m` 月份數字，不足二位前面補 0
+  - `n` 月份數字
+  - `D` 星期英文縮寫；如：'Fri'
+  - `l` 星期英文全稱；如：'Friday'
+  - `w` 星期數字
+  - `d` 幾日數字，不足二位前面補 0
+  - `j` 幾日數字
+  - `H` 24 小時制，不足二位前面補 0
+  - `h` 12 小時制，不足二位前面補 0
+  - `G` 24 小時制
+  - `g` 12 小時制
+  - `i` 分鐘
+  - `A` Am 或 Pm
+  - `a` am 或 pm
+  - `s` 秒
+  - `U` 總秒數
+  - `t` 指定月份的天數；如"28", "31"
+  - `z` 一年中的第幾天
+- `$timestamp` 時間戳(可選)
 
-- `mktime($hour, $minute = null, $second = null, $month = null, $day = null, $year = null)` 取得指定日期的時間戳
-  - 任何省略的變數，將依據本地時間設置
+#### `mktime($hour, $minute = null, $second = null, $month = null, $day = null, $year = null)` 取得指定日期的時間戳
+
+- 任何省略的變數，將依據本地時間設置
+
+#### `date_diff()` 獲取以分鐘為單位的時間差
+
+- `date_diff($StartDateTimeObject, $EndDateTimeObject)`
+  - `$StartDateTimeObject1` 必須，為一個 DataTime 物件，表示開始日期。
+  - `$EndDateTimeObject1` 必須，為一個 DataTime 物件，表示結束日期。
+  - 若失敗返回 false
+
+```php
+$date_time_start = date_create('2019-06-19')
+$date_time_end = date_create('2020-06-19')
+
+$difference = date_diff($date_time_start, $date_time_end);
+```
 
 ### `sort` 陣列排序
 

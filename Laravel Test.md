@@ -41,6 +41,12 @@ class ExampleTest extends TestCase
 ```bash
 php artisan test
 
+// 指定要運行的特定測試類別
+php artisan test --filter ExampleTest
+
+// 運定特定的測試方法
+php artisan test --filter ExampleTest::testExample
+
 // 傳遞參數
 php artisan test --testsuite=Feature --stop-on-failure
 ```

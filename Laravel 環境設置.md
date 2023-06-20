@@ -303,13 +303,12 @@ php artisan serve
 
 10. 執行
 
-    ```bash
-    # 遷移資料表
-    php artisan migrate
-
-    # 填充資料
-    php artisan db:seed
-    ```
+   ```bash
+   # 遷移資料表
+   php artisan migrate
+   # 填充資料
+   php artisan db:seed
+   ```
 
 ## Laravel ReactJS
 
@@ -318,37 +317,37 @@ php artisan serve
 1. 建立新的專案
 
    ```cmd
-        composer create-project laravel/laravel --prefer-dist running_in_circles
+   composer create-project laravel/laravel --prefer-dist running_in_circles
 
-        laravel new running_in_circles
+   laravel new running_in_circles
    ```
 
 2. 進入 Laravel 項目
 
    ```cmd
-       cd running_in_circles
+   cd running_in_circles
    ```
 
 3. 安裝 laravel/ui
 
    ```cmd
-       composer require laravel/ui
+   composer require laravel/ui
    ```
 
 4. 在 Laravel 中安裝 React
 
    ```cmd
-       php artisan ui react
+   php artisan ui react
    ```
 
 5. 安裝所需的軟件包
 
    ```cmd
-       <!-- 檢查node和npm是否安裝 -->
-           node -v
-           npm -v
-       <!-- 建立一個node_modules資料夾並自動安裝package.json -->
-           npm install
+   <!-- 檢查node和npm是否安裝 -->
+       node -v
+       npm -v
+   <!-- 建立一個node_modules資料夾並自動安裝package.json -->
+       npm install
    ```
 
 6. 在 Laravel 中設置 React 組件
@@ -367,9 +366,7 @@ php artisan serve
                <div className="card-header">
                  <h2>React Component in Laravel</h2>
                </div>
-               <div className="card-body">
-                 I'm tiny React component in Laravel app!
-               </div>
+               <div className="card-body">I am tiny React component in Laravel app!</div>
              </div>
            </div>
          </div>
@@ -420,14 +417,14 @@ php artisan serve
 9. 執行命令編譯 Laravel 和 React.js
 
    ```cmd
-       npm run watch
+   npm run watch
    ```
 
 10. 編譯成功，運行 laravel
 
-    ```cmd
-        php artisan serve
-    ```
+   ```cmd
+   php artisan serve
+   ```
 
 ## Laravel 安裝 bootstrap
 
@@ -436,7 +433,7 @@ php artisan serve
 1. 終端機
 
    ```cmd
-      npm install
+   npm install
    ```
 
 2. 建立文件(如果尚未建立) `resources/sass/app.scss` 並引入:
@@ -445,19 +442,19 @@ php artisan serve
 3. 在 webpack.mix.js 加入
 
    ```php
-       mix.sass('resources/sass/app.scss', 'public/css')
+   mix.sass('resources/sass/app.scss', 'public/css')
    ```
 
 4. 終端機
 
    ```cmd
-      npm run dev
+   npm run dev
    ```
 
 5. 現在可以引用 bootstrap
 
    ```php
-       <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
    ```
 
 ### Laravel 6
@@ -465,36 +462,36 @@ php artisan serve
 1. 終端機輸入
 
    ```cmd
-       composer require laravel/ui="1.*" --dev
+   composer require laravel/ui="1.*" --dev
    ```
 
 2. 輸入
 
    ```cmd
-       php artisan ui bootstrap
+   php artisan ui bootstrap
    ```
 
 3. 如果出現 "Command "ui" is not defined."
 
    ```cmd
-       composer update
+   composer update
    ```
 
 4. 執行
 
    ```cmd
-       npm install
+   npm install
    ```
 
 5. 終端機
 
    ```cmd
-      npm run dev
+   npm run dev
    ```
 
 6. 現在可以引入
 
    ```php
-       <link rel="stylesheet" href="/css/app.css">
-       <script src="/js/app.js"></script>
+   <link rel="stylesheet" href="/css/app.css">
+   <script src="/js/app.js"></script>
    ```

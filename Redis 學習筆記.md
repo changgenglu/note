@@ -15,8 +15,8 @@
 ## redis-cil
 
 ```bash
-# redis-cil -h <host> -p <port>
-redis-cil -h 127.0.0.1 -p 6379
+# redis-cli -h <host> -p <port>
+redis-cli -h 127.0.0.1 -p 6379
 ```
 
 ## 資料類型
