@@ -1240,11 +1240,9 @@ VueX 提供了一個 mapState 的方法，他有兩種方法可以使用：
   </div>
 </template>
 
-
-
 <script>
-// 這裡要先import進來
 import { mapState } from "vuex";
+
 export default {
   name: "app",
   components: {},
@@ -1326,9 +1324,19 @@ computed: mapState({
 }),
 ```
 
-通常我們的 compoted 中，不會只有 mapState，也會有別的 computed 要使用，可使用 
+通常我們的 computed 中，不會只有 mapState，也會有別的 computed 要使用，可使用`...`來達成：
 
-
+```javascript
+computed: {
+  otherfn() {
+    return "asdf";
+  },
+  ...mapState({
+    ifLoading: state => state.isLoading,
+    Times: state => state.clickedTimes
+  })
+},
+```
 
 ## 備註
 

@@ -8,6 +8,9 @@
     - [分支介紹](#分支介紹)
       - [長期分支](#長期分支)
       - [任務分支(Topic)](#任務分支topic)
+        - [hotfix](#hotfix)
+        - [feature](#feature)
+        - [release](#release)
     - [Git Commit 規範](#git-commit-規範)
       - [Commit Message 格式](#commit-message-格式)
       - [標題](#標題)
@@ -99,13 +102,168 @@
 
 #### 任務分支(Topic)
 
-- **hotfix**  
-   上線版本需緊急修復時，由 main 直接切出的 hotfix 分支，修復完成也會合併至 main 分支。  
-   由於 develop 在開發中，若從 develop 切 hotfix 分支，再合併至 main 分支時可能會出現更嚴重的問題。
-- **feature**  
-   開發新功能時，會從 develop 切出 feature 分支，其命名方式採`feature/功能名稱`。
-- **release**  
-   由 develop 切出來，正式上線前的最終測試分支，通過後會將 release 合併到 main 以及 develop 確保在 release 時修正的一些問題能同步到 main 與 develop。
+##### hotfix
+
+上線版本需緊急修復時，由 main 直接切出的 hotfix 分支，修復完成也會合併至 main 分支。
+
+由於 develop 在開發中，若從 develop 切 hotfix 分支，再合併至 main 分支時可能會出現更嚴重的問題。
+
+當 bug 修復後，可合併到開發分支，或是合併回主分支，並標上另一版本號的 tag。
+
+- 原則：
+  - 從主分支分離
+  - 合併回開發分支或主分支
+  - 分支命名規則為：hotfix-\*
+
+詳細步驟：
+
+1. 開修復分支
+
+   ```bash
+   # 從主要分支開一支名為「hotfix-1.2.1」的分支，開完後切換到hotfix-1.2.1分支。
+   $ git checkout -b hotfix-1.2.1 master
+   ```
+
+2. 制訂版本號
+
+   ```bash
+   # commit 一個版本，commit 訊息為「版本號跳躍至1.2.1」
+   $ git commit -a -m "Bumped version number to 1.2.1"
+   ```
+
+3. 修正 bug 並 commit 一版
+
+   ```bash
+   # commit 修正版
+   $ git commit -m "Fixed severe production problem"
+   ```
+
+4. 將修好的分支合併回主分支
+
+   ```bash
+   # 切換至主要分支
+   $ git checkout master
+
+   # 將hotfix-1.2.1分支合併到主要分支
+   $ git merge --no-ff hotfix-1.2.1
+
+   # 上tag
+   $ git tag -a 1.2.1
+   ```
+
+5. 將修好的分支合併回 develop 分支
+
+   ```bash
+   # 切換至開發分支
+   $ git checkout develop
+
+   # 將hotfix-1.2.1分支合併回開發分支
+   $ git merge --no-ff hotfix-1.2.1
+   ```
+
+   **特別注意** 若修復分支與發佈分支同時存在，則當 bug 修正後，就不是合併回開發分支而是發佈分支。修補程式就會在從未來發布分支合併回開發分支時，一併將 bug 修補完。
+
+6. 刪除 hotfix 分支
+
+   ```bash
+   # 刪除分支
+   $ git branch -d hotfix-1.2.1
+   ```
+
+##### feature
+
+開發新功能時，會從 develop 切出 feature 分支，其命名方式採`feature/功能名稱`。只要新功能未完成，功能分支就會持續存在，直到開發完成並合併回開發分支，或直到放棄此新功能。
+
+此分支通常只會存在於該功能的開發者的本機端 repository，不會出現在遠端的庫中。
+
+- 原則：
+  - 從 develop 分支分離
+  - 合併回 develop 分支
+  - 分支命名原則：除了 master, develop, release-\*, hotfix 之外的功能名稱都可以
+
+詳細步驟：
+
+1. 開新功能分支
+
+   ```bash
+   # 從 develop 分支開一個命為 new-feature 的分支
+   $ git checkout -b feature/new-feature develop
+   ```
+
+2. 將已開發完成之功能合併回 develop 分支
+
+   ```bash
+   # 切換至開發分支
+   $ git checkout develop
+
+   # 將 new-feature 分支合併到開發分支
+   $ git merge --no-ff feature/new-feature
+
+   # 刪除 new-feature 分支
+   $ git branch -d feature/new-feature
+
+   # 將開發分支push到遠端的origin
+   $ git push origin develop
+   ```
+
+`--no-ff` 可保存 feature 上面的歷史資訊，讓開發者可以更瞭解開發的來龍去脈。
+
+##### release
+
+由 develop 切出來，正式上線前的最終測試分支，通過後會將 release 合併到 main 以及 develop 確保在 release 時修正的一些問題能同步到 main 與 develop。
+
+制訂版本號碼的最佳時機是在發布分支時。
+
+- 原則
+  - 從 develop 分離
+  - 合併回 develop 與 main 分支
+  - 分支命名規則：release-\*(版本號)
+
+詳細步驟：
+
+1. 開發佈分支
+
+   ```bash
+   # 從開發分支開一支名為「release-1.2」的分支，開完後切換到release-1.2分支。
+   $ git checkout -b release-1.2 develop
+   ```
+
+2. 制訂版本號
+
+   ```bash
+   # commit 一個版本，commmit 訊息為「版本跳躍至1.2]
+   $ git commit -a -m "Bump version number to 1.2"
+   ```
+
+3. 將已制訂好的 metadata 或已修復錯誤的發佈分支，合併到主分支
+
+   ```bash
+   # 切換至主要分支
+   $ git checkout master
+
+   # 將release-1.2分支合併到主要分支
+   $ git merge --no-ff release-1.2
+
+   # 上tag
+   $ git tag -a 1.2
+   ```
+
+4. 將已制訂好 metadata 或已修復錯誤的發佈分支，合併回開發分支
+
+   ```bash
+   # 切換至開發分支
+   $ git checkout develop
+
+   # 將release-1.2分支合併回開發分支
+   $ git merge --no-ff release-1.2
+   ```
+
+5. 刪除 release-1.2 分支
+
+   ```bash
+   # 刪除分支
+   $ git branch -d release-1.2
+   ```
 
 ### Git Commit 規範
 
