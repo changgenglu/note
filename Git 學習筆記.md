@@ -8,9 +8,9 @@
     - [分支介紹](#分支介紹)
       - [長期分支](#長期分支)
       - [任務分支(Topic)](#任務分支topic)
-        - [hotfix](#hotfix)
         - [feature](#feature)
         - [release](#release)
+        - [hotfix](#hotfix)
     - [Git Commit 規範](#git-commit-規範)
       - [Commit Message 格式](#commit-message-格式)
       - [標題](#標題)
@@ -101,74 +101,6 @@
    所有開發分支的基礎，當新增/修改功能時，會從此分支切出去，完成後再合併回來。
 
 #### 任務分支(Topic)
-
-##### hotfix
-
-上線版本需緊急修復時，由 main 直接切出的 hotfix 分支，修復完成也會合併至 main 分支。
-
-由於 develop 在開發中，若從 develop 切 hotfix 分支，再合併至 main 分支時可能會出現更嚴重的問題。
-
-當 bug 修復後，可合併到開發分支，或是合併回主分支，並標上另一版本號的 tag。
-
-- 原則：
-  - 從主分支分離
-  - 合併回開發分支或主分支
-  - 分支命名規則為：hotfix-\*
-
-詳細步驟：
-
-1. 開修復分支
-
-   ```bash
-   # 從主要分支開一支名為「hotfix-1.2.1」的分支，開完後切換到hotfix-1.2.1分支。
-   $ git checkout -b hotfix-1.2.1 master
-   ```
-
-2. 制訂版本號
-
-   ```bash
-   # commit 一個版本，commit 訊息為「版本號跳躍至1.2.1」
-   $ git commit -a -m "Bumped version number to 1.2.1"
-   ```
-
-3. 修正 bug 並 commit 一版
-
-   ```bash
-   # commit 修正版
-   $ git commit -m "Fixed severe production problem"
-   ```
-
-4. 將修好的分支合併回主分支
-
-   ```bash
-   # 切換至主要分支
-   $ git checkout master
-
-   # 將hotfix-1.2.1分支合併到主要分支
-   $ git merge --no-ff hotfix-1.2.1
-
-   # 上tag
-   $ git tag -a 1.2.1
-   ```
-
-5. 將修好的分支合併回 develop 分支
-
-   ```bash
-   # 切換至開發分支
-   $ git checkout develop
-
-   # 將hotfix-1.2.1分支合併回開發分支
-   $ git merge --no-ff hotfix-1.2.1
-   ```
-
-   **特別注意** 若修復分支與發佈分支同時存在，則當 bug 修正後，就不是合併回開發分支而是發佈分支。修補程式就會在從未來發布分支合併回開發分支時，一併將 bug 修補完。
-
-6. 刪除 hotfix 分支
-
-   ```bash
-   # 刪除分支
-   $ git branch -d hotfix-1.2.1
-   ```
 
 ##### feature
 
@@ -263,6 +195,74 @@
    ```bash
    # 刪除分支
    $ git branch -d release-1.2
+   ```
+
+##### hotfix
+
+上線版本需緊急修復時，由 main 直接切出的 hotfix 分支，修復完成也會合併至 main 分支。
+
+由於 develop 在開發中，若從 develop 切 hotfix 分支，再合併至 main 分支時可能會出現更嚴重的問題。
+
+當 bug 修復後，可合併到開發分支，或是合併回主分支，並標上另一版本號的 tag。
+
+- 原則：
+  - 從主分支分離
+  - 合併回開發分支或主分支
+  - 分支命名規則為：hotfix-\*
+
+詳細步驟：
+
+1. 開修復分支
+
+   ```bash
+   # 從主要分支開一支名為「hotfix-1.2.1」的分支，開完後切換到hotfix-1.2.1分支。
+   $ git checkout -b hotfix-1.2.1 master
+   ```
+
+2. 制訂版本號
+
+   ```bash
+   # commit 一個版本，commit 訊息為「版本號跳躍至1.2.1」
+   $ git commit -a -m "Bumped version number to 1.2.1"
+   ```
+
+3. 修正 bug 並 commit 一版
+
+   ```bash
+   # commit 修正版
+   $ git commit -m "Fixed severe production problem"
+   ```
+
+4. 將修好的分支合併回主分支
+
+   ```bash
+   # 切換至主要分支
+   $ git checkout master
+
+   # 將hotfix-1.2.1分支合併到主要分支
+   $ git merge --no-ff hotfix-1.2.1
+
+   # 上tag
+   $ git tag -a 1.2.1
+   ```
+
+5. 將修好的分支合併回 develop 分支
+
+   ```bash
+   # 切換至開發分支
+   $ git checkout develop
+
+   # 將hotfix-1.2.1分支合併回開發分支
+   $ git merge --no-ff hotfix-1.2.1
+   ```
+
+   **特別注意** 若修復分支與發佈分支同時存在，則當 bug 修正後，就不是合併回開發分支而是發佈分支。修補程式就會在從未來發布分支合併回開發分支時，一併將 bug 修補完。
+
+6. 刪除 hotfix 分支
+
+   ```bash
+   # 刪除分支
+   $ git branch -d hotfix-1.2.1
    ```
 
 ### Git Commit 規範

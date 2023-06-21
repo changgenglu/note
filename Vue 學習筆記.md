@@ -1032,12 +1032,23 @@ props: ['channelNames', 'regionId', 'bxMac'],
 > 參考資料：
 >
 > [Vuex 是什麼? 怎麼用? — State、Mutations](https://medium.com/itsems-frontend/vue-vuex1-state-mutations-364163b3acac)
+> 
+> [2020it邦鐵人賽-30天手把手的Vue.js教學 Day19 - 認識vuex](https://ithelp.ithome.com.tw/articles/10248123?sc=rss.iron)
 
 ### 什麼是 VueX
+
+一個專門為 vue 專案開發的資料管理套件，可以為網站做全域的資料管理。
 
 在專案結構下面可能會有多個組件，組件中又會有組件，組件的溝通，通常會會透過 emit 和 prop，而為了處理大型專案的兄弟組件間的溝通，VueX 就這樣誕生了。
 
 VueX 可以作為網站的全域狀態管理，可以將全域狀態集中管理。
+
+以下為 VueX 流程：
+
+1. components 透過 state 內的資料 render 出畫面
+2. 資料須要變動時，透過 actions commit 一個 mutation
+3. mutation 變動 state 中的資料
+4. components 重新 render 變化後的結果
 
 ### 如何使用
 
@@ -1231,112 +1242,112 @@ VueX 提供了一個 mapState 的方法，他有兩種方法可以使用：
 
 1. 陣列指定：
 
-```javascript
-<template>
-  <div id="app">
-    <p>Loading: {{isLoading}}</p>
-    <button @click="reverseLoad();addTimes()">Reverse</button>
-    <p>Button Clicked Times: {{clickedTimes}}</p>
-  </div>
-</template>
+   ```javascript
+   <template>
+     <div id="app">
+       <p>Loading: {{isLoading}}</p>
+       <button @click="reverseLoad();addTimes()">Reverse</button>
+       <p>Button Clicked Times: {{clickedTimes}}</p>
+     </div>
+   </template>
 
-<script>
-import { mapState } from "vuex";
+   <script>
+   import { mapState } from "vuex";
 
-export default {
-  name: "app",
-  components: {},
-  computed: mapState([
-    // 需要的state在這邊
-    'isLoading',
-    'clickedTimes'
-    ]),
-  methods: {
-    reverseLoad() {
-      this.$store.commit("Loaded");
-    },
-    addTimes() {
-      this.$store.commit("addTimes");
-    }
-  }
-};
-</script>
-```
+   export default {
+     name: "app",
+     components: {},
+     computed: mapState([
+       // 需要的state在這邊
+       'isLoading',
+       'clickedTimes'
+       ]),
+     methods: {
+       reverseLoad() {
+         this.$store.commit("Loaded");
+       },
+       addTimes() {
+         this.$store.commit("addTimes");
+       }
+     }
+   };
+   </script>
+   ```
 
-這邊陣列裡面的字串 isLoading，就是 store 裡面的 state，所以 template 不能像剛剛自訂名稱，要設定 store 裡面 state 的名稱。
+   這邊陣列裡面的字串 isLoading，就是 store 裡面的 state，所以 template 不能像剛剛自訂名稱，要設定 store 裡面 state 的名稱。
 
-原本 computed 是一個物件，但是 mapState 也會回傳物件，所以可以直接這樣寫。
+   原本 computed 是一個物件，但是 mapState 也會回傳物件，所以可以直接這樣寫。
 
 2. 物件指定
 
-如果你還是想要在 template 上面設定一個不一樣的名字，就可以用物件的方式：
+   如果你還是想要在 template 上面設定一個不一樣的名字，就可以用物件的方式：
 
-```javascript
-<template>
-  <div id="app">
-    <p>Loading: {{ifLoading}}</p>
-    <button @click="reverseLoad();addTimes()">Reverse</button>
-    <p>Button Clicked Times: {{Times}}</p>
-  </div>
-</template>
+   ```javascript
+   <template>
+     <div id="app">
+       <p>Loading: {{ifLoading}}</p>
+       <button @click="reverseLoad();addTimes()">Reverse</button>
+       <p>Button Clicked Times: {{Times}}</p>
+     </div>
+   </template>
 
-<script>
-import { mapState } from "vuex";
-export default {
-  name: "app",
-  components: {},
-  // 改用物件來指定state裡面的值
-  computed: mapState({
-    ifLoading: "isLoading",
-    Times: "clickedTimes"
-  }),
-  methods: {
-    reverseLoad() {
-      this.$store.commit("Loaded");
-    },
-    addTimes() {
-      this.$store.commit("addTimes");
-    }
-  }
-};
-</script>
-```
+   <script>
+   import { mapState } from "vuex";
+   export default {
+     name: "app",
+     components: {},
+     // 改用物件來指定state裡面的值
+     computed: mapState({
+       ifLoading: "isLoading",
+       Times: "clickedTimes"
+     }),
+     methods: {
+       reverseLoad() {
+         this.$store.commit("Loaded");
+       },
+       addTimes() {
+         this.$store.commit("addTimes");
+       }
+     }
+   };
+   </script>
+   ```
 
-這邊的 isLoading 的地方除了是字串，也可以寫成函示。
+   這邊的 isLoading 的地方除了是字串，也可以寫成函示。
 
-```javascript
-computed: mapState({
-  ifLoading(state) {
-    return state.isLoading;
-  },
-  Times(state) {
-    return state.clickedTimes;
-  }
-}),
-```
+   ```javascript
+   computed: mapState({
+     ifLoading(state) {
+       return state.isLoading;
+     },
+     Times(state) {
+       return state.clickedTimes;
+     }
+   }),
+   ```
 
-因為沒有 this，也只有一個 state 參數，可以簡化成箭頭函示：
+   因為沒有 this，也只有一個 state 參數，可以簡化成箭頭函示：
 
-```javascript
-computed: mapState({
-  ifLoading: state => state.isLoading,
-  Times: state => state.clickedTimes
-}),
-```
+   ```javascript
+   computed: mapState({
+     ifLoading: state => state.isLoading,
+     Times: state => state.clickedTimes
+   }),
+   ```
 
-通常我們的 computed 中，不會只有 mapState，也會有別的 computed 要使用，可使用`...`來達成：
+   通常我們的 computed 中，不會只有 mapState，也會有別的 computed 要使用，可使用`...`來達成：
 
-```javascript
-computed: {
-  otherfn() {
-    return "asdf";
-  },
-  ...mapState({
-    ifLoading: state => state.isLoading,
-    Times: state => state.clickedTimes
-  })
-},
-```
+   ```javascript
+   computed: {
+     otherfn() {
+       return "asdf";
+     },
+     ...mapState({
+       ifLoading: state => state.isLoading,
+       Times: state => state.clickedTimes
+     })
+   },
+   ```
 
 ## 備註
 
