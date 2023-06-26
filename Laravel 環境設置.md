@@ -13,6 +13,7 @@
   - [從 Git clone Laravel 專案](#從-git-clone-laravel-專案)
     - [開發環境設定](#開發環境設定)
     - [上線環境設定](#上線環境設定)
+    - [composer install 失敗](#composer-install-失敗)
   - [Laravel ReactJS](#laravel-reactjs)
   - [Laravel 安裝 bootstrap](#laravel-安裝-bootstrap)
     - [Laravel 8](#laravel-8)
@@ -303,12 +304,59 @@ php artisan serve
 
 10. 執行
 
-   ```bash
-   # 遷移資料表
-   php artisan migrate
-   # 填充資料
-   php artisan db:seed
+```bash
+# 遷移資料表
+php artisan migrate
+# 填充資料
+php artisan db:seed
+```
+
+### composer install 失敗
+
+```shell
+node: /lib64/libm.so.6: version `GLIBC_2.27` not found (required by node)
+node: /lib64/libc.so.6: version `GLIBC_2.28` not found (required by node)
+node: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.28` not found (required by node)
+```
+
+當出現上面的錯誤訊息，表示 GLIBC 的版本不符合現行系統上的 node 版本。
+
+解決錯誤常見的方法有兩種：
+
+1. 安裝較舊、支援更廣泛的 Node.js (16.x) 版本
+
+   使用 `nvm` 安裝其他版本的 node.js
+
+   ```shell
+   nvm install 16
+   nvm use 16
    ```
+
+   完成後確認當前版本
+
+   ```shell
+   nvm ls
+   node --version
+   ```
+
+   移除特定版本
+
+   ```shell
+   # 👇️ uninstall Node.js version 13.X.X
+   nvm uninstall 13
+   ```
+
+   若還未安裝 nvm
+
+   ```shell
+   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
+   chmod +x ~/.nvm/nvm.sh
+   source ~/.bashrc
+   # 驗證 nvm 是否安裝成功
+   nvm -v
+   ```
+
+2. 將 Linux 操作系統升級到更新版本。
 
 ## Laravel ReactJS
 
@@ -422,9 +470,9 @@ php artisan serve
 
 10. 編譯成功，運行 laravel
 
-   ```cmd
-   php artisan serve
-   ```
+```cmd
+php artisan serve
+```
 
 ## Laravel 安裝 bootstrap
 
