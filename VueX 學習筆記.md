@@ -6,8 +6,9 @@
 >
 > 實作：
 >
-> [github-repo: vuex-test-1](https://github.com/changgenglu/vuex-note)
-> [github-pages: vuex-test-1](https://changgenglu.github.io/vuex-note/)
+> [github-repo](https://github.com/changgenglu/vuex-note)
+> 
+> [github-pages](https://changgenglu.github.io/vuex-note/)
 
 ## 什麼是 VueX
 
