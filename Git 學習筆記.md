@@ -44,6 +44,7 @@
       - [輸入指令產生 SHH](#輸入指令產生-shh)
       - [產生 SSH 連線所需的公鑰內容](#產生-ssh-連線所需的公鑰內容)
       - [上傳公鑰](#上傳公鑰)
+    - [部署靜態頁面到 github](#部署靜態頁面到-github)
 
 ## 常用指令
 
@@ -138,7 +139,7 @@
    $ git push origin develop
    ```
 
-`--no-ff` 可保存 feature 上面的歷史資訊，讓開發者可以更瞭解開發的來龍去脈。
+`--no-ff` 可保存 feature 上面的歷史資訊，讓開發者可以更瞭解開發的來龍去脈(No Fast Forward)。
 
 ##### release
 
@@ -797,3 +798,57 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDFp+A3qe4qm1Dkw66LN/vNGlufX5iC9VERfuUiXHNM
 #### 上傳公鑰
 
 到 Github > Settings > SSH and GPG keys 的設定頁面，選擇 New SSH Key。
+
+### 部署靜態頁面到 github
+
+> 參考資料：
+>
+> [[Vue] 將Vue專案部署至Github Pages](https://dean34520.medium.com/vue%E7%B3%BB%E5%88%97%E6%96%87-%E5%B0%87vue%E6%AA%94%E6%A1%88%E9%83%A8%E7%BD%B2%E8%87%B3github-334951cadede)
+
+1. 建立與本地專案相同名稱的 repository
+2. 在專案資料夾中新增 vue.config.js，設定 publishPath
+
+   ```javascript
+   //vue.config.js
+   module.exports = {
+     publicPath: process.env.NODE_ENV === "production" ? "/eric-project/" : "/",
+   };
+   ```
+
+3. 將本地專案推送至雲端
+4. 在專案目錄下新增 deploy.sh 自動化腳本
+
+   ```sh
+    #!/usr/bin/env sh
+    # 當發生錯誤時終止腳本運行
+    set -e
+    # 打包
+    npm run build
+    # 移動至到打包後的dist目錄
+    cd dist
+    # 因為dist資料夾預設是被ignore的，因此在進入dist資料夾後初始化git
+    git init
+    git add -A
+    git commit -m 'deploy'
+    # 部署到 https://github.com/<user-name>/<repo-name>.git 分支為 gh-pages
+    git push -f https://github.com/<user-name>/<repo-name>.git master:gh-pages
+    # 將dist資料夾中的內容推送至遠端eric-project的gh-pages分支中，並強制無條件將舊有的內容取代成目前的內容（指令 git push -f)
+    cd -
+   ```
+
+   github 在部署時只允許三種來源：
+
+   1. master
+   2. gh-pages
+   3. master/docs
+
+5. 執行腳本
+
+   ```shell
+   sh ./deploy.sh
+   ```
+
+   完成後，此時 github 上的 gh-pages 分支會和 vue 專案中的 /dist 資料夾內一樣
+
+6. 進入 setting 頁面的 pages，將 Source 改為 gh-pages
+7. 待部署完成，頁面上方會出現專案頁面的連結

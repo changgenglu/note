@@ -48,11 +48,15 @@
       - [在 computed 中](#在-computed-中)
   - [VueX](#vuex)
     - [什麼是 VueX](#什麼是-vuex)
-    - [如何使用](#如何使用)
-      - [install](#install)
-      - [Define VueX](#define-vuex)
-      - [import](#import)
-      - [usage in component](#usage-in-component)
+    - [帶入參數及呼叫方法](#帶入參數及呼叫方法)
+      - [State](#state)
+      - [mapState](#mapstate)
+      - [Getters](#getters)
+      - [mapGetters](#mapgetters)
+      - [mutations](#mutations)
+      - [mapMutations](#mapmutations)
+      - [actions](#actions)
+    - [專案結構](#專案結構)
   - [備註](#備註)
     - [判斷當前環境是否為開發環境](#判斷當前環境是否為開發環境)
 
@@ -1031,9 +1035,7 @@ props: ['channelNames', 'regionId', 'bxMac'],
 
 > 參考資料：
 >
-> [Vuex 是什麼? 怎麼用? — State、Mutations](https://medium.com/itsems-frontend/vue-vuex1-state-mutations-364163b3acac)
-> 
-> [2020it邦鐵人賽-30天手把手的Vue.js教學 Day19 - 認識vuex](https://ithelp.ithome.com.tw/articles/10248123?sc=rss.iron)
+> [Vuex 是什麼? 怎麼用?](https://medium.com/itsems-frontend/vue-vuex5-sumup-c170d4bd6c42)
 
 ### 什麼是 VueX
 
@@ -1041,313 +1043,350 @@ props: ['channelNames', 'regionId', 'bxMac'],
 
 在專案結構下面可能會有多個組件，組件中又會有組件，組件的溝通，通常會會透過 emit 和 prop，而為了處理大型專案的兄弟組件間的溝通，VueX 就這樣誕生了。
 
-VueX 可以作為網站的全域狀態管理，可以將全域狀態集中管理。
+VueX 有一點像是全域的 components，大家可以拿他資料，呼叫他出來用。
 
-以下為 VueX 流程：
+state 就像是 data，action + Mutation 就像是 methods，getters 就像 computed
 
-1. components 透過 state 內的資料 render 出畫面
-2. 資料須要變動時，透過 actions commit 一個 mutation
-3. mutation 變動 state 中的資料
-4. components 重新 render 變化後的結果
+在 VueX 中，儲存的狀態為 State，Component 使用 Dispatch 呼叫 Actions，讓 Actions 發出 commit 觸發 Mutations 去修改 State 的資料。整個 VueX 的方法也稱為 store。
 
-### 如何使用
+### 帶入參數及呼叫方法
 
-在 VueX 中，儲存的狀態為 State，組件須要更動狀態時，需透過 Actions 發出一個 commit 去呼叫 Mutations，再由 Mutations 去更改 state。整個 VueX 的方法也稱為 store。
+#### State
 
-#### install
+- 定義：/store.js
 
-```bash
-npm i -S vuex
-```
+  ```javascript
+  import Vue from "vue";
+  import Vuex from "vuex";
+  Vue.use(Vuex);
 
-#### Define VueX
-
-安裝好之後，在 /src 資料夾中新增一個 store.js 的檔案，新增好之後來建立一個 State 跟 Mutations
-
-```javascript
-import Vue from "vue";
-import Vuex from "vuex";
-
-Vue.use(Vuex);
-
-// 定義一個新的 Vue Store
-const store = new Vuex.Store({
-  state: {
-    isLoading: false,
-  },
-  mutations: {
-    // 將state設定為參數
-    Loaded(state) {
-      // state的isLoading true/false 互轉
-      state.isLoading = !state.isLoading;
+  const store = new Vuex.Store({
+    state: {
+      isLoading: false,
     },
-  },
-});
-export default store;
-```
+  });
+  export default store;
+  ```
 
-這邊要注意 state 有一點像是 component 的 data，`mutate` 本身單字的意思就是`變異`，也就是專門用來變動 state 的。若 mutations 要做更改，不可以變動在 State 還沒定義的 data。
+- 使用：/app.vue
 
-```javascript
-import Vue from "vue";
-import Vuex from "vuex";
+  ```vue
+  <template>
+    <div id="app">
+      <p>isLoading: {{ ifLoading }}</p>
+    </div>
+  </template>
 
-Vue.use(Vuex);
+  <script>
+    export default {
+      name: "app",
+      computed: {
+        // 注意: 這邊的ifLoading跟store的state的isLoading名字不同，是可以自定義的喔
+        ifLoading() {
+          return this.$store.state.isLoading;
+        },
+      },
+    };
+  </script>
+  ```
 
-const store = new Vuex.Store({
-  state: {
-    isLoading: false,
-  },
-  mutations: {
-    Loaded(state) {
-      state.isLoading = !state.isLoading;
+#### mapState
 
-      // state沒有age這個屬性
-      state.age = 18;
+- 定義：/store.js
+
+  ```javascript
+  import Vue from "vue";
+  import Vuex from "vuex";
+  Vue.use(Vuex);
+
+  const store = new Vuex.Store({
+    state: {
+      myName: "Emma",
+      isLoading: false,
     },
-  },
-});
-export default store;
-```
+  });
 
-若要在 mutations 定義新的 state，可以這樣寫：
+  export default store;
+  ```
 
-```javascript
-import Vue from "vue";
-import Vuex from "vuex";
+- 使用：/app.vue
 
-Vue.use(Vuex);
+  ```vue
+  <template>
+    <div id="app">
+      <p>My Name is {{ myName }}</p>
+      <p>isLoading: {{ isLoading }}</p>
+    </div>
+  </template>
 
-const store = new Vuex.Store({
-  state: {
-    isLoading: false,
-  },
-  mutations: {
-    Loaded(state) {
-      state.isLoading = !state.isLoading;
+  <script>
+    import { mapState } from "vuex";
+    export default {
+      name: "app",
+      computed: {
+        // 陣列寫法
+        ...mapState(["isLoading", "myName"])
+        // 物件寫法
+        ...mapState({
+          isLoading: state => state.isLoading,
+          myName:  state => state.myName,
+        })
+      }
+    };
+  </script>
+  ```
 
-      // 這樣每執行一次都會設定一次
-      Vue.set(state, "clicked", false);
+#### Getters
+
+- 可帶參數：state, getters
+- 定義：/store.js
+
+  ```javascript
+  import Vue from "vue";
+  import Vuex from "vuex";
+  Vue.use(Vuex);
+
+  const store = new Vuex.Store({
+    state: {
+      myName: "Emma",
     },
-  },
-});
-export default store;
-```
+    getters: {
+      // 只有一個參數的箭頭函式寫法
+      newName: (state) => {
+        return state.myName + " lin";
+      },
+    },
+  });
 
-#### import
+  export default store;
+  ```
 
-接下來在 main.js 裡面，將 store 拉進來：
+- 使用：/app.vue
 
-```javascript
-import store from "./store";
-new Vue({
-  store,
-  render: (h) => h(App),
-}).$mount("#app");
-```
+  ```vue
+  <template>
+    <div id="app">
+      <p>My New Name is {{ newName }}</p>
+    </div>
+  </template>
 
-#### usage in component
+  <script>
+    export default {
+      name: "app",
+      computed: {
+        newName() {
+          return this.$store.getters.newName;
+        },
+      },
+    };
+  </script>
+  ```
 
-在 component 中，將要顯示的動作在 template 寫好：
+加上參數 getters 表示可以呼叫別的 getters 來用
 
-```javascript
-<template>
-  <div>
-    <p>Loading: {{ifLoading}}</p>
-    <button @click="reverseLoad()">Reverse</button>
-  </div>
-</template>
-```
+- 定義：/store.js
 
-在 script 中：
+  ```javascript
+  import Vue from "vue";
+  import Vuex from "vuex";
+  Vue.use(Vuex);
 
-```javascript
-<script>
-export default {
-  name: "app",
-  computed: {
-    ifLoading() {
-      // 在這邊吐回state裡面的isLoading
-      return this.$store.state.isLoading;
-    }
-  },
+  const store = new Vuex.Store({
+    state: {
+      myName: "Emma",
+    },
+    getters: {
+      newName: (state) => {
+        return state.myName + " lin";
+      },
+      // 這邊呼叫下面那個getters
+      anotherName: (state, getters) => {
+        return getters.nickName;
+      },
+      nickName: (state) => {
+        return state.myName + " Watson";
+      },
+    },
+  });
+
+  export default store;
+  ```
+
+- 使用：/app.vue
+
+  ```vue
+  <template>
+    <div id="app">
+      <p>My New Name is {{ newName }}</p>
+      <p>or you can call me {{ anotherName }}</p>
+    </div>
+  </template>
+
+  <script>
+    export default {
+      name: "app",
+      computed: {
+        newName() {
+          return this.$store.getters.newName;
+        },
+        anotherName() {
+          return this.$store.getters.anotherName;
+        },
+      },
+    };
+  </script>
+  ```
+
+#### mapGetters
+
+定義和上面的 store.js 相同，差異在 components 呼叫的時候
+
+- 使用：
+
+  ```vue
+  <script>
+    import { mapGetters } from "vuex";
+    export default {
+      name: "app",
+      computed: {
+        // 陣列寫法
+        ...mapGetters(["newName", "anotherName"])
+        // 物件寫法
+        ...mapGetters({
+          newName: "newName",
+          anotherName: "anotherName"
+        })
+      }
+    };
+  </script>
+  ```
+
+#### mutations
+
+可帶參數：state, payload
+
+- 使用：/app.vue
+
+  ```javascript
   methods: {
-    // 在這邊commit store裡面的Loaded這個mutation
-    reverseLoad() {
+    reverse() {
       this.$store.commit("Loaded");
+    },
+  }
+  ```
+
+- with payload:
+  通常 payload 可以用物件表示，就能更具描述性，但是要記得在 mutations 運算時，帶入的參數 payload 要加上參數物件的 key
+
+  - /app.vue
+
+    ```javascript
+    store.commit("addCounts", {
+      amount: 10,
+    });
+    ```
+
+  - /store.js
+
+    ```javascript
+    mutations: {
+      addCounts (state, payload) {
+        state.count += payload.amount
+      }
+    }
+    ```
+
+  - 所以帶上 payload 的呼叫可以這樣使用：
+
+    ```javascript
+    this.$store.commit("addTimes", 10);
+    // 或
+    this.$store.commit({
+      type: "addTimes",
+      count: 2,
+    });
+    ```
+
+    物件 type 是必要的，其他可以隨意
+
+#### mapMutations
+
+```vue
+<script>
+  import { mapMutations } from "vuex";
+  export default {
+    name: "app",
+    computed: {
+      // 陣列寫法
+      ...mapMutations(["Loaded", "addTimes"])
+      // 物件寫法
+      ...mapMutations({
+        // add是component自定義的事件名稱，addTimes是mutations在store的名稱
+        add: 'addTimes'
+      })
+    }
+  };
+</script>
+```
+
+使用 mapMutations，就要把 payload 直接帶入 template：
+
+```html
+<button @click="addTimes(2)">addTimes</button>
+```
+
+**注意**：mutations 一定只能同步執行，action 才能執行非同步
+
+#### actions
+
+- 可帶參數：
+  - context: {commit, dispatch, state, getters, rootState, rootGetters}, payload
+
+上面描述 mutations 只能同步執行，action 執行非同步，意旨 axios 要在 Actions 裡面做，不可以在 mutations 裡面做。
+
+- 定義：/app.vue
+
+  ```javascript
+  ClickedActions({ commit }, payload) {
+  commit('addTimes', payload)
+  }
+  ```
+
+- 使用：/app.vue
+
+  ```javascript
+  methods: {
+    add() {
+      this.$store.dispatch("ClickedActions",2);
     }
   }
-};
-</script>
+  ```
+
+### 專案結構
+
+1. App 層級的狀態要在 state 集中管理
+   > app 層級的意思是指：不會因為跨組件改變的狀態，如：登入資訊、購物車清單...等。
+   >
+   > 會因為跨組件改變的狀態，如：下拉式選單的開關狀態、商品列表...等。
+2. 唯一改變 state 的方式只有 mutations，而且是同步執行
+3. actions 才可以非同步執行
+
+```txt
+|--index.js
+|--main.js
+|--api
+|  |--...             // 後端 api
+|--components         // 頁面
+|  |--App.vue
+|  |--...
+|--store
+   |--index.js        // 註冊 modules 並 export store
+   |--actions.js      // 跨組件的 action
+   |--mutations.js    // 跨組件的 mutations
+   |--modules
+      |--cart.js      // 購物車 model
+      |--products.js  // 商品 model
 ```
-
-template 裡面的 ifLoading 是 computed 裡面的 ifLoading 函示，會 return state 的 isLoading 狀態。button 的 click 事件 reverseLoad 則在 methods 裡面會呼叫 store commit Loaded 這個 mutations，以上是簡單的 state。
-
-> 但是我如果有不只一個 state 呢？如果我還要看我點了幾次這個 button？
-
-以上作法就會變成：
-在 store.js 再新增一個 state 跟 mutations：
-
-/store.js
-
-```javascript
-const store = new Vuex.Store({
-  state: {
-    isLoading: false,
-    clickedTimes: 0,
-  },
-  mutations: {
-    Loaded(state) {
-      state.isLoading = !state.isLoading;
-    },
-    addTimes(state) {
-      state.clickedTimes += 1;
-    },
-  },
-});
-```
-
-/App.vue
-
-```javascript
-<template>
-<button @click="reverseLoad();addTimes()">Reverse</button>
-<p>Button Clicked Times: {{clicked}}</p>
-</template>
-
-<script>
-computed: {
-  ifLoading() {
-    return this.$store.state.isLoading;
-  },
-  clicked() {
-    // 抓 state 的 clickedTimes
-    return this.$store.state.clickedTimes;
-  }
-},
-methods: {
-  reverseLoad() {
-    this.$store.commit("Loaded");
-  },
-  addTimes() {
-    // commit 執行 addTimes 這個 mutations
-    this.$store.commit("addTimes");
-  }
-}
-</script>
-```
-
-這樣做如果再多幾個，就會變的很醜。
-VueX 提供了一個 mapState 的方法，他有兩種方法可以使用：
-
-1. 陣列指定：
-
-   ```javascript
-   <template>
-     <div id="app">
-       <p>Loading: {{isLoading}}</p>
-       <button @click="reverseLoad();addTimes()">Reverse</button>
-       <p>Button Clicked Times: {{clickedTimes}}</p>
-     </div>
-   </template>
-
-   <script>
-   import { mapState } from "vuex";
-
-   export default {
-     name: "app",
-     components: {},
-     computed: mapState([
-       // 需要的state在這邊
-       'isLoading',
-       'clickedTimes'
-       ]),
-     methods: {
-       reverseLoad() {
-         this.$store.commit("Loaded");
-       },
-       addTimes() {
-         this.$store.commit("addTimes");
-       }
-     }
-   };
-   </script>
-   ```
-
-   這邊陣列裡面的字串 isLoading，就是 store 裡面的 state，所以 template 不能像剛剛自訂名稱，要設定 store 裡面 state 的名稱。
-
-   原本 computed 是一個物件，但是 mapState 也會回傳物件，所以可以直接這樣寫。
-
-2. 物件指定
-
-   如果你還是想要在 template 上面設定一個不一樣的名字，就可以用物件的方式：
-
-   ```javascript
-   <template>
-     <div id="app">
-       <p>Loading: {{ifLoading}}</p>
-       <button @click="reverseLoad();addTimes()">Reverse</button>
-       <p>Button Clicked Times: {{Times}}</p>
-     </div>
-   </template>
-
-   <script>
-   import { mapState } from "vuex";
-   export default {
-     name: "app",
-     components: {},
-     // 改用物件來指定state裡面的值
-     computed: mapState({
-       ifLoading: "isLoading",
-       Times: "clickedTimes"
-     }),
-     methods: {
-       reverseLoad() {
-         this.$store.commit("Loaded");
-       },
-       addTimes() {
-         this.$store.commit("addTimes");
-       }
-     }
-   };
-   </script>
-   ```
-
-   這邊的 isLoading 的地方除了是字串，也可以寫成函示。
-
-   ```javascript
-   computed: mapState({
-     ifLoading(state) {
-       return state.isLoading;
-     },
-     Times(state) {
-       return state.clickedTimes;
-     }
-   }),
-   ```
-
-   因為沒有 this，也只有一個 state 參數，可以簡化成箭頭函示：
-
-   ```javascript
-   computed: mapState({
-     ifLoading: state => state.isLoading,
-     Times: state => state.clickedTimes
-   }),
-   ```
-
-   通常我們的 computed 中，不會只有 mapState，也會有別的 computed 要使用，可使用`...`來達成：
-
-   ```javascript
-   computed: {
-     otherfn() {
-       return "asdf";
-     },
-     ...mapState({
-       ifLoading: state => state.isLoading,
-       Times: state => state.clickedTimes
-     })
-   },
-   ```
 
 ## 備註
 
@@ -1362,3 +1401,4 @@ if (process.env.NODE_ENV !== "production") {
   this.is_dev = false;
 }
 ```
+
