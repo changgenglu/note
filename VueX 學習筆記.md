@@ -7,8 +7,20 @@
 > 實作：
 >
 > [github-repo](https://github.com/changgenglu/vuex-note)
-> 
+>
 > [github-pages](https://changgenglu.github.io/vuex-note/)
+
+- [VueX 學習筆記](#vuex-學習筆記)
+  - [什麼是 VueX](#什麼是-vuex)
+  - [帶入參數及呼叫方法](#帶入參數及呼叫方法)
+    - [State](#state)
+    - [mapState](#mapstate)
+    - [Getters](#getters)
+    - [mapGetters](#mapgetters)
+    - [mutations](#mutations)
+    - [mapMutations](#mapmutations)
+    - [actions](#actions)
+  - [專案結構](#專案結構)
 
 ## 什麼是 VueX
 
@@ -51,15 +63,15 @@ state 就像是 data，action + Mutation 就像是 methods，getters 就像 comp
   </template>
 
   <script>
-    export default {
-      name: "app",
-      computed: {
-        // 注意: 這邊的ifLoading跟store的state的isLoading名字不同，是可以自定義的喔
-        ifLoading() {
-          return this.$store.state.isLoading;
-        },
+  export default {
+    name: "app",
+    computed: {
+      // 注意: 這邊的ifLoading跟store的state的isLoading名字不同，是可以自定義的喔
+      ifLoading() {
+        return this.$store.state.isLoading;
       },
-    };
+    },
+  };
   </script>
   ```
 
@@ -93,19 +105,19 @@ state 就像是 data，action + Mutation 就像是 methods，getters 就像 comp
   </template>
 
   <script>
-    import { mapState } from "vuex";
-    export default {
-      name: "app",
-      computed: {
-        // 陣列寫法
-        ...mapState(["isLoading", "myName"])
-        // 物件寫法
-        ...mapState({
-          isLoading: state => state.isLoading,
-          myName:  state => state.myName,
-        })
-      }
-    };
+  import { mapState } from "vuex";
+  export default {
+    name: "app",
+    computed: {
+      // 陣列寫法
+      ...mapState(["isLoading", "myName"])
+      // 物件寫法
+      ...mapState({
+        isLoading: state => state.isLoading,
+        myName:  state => state.myName,
+      })
+    }
+  };
   </script>
   ```
 
@@ -144,14 +156,14 @@ state 就像是 data，action + Mutation 就像是 methods，getters 就像 comp
   </template>
 
   <script>
-    export default {
-      name: "app",
-      computed: {
-        newName() {
-          return this.$store.getters.newName;
-        },
+  export default {
+    name: "app",
+    computed: {
+      newName() {
+        return this.$store.getters.newName;
       },
-    };
+    },
+  };
   </script>
   ```
 
@@ -196,17 +208,17 @@ state 就像是 data，action + Mutation 就像是 methods，getters 就像 comp
   </template>
 
   <script>
-    export default {
-      name: "app",
-      computed: {
-        newName() {
-          return this.$store.getters.newName;
-        },
-        anotherName() {
-          return this.$store.getters.anotherName;
-        },
+  export default {
+    name: "app",
+    computed: {
+      newName() {
+        return this.$store.getters.newName;
       },
-    };
+      anotherName() {
+        return this.$store.getters.anotherName;
+      },
+    },
+  };
   </script>
   ```
 
@@ -218,19 +230,19 @@ state 就像是 data，action + Mutation 就像是 methods，getters 就像 comp
 
   ```vue
   <script>
-    import { mapGetters } from "vuex";
-    export default {
-      name: "app",
-      computed: {
-        // 陣列寫法
-        ...mapGetters(["newName", "anotherName"])
-        // 物件寫法
-        ...mapGetters({
-          newName: "newName",
-          anotherName: "anotherName"
-        })
-      }
-    };
+  import { mapGetters } from "vuex";
+  export default {
+    name: "app",
+    computed: {
+      // 陣列寫法
+      ...mapGetters(["newName", "anotherName"])
+      // 物件寫法
+      ...mapGetters({
+        newName: "newName",
+        anotherName: "anotherName"
+      })
+    }
+  };
   </script>
   ```
 
@@ -286,19 +298,19 @@ state 就像是 data，action + Mutation 就像是 methods，getters 就像 comp
 
 ```vue
 <script>
-  import { mapMutations } from "vuex";
-  export default {
-    name: "app",
-    computed: {
-      // 陣列寫法
-      ...mapMutations(["Loaded", "addTimes"])
-      // 物件寫法
-      ...mapMutations({
-        // add是component自定義的事件名稱，addTimes是mutations在store的名稱
-        add: 'addTimes'
-      })
-    }
-  };
+import { mapMutations } from "vuex";
+export default {
+  name: "app",
+  computed: {
+    // 陣列寫法
+    ...mapMutations(["Loaded", "addTimes"])
+    // 物件寫法
+    ...mapMutations({
+      // add是component自定義的事件名稱，addTimes是mutations在store的名稱
+      add: 'addTimes'
+    })
+  }
+};
 </script>
 ```
 
