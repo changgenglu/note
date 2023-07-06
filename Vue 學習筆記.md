@@ -46,6 +46,11 @@
       - [在 methods 中](#在-methods-中)
       - [在 mounted 中](#在-mounted-中)
       - [在 computed 中](#在-computed-中)
+  - [ref 取得 Dom 元素](#ref-取得-dom-元素)
+    - [基本用法：取得 dom 元素](#基本用法取得-dom-元素)
+    - [獲取子組件中的 data 和調用子組件的方法](#獲取子組件中的-data-和調用子組件的方法)
+    - [子組件呼叫父組件的方法](#子組件呼叫父組件的方法)
+    - [this.$refs 介紹](#thisrefs-介紹)
   - [備註](#備註)
     - [判斷當前環境是否為開發環境](#判斷當前環境是否為開發環境)
 
@@ -1016,6 +1021,171 @@ props: ['channelNames', 'regionId', 'bxMac'],
         return this.parentData.length;
       },
     },
+  };
+</script>
+```
+
+## ref 取得 Dom 元素
+
+> `refs` 是 vue 提供的一個 api，可以讓我們在 vue 中取得 Dom 元素
+
+`ref` 被用來給元素或子組件註冊引用訊息，引用訊息將會註冊在父組件的`$refs` 物件上，如果在普通的 dom 元素上使用，那麼指向的就會是普通的 dom 元素；如果用在子組件上，引用就會指向該子組件的實例。
+
+ref 的特性就是為元素或子組件賦予一個 id 引用，通過 `this.$ref.refName` 來訪問元素或是子組件的實例。
+
+- 一共有三種用法：
+  - ref 加在普通元素上，用 `this.ref.name` 獲取到的是 dom 元素
+  - ref 加在子組件上，用 `this.ref.name` 方式，獲得的是組件實例，可以使用組件的所有方法。
+  - 如何利用 v-for 和 ref 獲取一組陣列或是 dom 節點
+
+### 基本用法：取得 dom 元素
+
+```html
+<p ref="p">Hello</p>
+<children ref="children"></children>
+```
+
+```javascript
+this.$ref.p;
+this.$ref.children;
+```
+
+### 獲取子組件中的 data 和調用子組件的方法
+
+```vue
+<!-- 子組件 -->
+<template>
+  <div>{{ msg }}</div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        msg: "我是子組件";
+      }
+    },
+    methods: {
+      changeMsg() {
+        this.mag = "變身";
+      }
+    }
+  }
+</script>
+```
+
+```vue
+<!-- 父組件 -->
+<template>
+  <div @click="parentMethod">
+    <children ref="children"></children>
+  </div>
+</template>
+
+<script>
+  import children from "components/children.vue";
+
+  export default {
+    components: {
+      children,
+    },
+    data() {
+      return {};
+    },
+    methods: {
+      parentMethod() {
+        this.$ref.children; // 返回一個物件
+        this.$ref.children.changMsg(); // 呼叫 children 的 changeMsg 方法
+      },
+    },
+  };
+</script>
+```
+
+### 子組件呼叫父組件的方法
+
+```vue
+<!-- 子組件 -->
+<template>
+  <div></div>
+</template>
+
+<script>
+  export default {
+    methods: {
+      open() {
+        console.log("已呼叫");
+        // 呼叫父組件方法
+        this.$emit("refreshData");
+      },
+    },
+  };
+</script>
+```
+
+```vue
+<!-- 父組件 -->
+<template>
+  <div id="app">
+    <HelloWorld ref="hello" @refreshData="getData" />
+    <button @cilck="getHello">取得 HelloWorld 組件中的值</button>
+  </div>
+</template>
+
+<script>
+  import HelloWorld from "./components/HelloWorld.vue";
+
+  export default {
+    components: {
+      HelloWorld,
+    },
+    data() {
+      return {};
+    },
+    methods: {
+      getHello() {
+        this.$refs.hello.open();
+      },
+      getData() {
+        console.log("111111111");
+      },
+    },
+  };
+</script>
+```
+
+最後輸出時，`已呼叫`為子組件輸出，`111111111111`為父組件輸出
+
+### this.$refs 介紹
+
+`this.$refs` 為一個物件，持有當前組件中註冊過`ref`特性的所有`dom`元素和子組件實例。
+
+注意：`$refs` 只有在組件完成渲染後才會填充，在初始渲染時無法取得，並且他是非響應式的，因此不能用他模版中做數據綁定。
+
+當 ref 和 v-for 一起用時，你得到的 ref 將會是一個包含了對應的數據源的這些子組件的陣列。
+
+```vue
+<template>
+  <ul>
+    <li v-for="item in people" ref="refContent">{{ item }}</li>
+  </ul>
+</template>
+
+<script>
+  export default {
+    data: {
+      return {
+        people:['one', 'two', 'three', 'four', 'five']
+      }
+    },
+    created() {
+      this.$nextTick(() => {
+        console.log(this.$refs.refContent);
+      })
+    },
+    mounted() {
+      console.log(this.$refs.refContent);
+    }
   };
 </script>
 ```

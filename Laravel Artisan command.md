@@ -5,7 +5,7 @@
 ### 利用指令建立要自訂命令的檔案
 
 ```bash
-php artisan make:command $name
+php artisan make:command <command-name>
 ```
 
 建立的檔案位置會在 app/Console/Commands

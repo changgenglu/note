@@ -55,6 +55,23 @@
     - [JSON 轉換](#json-轉換)
       - [`JSON.stringify()` 將物件轉為 json 字串](#jsonstringify-將物件轉為-json-字串)
       - [`JSON.parse()` 將 json 字串轉換為物件](#jsonparse-將-json-字串轉換為物件)
+  - [屬性描述器](#屬性描述器)
+    - [使用字面值宣告屬性的特徵](#使用字面值宣告屬性的特徵)
+    - [取得屬性特徵](#取得屬性特徵)
+    - [Object.defineProperty 設定單一個屬性描述器](#objectdefineproperty-設定單一個屬性描述器)
+    - [Object.defineProperties 一次設定多個屬性](#objectdefineproperties-一次設定多個屬性)
+    - [資料描述器](#資料描述器)
+      - [writable 屬性是否可以改值](#writable-屬性是否可以改值)
+      - [Configurable 是否可編輯該屬性](#configurable-是否可編輯該屬性)
+      - [Enumerable 屬性是否會在物件的屬性列舉時被顯示](#enumerable-屬性是否會在物件的屬性列舉時被顯示)
+      - [value 屬性的值](#value-屬性的值)
+      - [屬性描述器屬於淺層設定](#屬性描述器屬於淺層設定)
+    - [存取器描述器](#存取器描述器)
+      - [宣告方式](#宣告方式)
+      - [Getter](#getter)
+    - [setter](#setter)
+    - [資料處理器與存取器處理器](#資料處理器與存取器處理器)
+    - [取值器與設值器的應用](#取值器與設值器的應用)
   - [額外補充](#額外補充)
     - [random(亂數)公式](#random亂數公式)
 
@@ -1322,6 +1339,403 @@ mySet.add({ a: 1, b: 2 }); // Set { 1, 5, 'some text', { a: 1, b: 2 }, { a: 1, b
 #### `JSON.stringify()` 將物件轉為 json 字串
 
 #### `JSON.parse()` 將 json 字串轉換為物件
+
+## 屬性描述器
+
+當對於屬性除了指定 key/value 以外有更進一步的要求時，例如設定屬性為 read-only 甚至是 constant 時，就可以使用屬性描述器。
+
+屬性的特徵：
+
+- 資料描述器
+  - writable
+  - configurable
+  - enumerable
+  - value
+- 存取器描述器
+  - get
+  - set
+
+這些特徵都是可以透過屬性描述器去設定的 `Object.defineProperty` 和 `Object.definedProperties`
+
+### 使用字面值宣告屬性的特徵
+
+- writable, configurable, enumerable 都會是 true
+- value 代表屬性的值
+- get, set 則是沒有設定
+
+### 取得屬性特徵
+
+若想要瞭解一個屬性的特徵時，可以使用 `Object.getOwnPropertyDescriptor(object, 'propertyName')` 這個內建函式
+
+```javascript
+var obj = { prop1: "prop1", prop2: "prop2" };
+Object.getOwnPropertyDescriptor(obj, "prop1", "prop2");
+// {
+//    value: "prop1",
+//    writable: true,
+//    enumerable: true,
+//    configurable: true
+// }
+```
+
+使用字面值創建的屬性，其 `writable`, `enumerable`, `configurable` 都會是 `true`，而 `value` 就會是此屬性的值 `prop1`
+
+對於一次察看多個屬性的特徵，可以使用 `Object.getOwnPropertyDescriptors(object, 'propertyName1', 'propertyName2', ...)`
+
+```javascript
+var obj = { prop1: "prop1", prop2: "prop2" };
+Object.getOwnPropertyDescriptors(obj, "prop1", "prop2");
+// {
+//   prop1: { value: "prop1", writable: true, enumerable: true, configurable: true },
+//   prop2: { value: "prop2", writable: true, enumerable: true, configurable: true }
+// }
+```
+
+### Object.defineProperty 設定單一個屬性描述器
+
+```javascript
+Object.defineProperty(object, "propertyName", descriptor);
+// descriptor 是一個 object，descriptor 裡面的屬性可以是剛剛提到的屬性特徵
+```
+
+在 `obj` 中按需求設定 ‵prop` 這個屬性
+
+```javascript
+var obj = {};
+Object.defineProperty(obj, "prop", {
+  writable: false,
+  configurable: true,
+  enumerable: true,
+  value: "This is prop",
+});
+console.log(obj.prop); // "This is prop"
+```
+
+### Object.defineProperties 一次設定多個屬性
+
+```javascript
+Object.definedProperties(object, properties);
+
+// properties 也是一個 object，其結構如下：
+// {
+//   'propertyName1': descriptor1,
+//   'propertyName2': descriptor1,
+//    ...
+//   'propertyNamen': descriptorn
+// }
+```
+
+```javascript
+var obj = {};
+Object.defineProperties(obj, {
+  prop1: {
+    writable: false,
+    configurable: true,
+    enumerable: true,
+    value: "This is prop1",
+  },
+  prop2: {
+    writable: false,
+    configurable: true,
+    enumerable: true,
+    value: "This is prop2",
+  },
+});
+console.log(obj.prop1); // "This is prop1"
+console.log(obj.prop2); // "This is prop2"
+```
+
+### 資料描述器
+
+#### writable 屬性是否可以改值
+
+可以將屬性設定為 `read-only`
+
+當使用屬性的字面值( `obj.prop` 與 `obj[prop]`)定義屬性時，屬性的 writable 為 true，也就代表可以寫入。
+
+相較之下，當 writable 為 false 就代表此屬性為 read-only
+
+在非嚴格模式下，還是可以對 read-only 的屬性進行寫值，但會沒有效果。
+
+```javascript
+var obj = {};
+Object.defineProperty(obj, "prop1", {
+  value: "This is prop1",
+  configurable: true,
+  enumerable: true,
+  writable: false, // 將 writable 設為 false
+});
+console.log(obj.prop1); // 'This is prop1'
+obj.prop1 = "This is prop2";
+console.log(obj.prop1); // 'This is prop1'
+```
+
+#### Configurable 是否可編輯該屬性
+
+屬性描述器在一般狀況下，可以利用屬性描述器重新設定，若沒有重新設定，會保留原有的特徵。
+
+```javascript
+var obj = {};
+obj.prop1 = "This is prop1";
+
+Object.defineProperty(obj, "prop1", {
+  value: "This is prop1",
+  configurable: true,
+  enumerable: true,
+  writable: false,
+});
+console.log(obj.prop1); // "This is prop1"
+obj.prop1 = "This is prop2";
+console.log(obj.prop1); // "This is prop1"
+```
+
+上面將 `writable` 設為 `false`，因此無法對 `obj.prop1` 賦值。
+
+下面實作禁止屬性被重新設定：
+
+```javascript
+var obj = {};
+Object.defineProperty(obj, "prop1", {
+  value: "This is prop1",
+  configurable: false,
+  enumerable: true,
+  writable: true,
+});
+console.log(obj.prop1); // "This is prop1"
+
+Object.defineProperty(obj, "prop1", {
+  value: "This is prop1",
+  configurable: true,
+  enumerable: true,
+  writable: false,
+}); // Uncaught TypeError: Cannot redefine property: prop1
+
+delete obj.prop1; // false 禁止屬性被刪除
+console.log(obj.prop1); // "This is prop1"
+```
+
+當 `obj.prop1` 已經被設定為 `configurable: false` 時，又試著重新設定屬性描述器一次時，javascript 會報錯。
+
+即是在非嚴格模式下，都不允許重新設定 `configurable: false` 的屬性描述。
+
+但有一個特例：在 `configurable: false`，`writable` 特徵還是可以從 `true` 改為 `false`
+
+#### Enumerable 屬性是否會在物件的屬性列舉時被顯示
+
+在 `for...in` 的屬性列舉動作中，只有可列舉的屬性會被迭代
+
+```javascript
+var obj = {};
+Object.defineProperty(obj, "prop1", {
+  value: "This is prop1",
+  configurable: true,
+  enumerable: false,
+  writable: true,
+});
+obj.prop2 = "This is prop2";
+
+console.log("prop1" in obj); // true
+console.log("prop2" in obj); // true
+for (var prop in obj) {
+  console.log("prop: ", prop); // "prop: This is prop2"
+}
+```
+
+雖然 `prop1` 和 `prop2` 都存在於物件中(利用 `in` 檢查)，但因為 `obj.prop1` 被設定為 `enumerable: false` 因此在 `for...in` 列舉的動作中，並不會被迭代到。
+
+相較之下，普通屬性的 `obj.prop2` 可以被列舉。
+
+- `obj.propertyIsEnumerable` 檢查屬性是否可列舉且為物件自有的
+
+```javascript
+var obj = { prop1: "prop1" };
+Object.defineProperty(obj, "prop2", {
+  value: "prop2",
+  enumerable: false,
+  writable: true,
+  configurable: true,
+});
+obj.propertyIsEnumerable("prop1"); // true
+obj.propertyIsEnumerable("prop2"); // false
+```
+
+使用 Object.keys 會將所有可列舉的屬性列成一個陣列
+
+```javascript
+var obj = { prop1: "prop1" };
+Object.defineProperty(obj, "prop2", {
+  value: "prop2",
+  enumerable: false,
+  writable: true,
+  configurable: true,
+});
+Object.keys(obj); // ["prop1"]
+```
+
+#### value 屬性的值
+
+```javascript
+var obj = {};
+Object.defineProperty(obj, "prop1", {
+  value: "This is prop1",
+  writable: true,
+  configurable: true,
+  enumerable: true,
+});
+console.log(obj.prop1); // "This is prop1"
+```
+
+上面程式碼，等同於下面
+
+```javascript
+var obj = {};
+obj.prop1 = "This is prop1";
+console.log(obj.prop1); // "This is prop1"
+```
+
+#### 屬性描述器屬於淺層設定
+
+淺層設定：只有目標物件的`自有屬性`才會擁有這個特徵，若屬性又指向了另一個物件，則另一個物件內的屬性，即不為自有屬性，亦不會擁有這個特徵。
+
+```javascript
+var obj = {},
+var innerObj = { innerProp: "This is innerProp" };
+
+Object.defineProperty(obj, "prop1", {
+  value: innerObj,
+  writable: false,
+  configuration: true,
+  enumerable: true,
+});
+
+obj.prop1 = {};
+console.log(obj.prop1); // { innerProp: "This is innerProp" }
+
+obj.prop1.innerProp = "innerProp changed!";
+console.log(obj.prop1); // { innerProp: "innerProp changed!" }
+```
+
+將 `obj.prop1` 設為 `writable: false`，並賦值為 `innerObj`，接著試圖將`{}` 寫入 `obj.prop1`。此時寫入的動作並沒有成功，`obj.prop1` 還是指向 `innerObj`
+
+但若賦值的是 `innerObj` 的屬性 `innerProp` 的話，是可以寫入的，因為只有 `obj` 自身的屬性 `prop1` 被指定為 `writable: false`，而 `prop1` 指向的 `innerObj` 內部屬性則不受 `prop1` 的特徵管轄，因此複寫 `innerProp` 是可行的
+
+### 存取器描述器
+
+`get` 和 `set` 分別為取值器與設值器，可以將他想像成是函式。
+當有設定這兩個特徵時，他們會覆蓋 javascript 原有的取值與設值行為 `[[GET]]` 和 `[[set]]`
+
+#### 宣告方式
+
+- 使用物件字面值時直接定義
+
+  ```javascript
+  var obj = {
+    get propName() {
+      // ... do something
+      return "some value";
+    },
+    set propName(val) {
+      // ... do something
+    },
+  };
+  ```
+
+- 利用屬性描述器定義
+
+  ```javascript
+  Object.defineProperty(obj, "prop1", {
+    // ...
+    get: function () {
+      // ... do something
+      return "some value";
+    },
+    set: function (val) {
+      // ... do something
+    },
+  });
+  ```
+
+以上的宣告方式是一樣的
+
+#### Getter
+
+需要回傳一個值來當作取值結果
+
+```javascript
+var obj = {
+  get prop1() {
+    return "This is prop1";
+  },
+};
+console.log(obj.prop1); // 'This is prop1'
+
+obj.prop1 = "Change value!";
+console.log(obj.prop1); // 'This is prop1'
+```
+
+無論怎麼修改 prop1 的值，最後回傳的都是取值器回傳的 "This is prop1"
+
+### setter
+
+在拿到值之後，去做指定的動作
+
+```javascript
+var obj = {
+  set prop1(val) {
+    console.log("prop1 setted: ", val);
+  },
+};
+obj.prop1 = "This is prop1"; // "prop1 setted:  This is prop1"
+
+console.log(obj.prop1); // undefined
+```
+
+將 "this is prop1" 傳入 prop1 中，此時會印出 set 要求的 log，當要取出 obj.prop1 的值時，因為我們並沒有設置 get，因此出現 undefined
+
+### 資料處理器與存取器處理器
+
+- 資料描述器：代表屬性是有值，會有以下兩個特徵
+  - value
+  - writable
+- 存取器描述器：屬性的值是由取值器與設值器所決定，會有以下兩個特徵：
+  - get
+  - set
+
+需要注意的是，資料描述器與存取器描述器不相容。
+
+若今天物件中的屬性已經設定了 get 和 set，也就代表已經定義取值和設值的行為，此時再額外進行屬性值(value)與唯獨(writable)的設定，產生行為衝突
+
+```javascript
+var obj = {};
+Object.defineProperty(obj, "prop1", {
+  get: function () {
+    return "This is prop1";
+  },
+  value: "test",
+  writable: true,
+}); // Uncaught TypeError: Invalid property descriptor. Cannot both specify accessors and a value or writable attribute, #<Object>
+```
+
+### 取值器與設值器的應用
+
+```javascript
+var obj = {};
+Object.defineProperty(obj, "prop1", {
+  set: function (val) {
+    this._prop1_ = val * 2;
+  },
+  get: function () {
+    return this._prop1_;
+  },
+  configurable: true,
+  enumerable: true,
+});
+
+obj.prop1 = 100;
+console.log(obj.prop1); // 200
+```
+
+上面我們宣告了一個變數 obj 並加入一個屬性 prop1，並為這個屬性同時加入 get 和 set，這兩個函式的共通點：都對 obj.prop1 進行存取。
 
 ## 額外補充
 
