@@ -1447,6 +1447,10 @@ console.log(obj.prop2); // "This is prop2"
 
 ### 資料描述器
 
+> 參考資料：
+>
+> [JavaScript - 屬性描述器](https://ithelp.ithome.com.tw/articles/10197826)
+
 #### writable 屬性是否可以改值
 
 可以將屬性設定為 `read-only`
@@ -1598,8 +1602,8 @@ console.log(obj.prop1); // "This is prop1"
 淺層設定：只有目標物件的`自有屬性`才會擁有這個特徵，若屬性又指向了另一個物件，則另一個物件內的屬性，即不為自有屬性，亦不會擁有這個特徵。
 
 ```javascript
-var obj = {},
-var innerObj = { innerProp: "This is innerProp" };
+var obj = {};
+var  innerObj = { innerProp: "This is innerProp" };
 
 Object.defineProperty(obj, "prop1", {
   value: innerObj,
